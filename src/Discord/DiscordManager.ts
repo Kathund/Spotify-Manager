@@ -1,20 +1,20 @@
+import Application from '../Application';
 import InteractionHandler from './handlers/InteractionHandler';
-import Logger from './utils/Logger';
 import StateHandler from './handlers/StateHandler';
 import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
-import { SlashCommand } from './types/main';
+import { SlashCommand } from '../types/main';
 import { readdirSync } from 'fs';
-import { token } from '../config.json';
+import { token } from '../../config.json';
 
 class DiscordManager {
+  Application: Application;
   interactionHandler: InteractionHandler;
   stateHandler: StateHandler;
   client?: Client;
-  Logger: Logger;
-  constructor() {
+  constructor(app: Application) {
+    this.Application = app;
     this.interactionHandler = new InteractionHandler(this);
     this.stateHandler = new StateHandler(this);
-    this.Logger = new Logger();
   }
 
   connect(): void {
@@ -31,7 +31,7 @@ class DiscordManager {
     this.client.on('ready', () => this.stateHandler.onReady());
     this.client.on('interactionCreate', (interaction) => this.interactionHandler.onInteraction(interaction));
 
-    this.client.login(token).catch((e) => this.Logger.error(e));
+    this.client.login(token).catch((e) => this.Application.Logger.error(e));
   }
 
   async deployCommands(): Promise<void> {
@@ -49,7 +49,7 @@ class DiscordManager {
     const rest = new REST({ version: '10' }).setToken(token);
     const clientID = Buffer.from(token.split('.')[0], 'base64').toString('ascii');
     await rest.put(Routes.applicationCommands(clientID), { body: commands });
-    this.Logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
+    this.Application.Logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
   }
 }
 

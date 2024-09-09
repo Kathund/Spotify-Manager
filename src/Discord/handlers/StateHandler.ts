@@ -8,7 +8,7 @@ class StateHandler {
 
   onReady() {
     if (!this.discord.client) return;
-    this.discord.Logger.discord(
+    this.discord.Application.Logger.discord(
       `Logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`
     );
   }

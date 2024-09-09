@@ -15,14 +15,14 @@ class InteractionHandler {
     if (!interaction.member || !interaction.channel || !interaction.guild) return;
     const command = interaction.client.commands.get(interaction.commandName);
     try {
-      this.discord.Logger.discord(
+      this.discord.Application.Logger.discord(
         `Interaction Event trigged by ${interaction.user.username} (${
           interaction.user.id
         }) ran command ${interaction.commandName}`
       );
       await command.execute(interaction);
     } catch (error) {
-      if (error instanceof Error) this.discord.Logger.error(error);
+      if (error instanceof Error) this.discord.Application.Logger.error(error);
     }
   }
 }
