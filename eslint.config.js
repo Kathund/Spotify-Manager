@@ -1,6 +1,7 @@
-import prettier from 'eslint-config-prettier';
-import ts from 'typescript-eslint';
 import globals from 'globals';
+import prettier from 'eslint-config-prettier';
+import sortImports from '@j4cobi/eslint-plugin-sort-imports';
+import ts from 'typescript-eslint';
 
 export default [
   ...ts.configs.recommended,
@@ -12,16 +13,21 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.es2022,
-        ...globals.node,
-        guild: 'writable'
+        ...globals.node
       }
     },
+    plugins: { 'sort-imports': sortImports },
     rules: {
+      'sort-imports/sort-imports': [
+        'error',
+        { ignoreCase: false, ignoreMemberSort: false, memberSyntaxSortOrder: ['all', 'single', 'multiple', 'none'] }
+      ],
       'max-len': ['error', { code: 120, ignoreUrls: true, ignoreComments: true }],
       '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
       'no-constant-condition': ['error', { checkLoops: false }],
       'prefer-const': ['warn', { destructuring: 'all' }],
       curly: ['warn', 'multi-line', 'consistent'],
+      '@typescript-eslint/no-explicit-any': 'warn',
       'logical-assignment-operators': 'warn',
       'no-template-curly-in-string': 'error',
       'quote-props': ['error', 'as-needed'],
@@ -45,7 +51,6 @@ export default [
       'default-case-last': 'warn',
       'no-self-compare': 'error',
       'no-new-wrappers': 'error',
-      'no-fallthrough': 'error',
       'no-lone-blocks': 'error',
       'no-undef-init': 'error',
       'no-else-return': 'warn',

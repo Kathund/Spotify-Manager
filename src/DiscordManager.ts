@@ -1,23 +1,20 @@
-import { Client, GatewayIntentBits, Collection, REST, Routes } from 'discord.js';
 import InteractionHandler from './handlers/InteractionHandler';
-import MessageHandler from './handlers/MessageHandler';
+import Logger from './utils/Logger';
 import StateHandler from './handlers/StateHandler';
+import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { SlashCommand } from './types/main';
-import { token } from '../config.json';
-import Logger from './utils/logger';
 import { readdirSync } from 'fs';
+import { token } from '../config.json';
 
 class DiscordManager {
   interactionHandler: InteractionHandler;
-  messageHandler: MessageHandler;
   stateHandler: StateHandler;
   client?: Client;
-  logger: Logger;
+  Logger: Logger;
   constructor() {
     this.interactionHandler = new InteractionHandler(this);
-    this.messageHandler = new MessageHandler(this);
     this.stateHandler = new StateHandler(this);
-    this.logger = new Logger();
+    this.Logger = new Logger();
   }
 
   connect(): void {
@@ -32,10 +29,9 @@ class DiscordManager {
 
     this.deployCommands();
     this.client.on('ready', () => this.stateHandler.onReady());
-    this.client.on('messageCreate', (message) => this.messageHandler.onMessage(message));
     this.client.on('interactionCreate', (interaction) => this.interactionHandler.onInteraction(interaction));
 
-    this.client.login(token).catch((e) => this.logger.error(e));
+    this.client.login(token).catch((e) => this.Logger.error(e));
   }
 
   async deployCommands(): Promise<void> {
@@ -53,7 +49,7 @@ class DiscordManager {
     const rest = new REST({ version: '10' }).setToken(token);
     const clientID = Buffer.from(token.split('.')[0], 'base64').toString('ascii');
     await rest.put(Routes.applicationCommands(clientID), { body: commands });
-    this.logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
+    this.Logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
   }
 }
 

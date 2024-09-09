@@ -1,5 +1,5 @@
-import { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
 import DiscordManager from '../DiscordManager';
+import { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class Command {
   readonly discord: DiscordManager;

@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 const customLevels = { discord: 0, other: 1, warn: 2, error: 3, max: 4 };
-import { createLogger, format, transports } from 'winston';
 import chalk from 'chalk';
+import { createLogger, format, transports } from 'winston';
+
 function getCurrentTime() {
   return new Date().toLocaleString('en-US', {
     year: 'numeric',
@@ -92,10 +93,5 @@ class Logger {
     return console.log(chalk.bgRedBright.black(`[${getCurrentTime()}] Error >`) + ' ' + chalk.redBright(errorString));
   }
 }
-
-export const discordMessage = new Logger().discord;
-export const otherMessage = new Logger().other;
-export const warnMessage = new Logger().warn;
-export const errorMessage = new Logger().error;
 
 export default Logger;
