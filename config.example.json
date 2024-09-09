@@ -1,0 +1,11 @@
+{
+  "token": "DISCORD_BOT_TOKEN",
+  "mongoURL": "MONGO_DB_URL",
+  "teamRole": "TEAM_ROLE_ID",
+  "devRole": "DEV_ROLE_ID",
+  "contributorsRole": "CONTRIBUTORS_ROLE_ID",
+  "supportCategory": "SUPPORT_CATEGORY_ID",
+  "autoModBypassRole": "AUTOMOD_BYPASS_ROLE_ID",
+  "serverId": "SERVER_ID",
+  "infractionLogchannel": "INFRACTION_LOG_CHANNEL"
+}
