@@ -1,3 +1,6 @@
 {
-  "token": "DISCORD_BOT_TOKEN"
+  "token": "DISCORD_BOT_TOKEN",
+  "spotifyClientId": "SPOTIFY_CLIENT_ID",
+  "spotifyClientSecret": "SPOTIFY_CLIENT_SECRET",
+  "port": 5173
 }
