@@ -15,12 +15,7 @@ class Image {
   }
 
   toJSON(): Record<string, any> {
-    return {
-      url: this.url,
-      width: this.width,
-      height: this.height,
-      pixels: this.pixels
-    };
+    return { url: this.url, width: this.width, height: this.height, pixels: this.pixels };
   }
 }
 

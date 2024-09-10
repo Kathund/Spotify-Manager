@@ -2,6 +2,7 @@ import * as config from '../config.json';
 import DiscordManager from './Discord/DiscordManager';
 import Logger from './utils/Logger';
 import SpotifyManager from './Spotify/SpotifyManager';
+
 class Application {
   Logger: Logger;
   discord: DiscordManager;

@@ -2,7 +2,6 @@
 const customLevels = { discord: 0, other: 1, warn: 2, error: 3, max: 4 };
 import chalk from 'chalk';
 import { createLogger, format, transports } from 'winston';
-
 function getCurrentTime() {
   return new Date().toLocaleString('en-US', {
     year: 'numeric',
@@ -72,17 +71,14 @@ class Logger {
     discordLogger.log('discord', message);
     return console.log(chalk.bgMagenta.black(`[${getCurrentTime()}] Discord >`) + ' ' + chalk.magenta(message));
   }
-
   public other(message: string) {
     otherLogger.log('other', message);
     return console.log(chalk.bgCyan.black(`[${getCurrentTime()}] Other >`) + ' ' + chalk.cyan(message));
   }
-
   public warn(message: string) {
     warnLogger.log('warn', message);
     return console.log(chalk.bgYellow.black(`[${getCurrentTime()}] Warning >`) + ' ' + chalk.yellow(message));
   }
-
   public error(error: Error) {
     const errorString = `${error.toString()}${error.stack?.replace(error.toString(), '')}`;
     errorLogger.log('error', errorString);

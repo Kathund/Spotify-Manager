@@ -48,7 +48,6 @@ class ShuffleCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-
       await interaction.followUp({
         content: `Shuffle ${(await res.json()).state ? 'Enabled' : 'Disabled'}.`,
         ephemeral: true

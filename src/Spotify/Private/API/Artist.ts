@@ -19,13 +19,7 @@ class Artist {
   }
 
   toJSON(): Record<string, any> {
-    return {
-      id: this.id,
-      name: this.name,
-      type: this.type,
-      uri: this.uri,
-      url: this.url
-    };
+    return { id: this.id, name: this.name, type: this.type, uri: this.uri, url: this.url };
   }
 }
 

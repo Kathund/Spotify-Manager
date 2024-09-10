@@ -32,7 +32,6 @@ class PlayCommand extends Command {
         await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
         return;
       }
-
       const data = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
       if (403 === data.status || 401 === data.status) {
         await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
@@ -49,7 +48,6 @@ class PlayCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-
       await interaction.followUp({ content: 'Playing.', ephemeral: true });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);

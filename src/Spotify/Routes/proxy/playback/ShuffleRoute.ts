@@ -21,9 +21,7 @@ class PlaybackShuffleRoute extends Route {
       const newState = !Boolean((await currentPlayback.json()).data.shuffle_state);
       const result = await fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${newState}`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${this.spotify.token.key}`
-        }
+        headers: { Authorization: `Bearer ${this.spotify.token.key}` }
       });
       if (403 === result.status || 401 === result.status) {
         return res.status(403).json({ success: true, cause: 'Please login first.' });

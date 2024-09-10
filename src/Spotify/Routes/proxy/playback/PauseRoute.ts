@@ -25,9 +25,7 @@ class PlaybackPauseRoute extends Route {
       }
       const result = await fetch('https://api.spotify.com/v1/me/player/pause', {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${this.spotify.token.key}`
-        }
+        headers: { Authorization: `Bearer ${this.spotify.token.key}` }
       });
       if (403 === result.status || 401 === result.status) {
         const parsed = await result.json();

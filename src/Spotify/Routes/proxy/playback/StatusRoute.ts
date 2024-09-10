@@ -12,9 +12,7 @@ class PlaybackStatusRoute extends Route {
     try {
       if (!this.spotify.token) return res.status(403).json({ success: false, cause: 'Please login first.' });
       const result = await fetch('https://api.spotify.com/v1/me/player', {
-        headers: {
-          Authorization: `Bearer ${this.spotify.token.key}`
-        }
+        headers: { Authorization: `Bearer ${this.spotify.token.key}` }
       });
       if (403 === result.status || 401 === result.status) {
         return res.status(403).json({ success: false, cause: 'Please login first.' });

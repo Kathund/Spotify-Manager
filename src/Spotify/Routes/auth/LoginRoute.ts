@@ -13,7 +13,6 @@ class AuthRoute extends Route {
       const verifier = this.generateCodeVerifier(128);
       const challenge = await this.generateCodeChallenge(verifier);
       req.session.verifier = verifier;
-
       const params = new URLSearchParams();
       params.append('client_id', this.spotify.Application.config.spotifyClientId);
       params.append('response_type', 'code');
@@ -21,7 +20,6 @@ class AuthRoute extends Route {
       params.append('scope', this.spotify.scopes.join(' '));
       params.append('code_challenge_method', 'S256');
       params.append('code_challenge', challenge);
-
       res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
     } catch (error) {
       if (error instanceof Error) this.spotify.Application.Logger.error(error);
@@ -32,7 +30,6 @@ class AuthRoute extends Route {
   generateCodeVerifier(length: number) {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
     for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }

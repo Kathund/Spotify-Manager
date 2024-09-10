@@ -2,7 +2,6 @@ import Device from './Devices';
 import Track from './Track';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { emojis } from '../../../../config.json';
-
 export type RepeatState = 'off' | 'track' | 'context';
 
 class Playback {
@@ -51,8 +50,6 @@ class Playback {
     return '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
   }
 
-  // getVolumeBar(): string {
-
   toEmbed(): EmbedBuilder {
     const duration = `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
       .toString()
@@ -63,11 +60,7 @@ class Playback {
     return this.item
       .toEmbed()
       .setTitle(`Currently ${this.playing ? 'Playing' : 'Paused'}`)
-      .addFields({
-        name: 'Progress',
-        value: `${progress} ${this.getPrograssBar()} ${duration}`,
-        inline: true
-      });
+      .addFields({ name: 'Progress', value: `${progress} ${this.getPrograssBar()} ${duration}`, inline: true });
   }
 
   toButtons(): ActionRowBuilder<ButtonBuilder>[] {

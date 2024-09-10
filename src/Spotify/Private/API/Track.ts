@@ -65,11 +65,8 @@ class Track {
       .setTitle('Track Infomation')
       .setColor('Random')
       .setDescription(
-        `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.explicit ? emojis.explicit : ''}\n\n[${this.album.name}](<${
-          this.album.spotifyUrl || 'https://open.spotify.com/'
-        }>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+        `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.explicit ? emojis.explicit : ''}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
       );
-
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
     return embed;
   }

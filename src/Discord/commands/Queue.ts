@@ -32,7 +32,6 @@ class QueueCommand extends Command {
         await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
         return;
       }
-
       const data = new Queue((await res.json()).data);
       await interaction.followUp({ embeds: [data.toEmbed()], ephemeral: true });
     } catch (error) {

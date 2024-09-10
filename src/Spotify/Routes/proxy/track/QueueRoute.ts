@@ -22,9 +22,7 @@ class TrackQueueRoute extends Route {
       if (!query) return res.status(400).json({ success: false, cause: 'Please provide a song query.' });
       const result = await fetch(`https://api.spotify.com/v1/me/player/queue?uri=${query}`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.spotify.token.key}`
-        }
+        headers: { Authorization: `Bearer ${this.spotify.token.key}` }
       });
       if (403 === result.status || 401 === result.status) {
         return res.status(403).json({ success: true, cause: 'Please login first.' });

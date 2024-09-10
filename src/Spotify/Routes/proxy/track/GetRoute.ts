@@ -14,9 +14,7 @@ class TrackGetRoute extends Route {
       const { query } = req.params;
       if (!query) return res.status(400).json({ success: false, cause: 'Please provide a search query.' });
       const result = await fetch(`https://api.spotify.com/v1/tracks/${query}`, {
-        headers: {
-          Authorization: `Bearer ${this.spotify.token.key}`
-        }
+        headers: { Authorization: `Bearer ${this.spotify.token.key}` }
       });
       res.status(200).json({ success: true, data: await result.json() });
     } catch (error) {

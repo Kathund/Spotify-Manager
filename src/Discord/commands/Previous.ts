@@ -34,7 +34,6 @@ class PreviousCommand extends Command {
         await interaction.followUp({ content: 'Something went wrong! Please try again.', ephemeral: true });
         return;
       }
-
       const data = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
       if (403 === data.status || 401 === data.status) {
         await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });

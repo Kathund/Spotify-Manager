@@ -10,10 +10,7 @@ class Search {
   }
 
   toJSON(): Record<string, any> {
-    return {
-      query: this.query,
-      track: this.track ? this.track.toJSON() : null
-    };
+    return { query: this.query, track: this.track ? this.track.toJSON() : null };
   }
 
   toEmbed(): EmbedBuilder {

@@ -17,14 +17,10 @@ class DiscordManager {
   }
 
   connect(): void {
-    this.client = new Client({
-      intents: [GatewayIntentBits.Guilds]
-    });
-
+    this.client = new Client({ intents: [GatewayIntentBits.Guilds] });
     this.deployCommands();
     this.client.on('ready', () => this.stateHandler.onReady());
     this.client.on('interactionCreate', (interaction) => this.interactionHandler.onInteraction(interaction));
-
     this.client.login(this.Application.config.token).catch((e) => this.Application.Logger.error(e));
   }
 

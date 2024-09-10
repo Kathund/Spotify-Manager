@@ -15,11 +15,7 @@ class SearchTrackRoute extends Route {
       if (!query) return res.status(400).json({ success: false, cause: 'Please provide a search query.' });
       const result = await fetch(
         `https://api.spotify.com/v1/search?q=${query.replaceAll('%20', '+')}&type=track&limit=10&market=AU&offset=${offset || 0}`,
-        {
-          headers: {
-            Authorization: `Bearer ${this.spotify.token.key}`
-          }
-        }
+        { headers: { Authorization: `Bearer ${this.spotify.token.key}` } }
       );
       res.status(200).json({ success: true, data: { search: query, ...(await result.json()) } });
     } catch (error) {

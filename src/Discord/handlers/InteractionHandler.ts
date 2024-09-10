@@ -31,9 +31,9 @@ class InteractionHandler {
         await interaction.deferReply({ ephemeral: false });
       }
       this.discord.Application.Logger.discord(
-        `Interaction Event trigged by ${interaction.user.username} (${
-          interaction.user.id
-        }) ran command ${interaction.commandName}`
+        `Interaction Event trigged by ${interaction.user.username} (${interaction.user.id}) ran command ${
+          interaction.commandName
+        }`
       );
       await command.execute(interaction);
     } catch (error) {
@@ -46,7 +46,6 @@ class InteractionHandler {
       this.discord.Application.Logger.discord(
         `Button Clicked ${interaction.user.username} (${interaction.user.id}) button ${interaction.customId}`
       );
-
       if ('refresh' === interaction.customId) {
         const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
         if (403 === res.status || 401 === res.status) {
@@ -104,9 +103,9 @@ class InteractionHandler {
   async stringSelectMenu(interaction: StringSelectMenuInteraction): Promise<void> {
     try {
       this.discord.Application.Logger.discord(
-        `Menu Clicked ${interaction.user.username} (${interaction.user.id}) menu ${
-          interaction.customId
-        } value ${interaction.values[0]}`
+        `Menu Clicked ${interaction.user.username} (${interaction.user.id}) menu ${interaction.customId} value ${
+          interaction.values[0]
+        }`
       );
       const ids: string[] = ['searchSelectMenu'];
       if (!ids.includes(interaction.customId)) {

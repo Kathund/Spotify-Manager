@@ -20,9 +20,7 @@ class PlaybackNextRoute extends Route {
       if (204 === currentPlayback.status) return res.status(404).json({ success: false, cause: 'Nothing is playing.' });
       const result = await fetch('https://api.spotify.com/v1/me/player/next', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.spotify.token.key}`
-        }
+        headers: { Authorization: `Bearer ${this.spotify.token.key}` }
       });
       if (403 === result.status || 401 === result.status) {
         return res.status(403).json({ success: true, cause: 'Please login first.' });

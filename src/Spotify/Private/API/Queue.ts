@@ -14,10 +14,7 @@ class Queue {
   }
 
   toJSON(): Record<string, any> {
-    return {
-      currentPlayback: this.currentPlayback.toJSON(),
-      queue: this.queue.map((track) => track.toJSON())
-    };
+    return { currentPlayback: this.currentPlayback.toJSON(), queue: this.queue.map((track) => track.toJSON()) };
   }
 
   toEmbed(): EmbedBuilder {

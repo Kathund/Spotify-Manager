@@ -48,7 +48,6 @@ class PauseCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-
       await interaction.followUp({ content: 'Paused.', ephemeral: true });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
