@@ -96,5 +96,5 @@ jobs:
       - name: 
         run: cp config.example.json config.json
 
-      - name: Check eslint
+      - name: Check building
         run: pnpm build

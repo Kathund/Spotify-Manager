@@ -1,14 +1,16 @@
 class Image {
-  url: string;
+  url: string | null;
   width: number;
   height: number;
+  pixels: number;
   constructor(data: Record<string, any>) {
-    this.url = data.url;
-    this.width = data.width;
-    this.height = data.height;
+    this.url = data.url || null;
+    this.width = data.width || 0;
+    this.height = data.height || 0;
+    this.pixels = this.width * this.height;
   }
 
-  toString(): string {
+  toString(): string | null {
     return this.url;
   }
 
@@ -16,7 +18,8 @@ class Image {
     return {
       url: this.url,
       width: this.width,
-      height: this.height
+      height: this.height,
+      pixels: this.pixels
     };
   }
 }

@@ -8,7 +8,7 @@ class Track {
   disc: number;
   duration: number;
   explicit: boolean;
-  url: string;
+  url: string | null;
   id: string;
   local: boolean;
   name: string;
@@ -22,8 +22,8 @@ class Track {
     this.availableMarkets = data.available_markets;
     this.disc = data.disc_number;
     this.duration = data.duration_ms;
-    this.explicit = data.explicit;
-    this.url = data.href;
+    this.explicit = data.explicit || false;
+    this.url = data.href || null;
     this.id = data.id;
     this.local = data.is_local;
     this.name = data.name;

@@ -3,25 +3,34 @@ import DiscordManager from '../DiscordManager';
 import {
   ApplicationIntegrationType,
   ChatInputCommandInteraction,
+  EmbedBuilder,
   InteractionContextType,
   SlashCommandBuilder
 } from 'discord.js';
 
-class UptimeCommand extends Command {
+class AboutCommand extends Command {
   data: SlashCommandBuilder;
   constructor(discord: DiscordManager) {
     super(discord);
     this.data = new SlashCommandBuilder()
-      .setName('uptime')
-      .setDescription('Uptime of stuff')
+      .setName('about')
+      .setDescription('about')
       .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
       .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
+      const app = await interaction.client.application.fetch();
       await interaction.reply({
-        content: `Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('Kath Bot')
+            .setColor('Random')
+            .setDescription(
+              `Kath Bot made with :purple_heart: by <@1276524855445164098>\nFollow my Github https://github.com/Kathund\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
+            )
+        ]
       });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
@@ -34,4 +43,4 @@ class UptimeCommand extends Command {
   }
 }
 
-export default UptimeCommand;
+export default AboutCommand;

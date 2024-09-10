@@ -10,8 +10,8 @@ class TrackRoute extends Route {
 
   async handle(req: Request, res: Response) {
     try {
+      if (!this.spotify.token) return res.status(403).json({ success: false, cause: 'Please login first.' });
       const { track } = req.query;
-      if (!this.spotify.token) return res.status(400).send('Please login first.');
       const result = await fetch(`https://api.spotify.com/v1/tracks/${track}`, {
         headers: {
           Authorization: `Bearer ${this.spotify.token}`

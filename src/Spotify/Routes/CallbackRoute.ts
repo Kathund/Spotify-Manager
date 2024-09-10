@@ -1,7 +1,6 @@
 import Route from '../Private/BaseRoute';
 import SpotifyManager from '../SpotifyManager';
 import { Request, Response } from 'express';
-import { spotifyClientId } from '../../../config.json';
 
 class CallbackRoute extends Route {
   constructor(spotify: SpotifyManager) {
@@ -25,7 +24,7 @@ class CallbackRoute extends Route {
 
   async getAccessToken(verifier: string, code: string): Promise<string> {
     const params = new URLSearchParams();
-    params.append('client_id', spotifyClientId);
+    params.append('client_id', this.spotify.Application.config.spotifyClientId);
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
     params.append('redirect_uri', 'http://localhost:5173/callback');

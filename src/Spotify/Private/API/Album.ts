@@ -5,7 +5,7 @@ class Album {
   albumType: string;
   artists: Artist[];
   availableMarkets: string[];
-  url: string;
+  url: string | null;
   id: string;
   images: Image[];
   name: string;
@@ -18,9 +18,11 @@ class Album {
     this.albumType = data.album_type;
     this.artists = data.artists.map((artistData: Record<string, any>) => new Artist(artistData));
     this.availableMarkets = data.available_markets;
-    this.url = data.href;
+    this.url = data.href || null;
     this.id = data.id;
-    this.images = data.images.map((imgData: Record<string, any>) => new Image(imgData));
+    this.images = data.images
+      .map((imgData: Record<string, any>) => new Image(imgData))
+      .sort((a: Image, b: Image) => b.pixels - a.pixels);
     this.name = data.name;
     this.releaseDate = data.release_date;
     this.releaseDatePrecision = data.release_date_precision;

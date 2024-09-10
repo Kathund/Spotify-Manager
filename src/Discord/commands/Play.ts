@@ -7,22 +7,31 @@ import {
   SlashCommandBuilder
 } from 'discord.js';
 
-class UptimeCommand extends Command {
+class PlayCommand extends Command {
   data: SlashCommandBuilder;
   constructor(discord: DiscordManager) {
     super(discord);
     this.data = new SlashCommandBuilder()
-      .setName('uptime')
-      .setDescription('Uptime of stuff')
+      .setName('play')
+      .setDescription('play')
       .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
       .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
-      await interaction.reply({
-        content: `Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`
-      });
+      await interaction.deferReply();
+      const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/play`);
+      if (403 === res.status || 401 === res.status) {
+        await interaction.followUp({ content: 'Account isnt logged in.' });
+        return;
+      }
+      if (204 === res.status) {
+        await interaction.followUp({ content: 'Nothing is playing.' });
+        return;
+      }
+
+      await interaction.followUp({ content: 'Playing.' });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {
@@ -34,4 +43,4 @@ class UptimeCommand extends Command {
   }
 }
 
-export default UptimeCommand;
+export default PlayCommand;

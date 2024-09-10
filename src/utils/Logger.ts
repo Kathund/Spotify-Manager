@@ -17,10 +17,6 @@ function getCurrentTime() {
   });
 }
 
-const discordTransport = new transports.File({ level: 'discord', filename: './logs/discord.log' });
-const otherTransport = new transports.File({ level: 'other', filename: './logs/other.log' });
-const warnTransport = new transports.File({ level: 'warn', filename: './logs/warn.log' });
-const errorTransport = new transports.File({ level: 'error', filename: './logs/error.log' });
 const combinedTransport = new transports.File({ level: 'max', filename: './logs/combined.log' });
 
 const discordLogger = createLogger({
@@ -32,7 +28,7 @@ const discordLogger = createLogger({
       return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
     })
   ),
-  transports: [discordTransport, combinedTransport]
+  transports: [new transports.File({ level: 'discord', filename: './logs/discord.log' }), combinedTransport]
 });
 
 const otherLogger = createLogger({
@@ -44,7 +40,7 @@ const otherLogger = createLogger({
       return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
     })
   ),
-  transports: [otherTransport, combinedTransport]
+  transports: [new transports.File({ level: 'other', filename: './logs/other.log' }), combinedTransport]
 });
 
 const warnLogger = createLogger({
@@ -56,7 +52,7 @@ const warnLogger = createLogger({
       return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
     })
   ),
-  transports: [warnTransport, combinedTransport]
+  transports: [new transports.File({ level: 'warn', filename: './logs/warn.log' }), combinedTransport]
 });
 
 const errorLogger = createLogger({
@@ -68,7 +64,7 @@ const errorLogger = createLogger({
       return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
     })
   ),
-  transports: [errorTransport, combinedTransport]
+  transports: [new transports.File({ level: 'error', filename: './logs/error.log' }), combinedTransport]
 });
 
 class Logger {

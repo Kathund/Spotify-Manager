@@ -4,7 +4,6 @@ import StateHandler from './handlers/StateHandler';
 import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { SlashCommand } from '../types/main';
 import { readdirSync } from 'fs';
-import { token } from '../../config.json';
 
 class DiscordManager {
   Application: Application;
@@ -19,25 +18,20 @@ class DiscordManager {
 
   connect(): void {
     this.client = new Client({
-      intents: [
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.Guilds
-      ]
+      intents: [GatewayIntentBits.Guilds]
     });
 
     this.deployCommands();
     this.client.on('ready', () => this.stateHandler.onReady());
     this.client.on('interactionCreate', (interaction) => this.interactionHandler.onInteraction(interaction));
 
-    this.client.login(token).catch((e) => this.Application.Logger.error(e));
+    this.client.login(this.Application.config.token).catch((e) => this.Application.Logger.error(e));
   }
 
   async deployCommands(): Promise<void> {
     if (!this.client) return;
     this.client.commands = new Collection<string, SlashCommand>();
-    const commandFiles = readdirSync('./src/commands');
+    const commandFiles = readdirSync('./src/Discord/commands');
     const commands = [];
     for (const file of commandFiles) {
       const command = new (await import(`./commands/${file}`)).default(this);
@@ -46,8 +40,8 @@ class DiscordManager {
         this.client.commands.set(command.data.name, command);
       }
     }
-    const rest = new REST({ version: '10' }).setToken(token);
-    const clientID = Buffer.from(token.split('.')[0], 'base64').toString('ascii');
+    const rest = new REST({ version: '10' }).setToken(this.Application.config.token);
+    const clientID = Buffer.from(this.Application.config.token.split('.')[0], 'base64').toString('ascii');
     await rest.put(Routes.applicationCommands(clientID), { body: commands });
     this.Application.Logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
   }

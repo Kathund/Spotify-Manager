@@ -2,7 +2,6 @@ import Application from '../Application';
 import Routes from './Routes';
 import express from 'express';
 import session from 'express-session';
-import { port } from '../../config.json';
 
 class SpotifyManager {
   readonly Application: Application;
@@ -14,7 +13,12 @@ class SpotifyManager {
     this.expressServer = express();
     this.startWebServer();
 
-    this.scopes = ['user-read-playback-state', 'user-read-private', 'user-read-email'];
+    this.scopes = [
+      'user-read-currently-playing',
+      'user-modify-playback-state',
+      'user-read-playback-state',
+      'user-read-private'
+    ];
     this.token = '';
   }
 
@@ -33,8 +37,8 @@ class SpotifyManager {
       this.expressServer.get(route.path, route.handle.bind(route));
     }
 
-    this.expressServer.listen(port, () => {
-      this.Application.Logger.other(`Proxy server listening at http://localhost:${port}`);
+    this.expressServer.listen(this.Application.config.port, () => {
+      this.Application.Logger.other(`Proxy server listening at http://localhost:${this.Application.config.port}`);
     });
   }
 }

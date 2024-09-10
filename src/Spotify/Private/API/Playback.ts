@@ -1,5 +1,6 @@
 import Device from './Devices';
 import Track from './Track';
+import { EmbedBuilder } from 'discord.js';
 
 class Playback {
   device: Device;
@@ -25,6 +26,34 @@ class Playback {
 
   toString(): Track {
     return this.item;
+  }
+
+  toJSON(): Record<string, any> {
+    return {
+      device: this.device.toJSON(),
+      shuffleState: this.shuffleState,
+      smartShuffle: this.smartShuffle,
+      repeatState: this.repeatState,
+      timestamp: this.timestamp,
+      progress: this.progress,
+      item: this.item.toJSON(),
+      playingType: this.playingType,
+      playing: this.playing
+    };
+  }
+
+  toEmbed(): EmbedBuilder {
+    const embed = new EmbedBuilder()
+      .setColor('Random')
+      .setTitle('Currently Playing')
+      .setDescription(
+        `[${this.item.name}](${this.item.url || 'https://open.spotify.com'})\n\n[${this.item.album.name}](<${
+          this.item.album.url || 'https://open.spotify.com/'
+        }>) | [${this.item.artists[0].name}](<${this.item.artists[0].url || 'https://open.spotify.com/'}>)`
+      );
+
+    if (this.item.album.images[0]) embed.setThumbnail(this.item.album.images[0].url);
+    return embed;
   }
 }
 
