@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 class PlaybackPreviousRoute extends Route {
   constructor(spotify: SpotifyManager) {
     super(spotify);
-    this.path = '/proxy/playback/previous/';
+    this.path = '/proxy/playback/previous';
   }
 
   async handle(req: Request, res: Response) {
@@ -15,13 +15,13 @@ class PlaybackPreviousRoute extends Route {
         `http://localhost:${this.spotify.Application.config.port}/proxy/playback/status`
       );
       if (403 === currentPlayback.status || 401 === currentPlayback.status) {
-        return res.status(404).json({ success: false, cause: 'Account isnt logged in.' });
+        return res.status(403).json({ success: false, cause: 'Please login first.' });
       }
       if (204 === currentPlayback.status) return res.status(404).json({ success: false, cause: 'Nothing is playing.' });
       const result = await fetch('https://api.spotify.com/v1/me/player/previous', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.spotify.token}`
+          Authorization: `Bearer ${this.spotify.token.key}`
         }
       });
       if (403 === result.status || 401 === result.status) {

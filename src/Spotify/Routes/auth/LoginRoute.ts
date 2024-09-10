@@ -1,11 +1,11 @@
-import Route from '../Private/BaseRoute';
-import SpotifyManager from '../SpotifyManager';
+import Route from '../../Private/BaseRoute';
+import SpotifyManager from '../../SpotifyManager';
 import { Request, Response } from 'express';
 
 class AuthRoute extends Route {
   constructor(spotify: SpotifyManager) {
     super(spotify);
-    this.path = '/auth/';
+    this.path = '/auth/login';
   }
 
   async handle(req: Request, res: Response) {
@@ -17,7 +17,7 @@ class AuthRoute extends Route {
       const params = new URLSearchParams();
       params.append('client_id', this.spotify.Application.config.spotifyClientId);
       params.append('response_type', 'code');
-      params.append('redirect_uri', 'http://localhost:5173/callback');
+      params.append('redirect_uri', `http://localhost:${this.spotify.Application.config.port}/auth/callback`);
       params.append('scope', this.spotify.scopes.join(' '));
       params.append('code_challenge_method', 'S256');
       params.append('code_challenge', challenge);

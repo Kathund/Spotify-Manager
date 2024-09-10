@@ -1,7 +1,10 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
+import Playback from '../../Spotify/Private/API/Playback';
 import {
   ApplicationIntegrationType,
+  BaseMessageOptions,
+  ButtonInteraction,
   ChatInputCommandInteraction,
   InteractionContextType,
   SlashCommandBuilder
@@ -18,20 +21,36 @@ class PlayCommand extends Command {
       .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
   }
 
-  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
-      await interaction.deferReply();
       const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/play`);
       if (403 === res.status || 401 === res.status) {
-        await interaction.followUp({ content: 'Account isnt logged in.' });
+        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
         return;
       }
       if (204 === res.status) {
-        await interaction.followUp({ content: 'Nothing is playing.' });
+        await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
         return;
       }
 
-      await interaction.followUp({ content: 'Playing.' });
+      const data = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
+      if (403 === data.status || 401 === data.status) {
+        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
+        return;
+      }
+      if (204 === data.status) {
+        await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
+        return;
+      }
+      const playback = new Playback((await data.json()).data);
+      const sendData: BaseMessageOptions = { embeds: [playback.toEmbed()], components: playback.toButtons() };
+      if (interaction.isButton()) {
+        await interaction.update(sendData);
+      } else {
+        await interaction.followUp(sendData);
+      }
+
+      await interaction.followUp({ content: 'Playing.', ephemeral: true });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

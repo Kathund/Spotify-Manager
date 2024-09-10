@@ -1,4 +1,5 @@
 import Track from './Track';
+import { EmbedBuilder } from 'discord.js';
 
 class Queue {
   currentPlayback: Track;
@@ -17,6 +18,17 @@ class Queue {
       currentPlayback: this.currentPlayback.toJSON(),
       queue: this.queue.map((track) => track.toJSON())
     };
+  }
+
+  toEmbed(): EmbedBuilder {
+    const embed = new EmbedBuilder().setColor('Random').setTitle('Queue');
+    this.queue.map((track) => {
+      embed.addFields({
+        name: track.name,
+        value: `[${track.album.name}](<${track.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${track.artists[0].name}](<${track.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+      });
+    });
+    return embed;
   }
 }
 

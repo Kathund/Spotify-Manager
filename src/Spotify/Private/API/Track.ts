@@ -1,5 +1,7 @@
 import Album from './Album';
 import Artist from './Artist';
+import { ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
+import { emojis } from '../../../../config.json';
 
 class Track {
   album: Album;
@@ -9,6 +11,7 @@ class Track {
   duration: number;
   explicit: boolean;
   url: string | null;
+  spotifyUrl: string | null;
   id: string;
   local: boolean;
   name: string;
@@ -24,6 +27,7 @@ class Track {
     this.duration = data.duration_ms;
     this.explicit = data.explicit || false;
     this.url = data.href || null;
+    this.spotifyUrl = data.external_urls?.spotify || null;
     this.id = data.id;
     this.local = data.is_local;
     this.name = data.name;
@@ -54,6 +58,24 @@ class Track {
       type: this.type,
       uri: this.uri
     };
+  }
+
+  toEmbed(): EmbedBuilder {
+    const embed = new EmbedBuilder()
+      .setTitle('Track Infomation')
+      .setColor('Random')
+      .setDescription(
+        `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.explicit ? emojis.explicit : ''}\n\n[${this.album.name}](<${
+          this.album.spotifyUrl || 'https://open.spotify.com/'
+        }>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+      );
+
+    if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
+    return embed;
+  }
+
+  queueButton(): ButtonBuilder {
+    return new ButtonBuilder().setLabel('Queue').setStyle(ButtonStyle.Danger).setCustomId(`add.${this.id}`);
   }
 }
 

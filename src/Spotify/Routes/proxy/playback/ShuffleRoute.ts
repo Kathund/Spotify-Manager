@@ -2,10 +2,10 @@ import Route from '../../../Private/BaseRoute';
 import SpotifyManager from '../../../SpotifyManager';
 import { Request, Response } from 'express';
 
-class PlaybackQueueRoute extends Route {
+class PlaybackShuffleRoute extends Route {
   constructor(spotify: SpotifyManager) {
     super(spotify);
-    this.path = '/proxy/playback/queue';
+    this.path = '/proxy/playback/shuffle';
   }
 
   async handle(req: Request, res: Response) {
@@ -17,8 +17,10 @@ class PlaybackQueueRoute extends Route {
       if (403 === currentPlayback.status || 401 === currentPlayback.status) {
         return res.status(403).json({ success: false, cause: 'Please login first.' });
       }
-      if (204 === currentPlayback.status) return res.status(400).json({ success: false, cause: 'Nothing is playing.' });
-      const result = await fetch('https://api.spotify.com/v1/me/player/queue', {
+      if (204 === currentPlayback.status) return res.status(404).json({ success: false, cause: 'Nothing is playing.' });
+      const newState = !Boolean((await currentPlayback.json()).data.shuffle_state);
+      const result = await fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${newState}`, {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${this.spotify.token.key}`
         }
@@ -27,9 +29,9 @@ class PlaybackQueueRoute extends Route {
         return res.status(403).json({ success: true, cause: 'Please login first.' });
       }
       if (200 !== result.status) {
-        return res.status(400).json({ success: false, cause: 'Something went wrong. Please try again' });
+        return res.status(404).json({ success: false, cause: 'Something went wrong. Please try again' });
       }
-      res.status(200).json({ success: true, data: await result.json() });
+      res.status(200).json({ success: true, state: newState });
     } catch (error) {
       if (error instanceof Error) this.spotify.Application.Logger.error(error);
       res.status(500).json({ success: false, cause: 'An error occurred while fetching data.' });
@@ -37,4 +39,4 @@ class PlaybackQueueRoute extends Route {
   }
 }
 
-export default PlaybackQueueRoute;
+export default PlaybackShuffleRoute;

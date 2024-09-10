@@ -6,6 +6,7 @@ class Album {
   artists: Artist[];
   availableMarkets: string[];
   url: string | null;
+  spotifyUrl: string | null;
   id: string;
   images: Image[];
   name: string;
@@ -19,6 +20,7 @@ class Album {
     this.artists = data.artists.map((artistData: Record<string, any>) => new Artist(artistData));
     this.availableMarkets = data.available_markets;
     this.url = data.href || null;
+    this.spotifyUrl = data.external_urls?.spotify || null;
     this.id = data.id;
     this.images = data.images
       .map((imgData: Record<string, any>) => new Image(imgData))

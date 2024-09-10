@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 class PlaybackPauseRoute extends Route {
   constructor(spotify: SpotifyManager) {
     super(spotify);
-    this.path = '/proxy/playback/pause/';
+    this.path = '/proxy/playback/pause';
   }
 
   async handle(req: Request, res: Response) {
@@ -16,7 +16,7 @@ class PlaybackPauseRoute extends Route {
         `http://localhost:${this.spotify.Application.config.port}/proxy/playback/status`
       );
       if (403 === currentPlayback.status || 401 === currentPlayback.status) {
-        return res.status(404).json({ success: false, cause: 'Account isnt logged in.' });
+        return res.status(403).json({ success: false, cause: 'Please login first.' });
       }
       const data = await currentPlayback.json();
       const playback = new Playback(data.data);
@@ -26,7 +26,7 @@ class PlaybackPauseRoute extends Route {
       const result = await fetch('https://api.spotify.com/v1/me/player/pause', {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${this.spotify.token}`
+          Authorization: `Bearer ${this.spotify.token.key}`
         }
       });
       if (403 === result.status || 401 === result.status) {

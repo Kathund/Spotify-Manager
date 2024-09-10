@@ -1,13 +1,24 @@
+/* eslint-disable max-len */
 import Application from '../Application';
 import Routes from './Routes';
 import express from 'express';
 import session from 'express-session';
 
+export interface Token {
+  key: string;
+  refresh: string;
+  type: string;
+  expiresIn: number;
+  expirationTime: number;
+  scope: string[];
+}
+
 class SpotifyManager {
   readonly Application: Application;
   readonly expressServer: express.Application;
   scopes: string[];
-  token: string;
+  token: null | Token;
+  declare interval: NodeJS.Timeout;
   constructor(app: Application) {
     this.Application = app;
     this.expressServer = express();
@@ -19,7 +30,30 @@ class SpotifyManager {
       'user-read-playback-state',
       'user-read-private'
     ];
-    this.token = '';
+    this.token = {
+      key: 'BQBSRxaH1Hz8iCQ_M-uN-S-fiU2a1su4DqmxS2hmVqngpKOJly7L6tlGiV7zA6WkF-rlSzIuEKMs-dBjh-YjL-zmovfkAEUDEWfOkD6fZZjG6xG65RxvKnuCo1TX6c7gpWyXrn0BsktYrhjqULHuipxb0XCzlm2Nx3slvzjuPgLZFzQV-L4_VXAv86EmZH4BvAnJOpEM-xbAp05Bo7MexgdIbZcY3WGMaQ',
+      refresh:
+        'AQC-NLi2hQOFshJITOvtpHsMrdgt1u4OAF5J8vAoWrUB-HZOpOpUTxx0L2bzZHuAUUM4EPspaJRp4Myia-MCjvsOaSnCPW7ybGyeJYMWZajYW_dCJZWpRxxOUCXl_KjaGj8',
+      type: 'Bearer',
+      expiresIn: 3600,
+      expirationTime: 1725974684858,
+      scope: [
+        'user-modify-playback-state',
+        'user-read-playback-state',
+        'user-read-currently-playing',
+        'user-read-private'
+      ]
+    };
+    this.interval = setInterval(async () => {
+      if (this.token) {
+        const res = await fetch(`http://localhost:${this.Application.config.port}/auth/refresh`);
+        if (200 !== res.status) {
+          this.Application.Logger.warn('Token refresh failed.');
+          return;
+        }
+        this.Application.Logger.other('Token refreshed successfully.');
+      }
+    }, 1000 * 3600);
   }
 
   private startWebServer() {

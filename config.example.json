@@ -2,5 +2,18 @@
   "token": "DISCORD_BOT_TOKEN",
   "spotifyClientId": "SPOTIFY_CLIENT_ID",
   "spotifyClientSecret": "SPOTIFY_CLIENT_SECRET",
-  "port": 5173
+  "port": 5173,
+  "emojis": {
+    "back": "<:back:1283005788880637962>",
+    "pause": "<:pause:1283005784346595338>",
+    "play": "<:play:1283005786653462641>",
+    "skip": "<:forward:1283005781272432641>",
+    "queue": "<:queue:1283005778378227782>",
+    "spotify": "<:spotify:1283005775756922890>",
+    "refresh": "<:refresh:1283005773315838017>",
+    "shuffle": "<:shuffle:1283005791150018580>",
+    "repeat": "<:repeat:1283005769368866816>",
+    "repeatOne": "<:repeatOne:1283005771168088096>",
+    "explicit": "<:etag:1283029224948760631>"
+  }
 }

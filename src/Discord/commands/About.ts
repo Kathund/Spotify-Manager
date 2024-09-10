@@ -22,7 +22,7 @@ class AboutCommand extends Command {
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
       const app = await interaction.client.application.fetch();
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           new EmbedBuilder()
             .setTitle('Kath Bot')

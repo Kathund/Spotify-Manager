@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 class PlaybackToggleRoute extends Route {
   constructor(spotify: SpotifyManager) {
     super(spotify);
-    this.path = '/proxy/playback/toggle/';
+    this.path = '/proxy/playback/toggle';
   }
 
   async handle(req: Request, res: Response) {
@@ -16,14 +16,14 @@ class PlaybackToggleRoute extends Route {
         `http://localhost:${this.spotify.Application.config.port}/proxy/playback/status`
       );
       if (403 === currentPlayback.status || 401 === currentPlayback.status) {
-        return res.status(404).json({ success: false, cause: 'Account isnt logged in.' });
+        return res.status(403).json({ success: false, cause: 'Please login first.' });
       }
       const data = await currentPlayback.json();
       const playback = new Playback(data.data);
       if (playback.playing) {
         const response = await fetch(`http://localhost:${this.spotify.Application.config.port}/proxy/playback/pause/`);
         if (200 !== response.status) {
-          return res.status(404).json({ success: false, cause: 'Something went wrong. Please try again' });
+          return res.status(400).json({ success: false, cause: 'Something went wrong. Please try again' });
         }
         return res.status(200).json({ success: true });
       }
