@@ -20,7 +20,7 @@ class UptimeCommand extends Command {
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
-      await interaction.reply({
+      await interaction.followUp({
         content: `Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`
       });
     } catch (error) {

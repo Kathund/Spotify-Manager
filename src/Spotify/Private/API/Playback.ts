@@ -1,34 +1,33 @@
 import Device from './Devices';
+import Embed from '../../../Discord/Private/Embed';
 import Track from './Track';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { emojis } from '../../../../config.json';
 export type RepeatState = 'off' | 'track' | 'context';
 
 class Playback {
-  device: Device;
+  device: Device | null;
   shuffleState: boolean;
   smartShuffle: boolean;
   repeatState: RepeatState;
   timestamp: number;
-  item: Track;
+  item: Track | null;
   progressMS: number;
   progress: number;
-  playingType: string;
   playing: boolean;
   constructor(data: Record<string, any>) {
-    this.device = data.device;
-    this.shuffleState = data.shuffle_state;
-    this.smartShuffle = data.smart_shuffle;
-    this.repeatState = data.repeat_state;
-    this.timestamp = data.timestamp;
-    this.item = new Track(data.item);
-    this.progressMS = data.progress_ms;
-    this.progress = this.progressMS / this.item.duration;
-    this.playingType = data.currently_playing_type;
-    this.playing = data.is_playing;
+    this.device = data.device ? new Device(data.device) : null;
+    this.shuffleState = data.shuffle_state || false;
+    this.smartShuffle = data.smart_shuffle || false;
+    this.repeatState = data.repeat_state || 'off';
+    this.timestamp = data.timestamp || Date.now();
+    this.item = data.track ? new Track(data.item) : null;
+    this.progressMS = data.progress_ms ? data.progress_ms : 0;
+    this.progress = this.item ? this.progressMS / this.item.duration : 0;
+    this.playing = data.is_playing || false;
   }
 
-  toString(): Track {
+  toString(): Track | null {
     return this.item;
   }
 
@@ -36,22 +35,27 @@ class Playback {
     const progress = `${Math.floor(this.progressMS / 60000)}:${Math.floor((this.progressMS % 60000) / 1000)
       .toString()
       .padStart(2, '0')}`;
-    const duration = `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
-      .toString()
-      .padStart(2, '0')}`;
+    const duration = this.item
+      ? `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
+          .toString()
+          .padStart(2, '0')}`
+      : '0:00';
 
     const prograssBar = '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
     return `${progress} ${prograssBar} ${duration}`;
   }
 
   getVolumeBar(): string {
-    if (null === this.device.volumePercent) return `0% ${'-'.repeat(20)} 100%`;
+    if (null === this.device || null === this.device.volumePercent) return `0% ${'-'.repeat(20)} 100%`;
     return `0% ${'█'.repeat(Math.floor(this.device.volumePercent * 20))}${'-'.repeat(
       20 - Math.floor(this.device.volumePercent * 20)
     )} 100%`;
   }
 
   toEmbed(): EmbedBuilder {
+    if (!this.item) {
+      return new Embed({ title: 'Nothing is playing.', description: 'User has nothing playing on spotify' }).build();
+    }
     return this.item
       .toEmbed()
       .setTitle(`Currently ${this.playing ? 'Playing' : 'Paused'}`)
@@ -60,6 +64,13 @@ class Playback {
   }
 
   toButtons(): ActionRowBuilder<ButtonBuilder>[] {
+    if (!this.item) {
+      return [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder().setEmoji(emojis.spotify).setStyle(ButtonStyle.Link).setURL('https://open.spotify.com')
+        )
+      ];
+    }
     return [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()

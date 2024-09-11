@@ -30,6 +30,7 @@
     "discord.js": "^14.16.1",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "node-cache": "^5.1.2",
     "winston": "^3.14.2"
   },
   "devDependencies": {

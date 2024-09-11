@@ -1,6 +1,4 @@
 import DiscordManager from '../DiscordManager';
-import Playback from '../../Spotify/Private/API/Playback';
-import Track from '../../Spotify/Private/API/Track';
 import {
   ActionRowBuilder,
   BaseInteraction,
@@ -12,8 +10,8 @@ import {
 
 class InteractionHandler {
   discord: DiscordManager;
-  constructor(discordManager: DiscordManager) {
-    this.discord = discordManager;
+  constructor(discord: DiscordManager) {
+    this.discord = discord;
   }
 
   onInteraction(interaction: BaseInteraction) {
@@ -47,40 +45,12 @@ class InteractionHandler {
         `Button Clicked ${interaction.user.username} (${interaction.user.id}) button ${interaction.customId}`
       );
       if ('refresh' === interaction.customId) {
-        const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
-        if (403 === res.status || 401 === res.status) {
-          await interaction.reply({ content: 'Account isnt logged in.', ephemeral: true });
-          return;
-        }
-        if (204 === res.status) {
-          await interaction.reply({ content: 'Nothing is playing.', ephemeral: true });
-          return;
-        }
-        const playback = new Playback((await res.json()).data);
+        const playback = await this.discord.Application.spotify.requestHandler.getStatus();
         await interaction.update({ embeds: [playback.toEmbed()], components: playback.toButtons() });
       } else if (interaction.customId.startsWith('add.')) {
         await interaction.deferReply({ ephemeral: true });
         const trackId = interaction.customId.split('.')[1];
-        const request = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
-        if (403 === request.status || 401 === request.status) {
-          await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-          return;
-        }
-        if (204 === request.status) {
-          await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
-          return;
-        }
-        const res = await fetch(
-          `http://localhost:${this.discord.Application.config.port}/proxy/track/queue/spotify:track:${trackId}`
-        );
-        if (403 === res.status || 401 === res.status) {
-          await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-          return;
-        }
-        if (200 !== res.status) {
-          await interaction.followUp({ content: 'Something went wrong. Please try again.', ephemeral: true });
-          return;
-        }
+        await this.discord.Application.spotify.requestHandler.queueTrack(`spotify:track:${trackId}`);
         await interaction.followUp({ content: 'Song added to queue.', ephemeral: true });
       } else {
         const ids: string[] = ['previous', 'pause', 'play', 'skip', 'queue', 'shuffle'];
@@ -113,17 +83,10 @@ class InteractionHandler {
         return;
       }
       await interaction.deferReply({ ephemeral: true });
-      const res = await fetch(
-        `http://localhost:${this.discord.Application.config.port}/proxy/track/get/${interaction.values[0]}`
-      );
-      if (403 === res.status || 401 === res.status) {
-        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-        return;
-      }
-      const data = new Track((await res.json()).data);
+      const track = await this.discord.Application.spotify.requestHandler.getTrack(interaction.values[0]);
       await interaction.followUp({
-        embeds: [data.toEmbed()],
-        components: [new ActionRowBuilder<ButtonBuilder>().setComponents(data.queueButton())]
+        embeds: [track.toEmbed()],
+        components: [new ActionRowBuilder<ButtonBuilder>().setComponents(track.queueButton())]
       });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);

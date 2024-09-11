@@ -1,6 +1,5 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
-import Search from '../../Spotify/Private/API/Search/Search';
 import {
   ApplicationIntegrationType,
   ChatInputCommandInteraction,
@@ -30,23 +29,8 @@ class SearchCommand extends Command {
         await interaction.reply({ content: 'Please provide a search query.', ephemeral: true });
         return;
       }
-      const res = await fetch(
-        `http://localhost:${this.discord.Application.config.port}/proxy/search/track/${query}/${page}`
-      );
-      if (403 === res.status || 401 === res.status) {
-        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-        return;
-      }
-      if (200 !== res.status) {
-        await interaction.followUp({ content: 'Something went wrong! Please try again.', ephemeral: true });
-        return;
-      }
-      const data = new Search((await res.json()).data);
-      await interaction.followUp({
-        embeds: [data.toEmbed()],
-        components: [data.toButtons(), data.toSelectMenu()],
-        ephemeral: true
-      });
+      const res = await this.discord.Application.spotify.requestHandler.searchTracks(query, page);
+      await interaction.followUp({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

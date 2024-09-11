@@ -1,6 +1,5 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
-import Queue from '../../Spotify/Private/API/Queue';
 import {
   ApplicationIntegrationType,
   ButtonInteraction,
@@ -23,17 +22,8 @@ class QueueCommand extends Command {
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
       if (!interaction.deferred) await interaction.deferReply({ ephemeral: true });
-      const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/queue`);
-      if (403 === res.status || 401 === res.status) {
-        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-        return;
-      }
-      if (204 === res.status) {
-        await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
-        return;
-      }
-      const data = new Queue((await res.json()).data);
-      await interaction.followUp({ embeds: [data.toEmbed()], ephemeral: true });
+      const res = await this.discord.Application.spotify.requestHandler.getQueue();
+      await interaction.followUp({ embeds: [res.toEmbed()], ephemeral: true });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

@@ -1,4 +1,5 @@
 import Application from '../Application';
+import RequestHandler from './Private/RequestHandler';
 import Routes from './Routes';
 import express from 'express';
 import session from 'express-session';
@@ -14,12 +15,14 @@ export interface Token {
 
 class SpotifyManager {
   readonly Application: Application;
+  declare requestHandler: RequestHandler;
   readonly expressServer: express.Application;
   scopes: string[];
   token: null | Token;
   declare interval: NodeJS.Timeout;
   constructor(app: Application) {
     this.Application = app;
+    this.requestHandler = new RequestHandler(this);
     this.expressServer = express();
     this.startWebServer();
     this.scopes = [

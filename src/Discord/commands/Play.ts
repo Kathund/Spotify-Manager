@@ -1,6 +1,5 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
-import Playback from '../../Spotify/Private/API/Playback';
 import {
   ApplicationIntegrationType,
   BaseMessageOptions,
@@ -23,25 +22,8 @@ class PlayCommand extends Command {
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
-      const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/play`);
-      if (403 === res.status || 401 === res.status) {
-        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-        return;
-      }
-      if (204 === res.status) {
-        await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
-        return;
-      }
-      const data = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/playback/status`);
-      if (403 === data.status || 401 === data.status) {
-        await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
-        return;
-      }
-      if (204 === data.status) {
-        await interaction.followUp({ content: 'Nothing is playing.', ephemeral: true });
-        return;
-      }
-      const playback = new Playback((await data.json()).data);
+      await this.discord.Application.spotify.requestHandler.play();
+      const playback = await this.discord.Application.spotify.requestHandler.getStatus();
       const sendData: BaseMessageOptions = { embeds: [playback.toEmbed()], components: playback.toButtons() };
       if (interaction.isButton()) {
         await interaction.update(sendData);
