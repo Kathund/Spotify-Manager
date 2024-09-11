@@ -14,7 +14,12 @@ class Embed {
     this.author = data.author || null;
   }
   build(): EmbedBuilder {
-    return new EmbedBuilder().setColor(this.color).setTimestamp().setTitle(this.title).setDescription(this.description);
+    return new EmbedBuilder()
+      .setColor(this.color)
+      .setTimestamp()
+      .setTitle(this.title)
+      .setDescription(this.description)
+      .setAuthor(this.author ? { name: this.author } : null);
   }
 }
 

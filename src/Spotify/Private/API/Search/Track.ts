@@ -23,9 +23,9 @@ class TrackSearch {
 
   toEmbed(): EmbedBuilder {
     const embed = new Embed({
-      title: `Search Results for ${this.query}`,
-      description: `Found ${this.total} results`,
-      author: `Found ${this.total} results`
+      title: `Search: ${this.query}`,
+      description: `Page ${Math.floor(this.offset / this.limit) + 1}/${Math.ceil(this.total / this.limit)}`,
+      author: `Found ${this.total} Results`
     }).build();
     this.items.map((track) => {
       embed.addFields({

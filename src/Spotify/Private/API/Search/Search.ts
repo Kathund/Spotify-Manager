@@ -32,14 +32,15 @@ class Search {
 
   toButtons(): ActionRowBuilder<ButtonBuilder> {
     const buttons: ButtonBuilder[] = [
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('searchStart').setEmoji(emojis.back),
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('searchBack').setEmoji(emojis.back),
+      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.Start').setEmoji(emojis.back),
+      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.Back').setEmoji(emojis.backOne),
       new ButtonBuilder()
+        .setCustomId('MEOW')
         .setStyle(ButtonStyle.Secondary)
         .setLabel(`Page ${this.getPage()} / ${this.getPages()}`)
         .setDisabled(true),
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('searchForward').setEmoji(emojis.skip),
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('searchEnd').setEmoji(emojis.skip)
+      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.Forward').setEmoji(emojis.forwardOne),
+      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.End').setEmoji(emojis.forward)
     ];
     if (1 === this.getPages() || 0 === this.getPages()) {
       buttons[0].setDisabled(true);

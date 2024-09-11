@@ -68,7 +68,7 @@ class RequestHandler {
     });
   }
 
-  async searchTracks(query: string, page: number): Promise<Search> {
+  async searchTracks(query: string, page: number = 0): Promise<Search> {
     const offset = page * 10;
     const res = await this.spotify.Application.requestHandler.request(
       `/search?type=track&limit=10&market=AU&q=${query.replaceAll('%20', '+')}&offset=${offset}`

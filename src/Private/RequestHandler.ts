@@ -43,7 +43,7 @@ class RequestHandler {
 
   async request(endpoint: string, options?: RequestOptions): Promise<RequestData> {
     if (!this.Application.spotify.token) throw new Error(this.Application.errors.NOT_LOGGED_IN);
-    options = { raw: options?.raw ?? false, noCache: options?.noCache ?? false };
+    options = { raw: options?.raw ?? false, noCache: options?.noCache ?? false, method: options?.method ?? 'GET' };
     if (this.Application.cacheHandler.has(endpoint)) {
       const data = this.Application.cacheHandler.get(endpoint);
       return new RequestData(data.data, data.headers, {
@@ -55,9 +55,12 @@ class RequestHandler {
       });
     }
     const res = await fetch(BASE_URL + endpoint, {
-      method: options.method || 'GET',
+      method: options.method,
       headers: { Authorization: `Bearer ${this.Application.spotify.token.key}` }
     });
+    if ('GET' !== options.method) {
+      return new RequestData({}, res.headers, { status: res.status, options, url: endpoint, cached: false });
+    }
     const parsedRes = (await res.json()) as Record<string, any>;
     if (401 === res.status || 403 === res.status) throw new Error(this.Application.errors.NOT_LOGGED_IN);
     const requestData = new RequestData(parsedRes, res.headers, {

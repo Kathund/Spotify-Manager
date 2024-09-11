@@ -52,6 +52,46 @@ class InteractionHandler {
         const trackId = interaction.customId.split('.')[1];
         await this.discord.Application.spotify.requestHandler.queueTrack(`spotify:track:${trackId}`);
         await interaction.followUp({ content: 'Song added to queue.', ephemeral: true });
+      } else if (interaction.customId.startsWith('search.')) {
+        const action = interaction.customId.split('.')[1];
+        if (
+          !interaction.message.embeds[0] ||
+          !interaction.message.embeds[0].description ||
+          !interaction.message.embeds[0].title
+        ) {
+          return;
+        }
+        const [search, pageIndex, maxPage] = [
+          interaction.message.embeds[0].title.split(': ')[1].trim(),
+          Number(interaction.message.embeds[0].description.split('Page ')[1].split('/')[0]) - 1,
+          Number(interaction.message.embeds[0].description.split('Page ')[1].split('/')[1]) - 1
+        ];
+        switch (action) {
+          case 'Start': {
+            const res = await this.discord.Application.spotify.requestHandler.searchTracks(search);
+            await interaction.update({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+            break;
+          }
+          case 'Back': {
+            const res = await this.discord.Application.spotify.requestHandler.searchTracks(search, pageIndex - 1);
+            await interaction.update({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+            break;
+          }
+          case 'Forward': {
+            const res = await this.discord.Application.spotify.requestHandler.searchTracks(search, pageIndex + 1);
+            await interaction.update({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+            break;
+          }
+          case 'End': {
+            const res = await this.discord.Application.spotify.requestHandler.searchTracks(search, maxPage);
+            await interaction.update({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+            break;
+          }
+          default: {
+            await interaction.reply({ content: 'Can i click ur buttons?', ephemeral: true });
+            break;
+          }
+        }
       } else {
         const ids: string[] = ['previous', 'pause', 'play', 'skip', 'queue', 'shuffle'];
         if (!ids.includes(interaction.customId)) {

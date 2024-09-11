@@ -21,7 +21,7 @@ class Playback {
     this.smartShuffle = data.smart_shuffle || false;
     this.repeatState = data.repeat_state || 'off';
     this.timestamp = data.timestamp || Date.now();
-    this.item = data.track ? new Track(data.item) : null;
+    this.item = data.item ? new Track(data.item) : null;
     this.progressMS = data.progress_ms ? data.progress_ms : 0;
     this.progress = this.item ? this.progressMS / this.item.duration : 0;
     this.playing = data.is_playing || false;
@@ -82,7 +82,7 @@ class Playback {
           .setEmoji(this.playing ? emojis.pause : emojis.play)
           .setStyle(this.playing ? ButtonStyle.Success : ButtonStyle.Danger)
           .setCustomId(this.playing ? 'pause' : 'play'),
-        new ButtonBuilder().setEmoji(emojis.skip).setStyle(ButtonStyle.Secondary).setCustomId('skip'),
+        new ButtonBuilder().setEmoji(emojis.forward).setStyle(ButtonStyle.Secondary).setCustomId('skip'),
         new ButtonBuilder()
           .setEmoji('track' === this.repeatState ? emojis.repeatOne : emojis.repeat)
           .setStyle('off' === this.repeatState ? ButtonStyle.Danger : ButtonStyle.Success)
