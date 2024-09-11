@@ -18,17 +18,21 @@ class SearchCommand extends Command {
       .setDescription('search')
       .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
       .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall)
-      .addStringOption((option) => option.setName('query').setDescription('The search query').setRequired(true));
+      .addStringOption((option) => option.setName('query').setDescription('The search query').setRequired(true))
+      .addIntegerOption((option) => option.setName('page').setDescription('The search page').setRequired(false));
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
       const query = interaction.options.getString('query') || null;
+      const page = interaction.options.getInteger('page') || 0;
       if (!query) {
         await interaction.reply({ content: 'Please provide a search query.', ephemeral: true });
         return;
       }
-      const res = await fetch(`http://localhost:${this.discord.Application.config.port}/proxy/search/track/${query}`);
+      const res = await fetch(
+        `http://localhost:${this.discord.Application.config.port}/proxy/search/track/${query}/${page}`
+      );
       if (403 === res.status || 401 === res.status) {
         await interaction.followUp({ content: 'Account isnt logged in.', ephemeral: true });
         return;
