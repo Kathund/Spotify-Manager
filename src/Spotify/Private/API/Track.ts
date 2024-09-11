@@ -1,5 +1,6 @@
 import Album from './Album';
 import Artist from './Artist';
+import Embed from '../../../Discord/Private/Embed';
 import { ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { emojis } from '../../../../config.json';
 
@@ -41,32 +42,11 @@ class Track {
     return this.name;
   }
 
-  toJSON(): Record<string, any> {
-    return {
-      album: this.album.toJSON(),
-      artists: this.artists.map((artist) => artist.toJSON()),
-      availableMarkets: this.availableMarkets,
-      disc: this.disc,
-      duration: this.duration,
-      explicit: this.explicit,
-      url: this.url,
-      id: this.id,
-      local: this.local,
-      name: this.name,
-      popularity: this.popularity,
-      track: this.track,
-      type: this.type,
-      uri: this.uri
-    };
-  }
-
   toEmbed(): EmbedBuilder {
-    const embed = new EmbedBuilder()
-      .setTitle('Track Infomation')
-      .setColor('Random')
-      .setDescription(
-        `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.explicit ? emojis.explicit : ''}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
-      );
+    const embed = new Embed({
+      title: 'Track Infomation',
+      description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.explicit ? emojis.explicit : ''}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+    }).build();
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
     return embed;
   }

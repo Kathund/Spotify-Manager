@@ -36,23 +36,6 @@ class Album {
   toString(): string {
     return this.name;
   }
-
-  toJSON(): Record<string, any> {
-    return {
-      albumType: this.albumType,
-      artists: this.artists.map((artist) => artist.toJSON()),
-      availableMarkets: this.availableMarkets,
-      url: this.url,
-      id: this.id,
-      images: this.images.map((img) => img.toJSON()),
-      name: this.name,
-      releaseDate: this.releaseDate,
-      releaseDatePrecision: this.releaseDatePrecision,
-      totalTracks: this.totalTracks,
-      type: this.type,
-      uri: this.uri
-    };
-  }
 }
 
 export default Album;

@@ -32,35 +32,31 @@ class Playback {
     return this.item;
   }
 
-  toJSON(): Record<string, any> {
-    return {
-      device: this.device.toJSON(),
-      shuffleState: this.shuffleState,
-      smartShuffle: this.smartShuffle,
-      repeatState: this.repeatState,
-      timestamp: this.timestamp,
-      progress: this.progressMS,
-      item: this.item.toJSON(),
-      playingType: this.playingType,
-      playing: this.playing
-    };
-  }
-
   getPrograssBar(): string {
-    return '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
-  }
-
-  toEmbed(): EmbedBuilder {
-    const duration = `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
-      .toString()
-      .padStart(2, '0')}`;
     const progress = `${Math.floor(this.progressMS / 60000)}:${Math.floor((this.progressMS % 60000) / 1000)
       .toString()
       .padStart(2, '0')}`;
+    const duration = `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
+      .toString()
+      .padStart(2, '0')}`;
+
+    const prograssBar = '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
+    return `${progress} ${prograssBar} ${duration}`;
+  }
+
+  getVolumeBar(): string {
+    if (null === this.device.volumePercent) return `0% ${'-'.repeat(20)} 100%`;
+    return `0% ${'█'.repeat(Math.floor(this.device.volumePercent * 20))}${'-'.repeat(
+      20 - Math.floor(this.device.volumePercent * 20)
+    )} 100%`;
+  }
+
+  toEmbed(): EmbedBuilder {
     return this.item
       .toEmbed()
       .setTitle(`Currently ${this.playing ? 'Playing' : 'Paused'}`)
-      .addFields({ name: 'Progress', value: `${progress} ${this.getPrograssBar()} ${duration}`, inline: true });
+      .addFields({ name: 'Progress', value: this.getPrograssBar() })
+      .addFields({ name: 'Volume', value: this.getVolumeBar() });
   }
 
   toButtons(): ActionRowBuilder<ButtonBuilder>[] {

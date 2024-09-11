@@ -17,10 +17,6 @@ class Artist {
   toString(): string {
     return this.name;
   }
-
-  toJSON(): Record<string, any> {
-    return { id: this.id, name: this.name, type: this.type, uri: this.uri, url: this.url };
-  }
 }
 
 export default Artist;

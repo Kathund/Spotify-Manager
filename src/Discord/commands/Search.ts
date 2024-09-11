@@ -2,13 +2,11 @@ import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
 import Search from '../../Spotify/Private/API/Search/Search';
 import {
-  ActionRowBuilder,
   ApplicationIntegrationType,
   ChatInputCommandInteraction,
   InteractionContextType,
   SlashCommandBuilder,
-  SlashCommandOptionsOnlyBuilder,
-  StringSelectMenuBuilder
+  SlashCommandOptionsOnlyBuilder
 } from 'discord.js';
 
 class SearchCommand extends Command {
@@ -42,7 +40,7 @@ class SearchCommand extends Command {
       const data = new Search((await res.json()).data);
       await interaction.followUp({
         embeds: [data.toEmbed()],
-        components: [new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(data.toSelectMenu())],
+        components: [data.toButtons(), data.toSelectMenu()],
         ephemeral: true
       });
     } catch (error) {

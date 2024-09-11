@@ -13,10 +13,6 @@ class Image {
   toString(): string | null {
     return this.url;
   }
-
-  toJSON(): Record<string, any> {
-    return { url: this.url, width: this.width, height: this.height, pixels: this.pixels };
-  }
 }
 
 export default Image;

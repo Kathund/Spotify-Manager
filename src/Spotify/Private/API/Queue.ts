@@ -1,3 +1,4 @@
+import Embed from '../../../Discord/Private/Embed';
 import Track from './Track';
 import { EmbedBuilder } from 'discord.js';
 
@@ -13,12 +14,8 @@ class Queue {
     return this.queue[0];
   }
 
-  toJSON(): Record<string, any> {
-    return { currentPlayback: this.currentPlayback.toJSON(), queue: this.queue.map((track) => track.toJSON()) };
-  }
-
   toEmbed(): EmbedBuilder {
-    const embed = new EmbedBuilder().setColor('Random').setTitle('Queue');
+    const embed = new Embed({ title: 'Queue', description: 'Upcomming Queue' }).build();
     this.queue.map((track) => {
       embed.addFields({
         name: track.name,

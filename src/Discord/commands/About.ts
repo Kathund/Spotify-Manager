@@ -1,9 +1,9 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
+import Embed from '../Private/Embed';
 import {
   ApplicationIntegrationType,
   ChatInputCommandInteraction,
-  EmbedBuilder,
   InteractionContextType,
   SlashCommandBuilder
 } from 'discord.js';
@@ -24,12 +24,10 @@ class AboutCommand extends Command {
       const app = await interaction.client.application.fetch();
       await interaction.followUp({
         embeds: [
-          new EmbedBuilder()
-            .setTitle('Kath Bot')
-            .setColor('Random')
-            .setDescription(
-              `Kath Bot made with :purple_heart: by <@1276524855445164098>\nFollow my Github https://github.com/Kathund\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
-            )
+          new Embed({
+            title: 'Kath Bot',
+            description: `Kath Bot made with :purple_heart: by <@1276524855445164098>\nFollow my Github https://github.com/Kathund\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
+          }).build()
         ]
       });
     } catch (error) {

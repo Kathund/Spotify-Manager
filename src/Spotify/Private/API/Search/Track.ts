@@ -1,3 +1,4 @@
+import Embed from '../../../../Discord/Private/Embed';
 import Track from '../Track';
 import { EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js';
 import { emojis } from '../../../../../config.json';
@@ -20,20 +21,12 @@ class TrackSearch {
     this.total = data.total;
   }
 
-  toJSON(): Record<string, any> {
-    return {
-      query: this.query,
-      items: this.items.map((item: Track) => item.toJSON()),
-      limit: this.limit,
-      next: this.next,
-      offset: this.offset,
-      previous: this.previous,
-      total: this.total
-    };
-  }
-
   toEmbed(): EmbedBuilder {
-    const embed = new EmbedBuilder().setColor('Random').setTitle(`Search Results for ${this.query}`);
+    const embed = new Embed({
+      title: `Search Results for ${this.query}`,
+      description: `Found ${this.total} results`,
+      author: `Found ${this.total} results`
+    }).build();
     this.items.map((track) => {
       embed.addFields({
         name: `${track.name} ${track.explicit ? emojis.explicit : ''}`,
@@ -47,7 +40,10 @@ class TrackSearch {
     const select = new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder('look at an item');
     this.items.map((track) => {
       select.addOptions(
-        new StringSelectMenuOptionBuilder().setLabel(`${track.name} ${track.explicit ? '[E]' : ''}`).setValue(track.id)
+        new StringSelectMenuOptionBuilder()
+          .setLabel(`${track.name} ${track.explicit ? '[E]' : ''}`)
+          .setValue(track.id)
+          .setDescription(`${track.album.name} | ${track.artists[0].name}`)
       );
     });
     return select;
