@@ -38,21 +38,26 @@ class Track {
     this.uri = data.uri;
   }
 
+  toEmojis(): string {
+    return `${this.explicit ? emojis.explicit : ''} ${this.local ? emojis.local : ''}`;
+  }
+
   toString(): string {
     return this.name;
   }
 
   toEmbed(): EmbedBuilder {
     const embed = new Embed({
+      author: `ID: ${this.id || 'Unknown'}`,
       title: 'Track Infomation',
-      description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.explicit ? emojis.explicit : ''}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+      description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.toEmojis()}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
     }).build();
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
     return embed;
   }
 
   queueButton(): ButtonBuilder {
-    return new ButtonBuilder().setLabel('Queue').setStyle(ButtonStyle.Danger).setCustomId(`add.${this.id}`);
+    return new ButtonBuilder().setLabel('Queue').setStyle(ButtonStyle.Danger).setCustomId(`QueueTrack`);
   }
 }
 

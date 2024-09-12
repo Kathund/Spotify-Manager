@@ -16,6 +16,7 @@
     "shuffle": "EMOJI_ID_shuffle",
     "repeat": "EMOJI_ID_repeat",
     "repeatOne": "EMOJI_ID_repeatOne",
-    "explicit": "EMOJI_ID_explicit"
+    "explicit": "EMOJI_ID_explicit",
+    "local": "EMOJI_ID_local"
   }
 }

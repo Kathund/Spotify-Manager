@@ -1,7 +1,6 @@
 import Embed from '../../../../Discord/Private/Embed';
 import Track from '../Track';
 import { EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js';
-import { emojis } from '../../../../../config.json';
 
 class TrackSearch {
   query: string;
@@ -29,7 +28,7 @@ class TrackSearch {
     }).build();
     this.items.map((track) => {
       embed.addFields({
-        name: `${track.name} ${track.explicit ? emojis.explicit : ''}`,
+        name: `${track.name} ${track.toEmojis()}`,
         value: `[${track.album.name}](<${track.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${track.artists[0].name}](<${track.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
       });
     });

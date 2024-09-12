@@ -8,7 +8,7 @@ class Search {
   track: TrackSearch | null;
   constructor(data: Record<string, any>) {
     this.query = data.search;
-    this.track = data.tracks ? new TrackSearch({ query: this.query, ...data.tracks }) : null;
+    this.track = 1 < data.tracks.items.length ? new TrackSearch({ query: this.query, ...data.tracks }) : null;
   }
 
   getPages(): number {

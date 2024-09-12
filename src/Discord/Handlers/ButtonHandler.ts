@@ -28,7 +28,7 @@ class ButtonHandler {
     const buttonFiles = readdirSync('./src/Discord/Buttons');
     for (const file of buttonFiles) {
       const button = new (await import(`../Buttons/${file}`)).default(this.discord);
-      this.discord.client.buttons.set(button.id, button);
+      this.discord.client.buttons.set(button.data.id, button);
     }
   }
 }

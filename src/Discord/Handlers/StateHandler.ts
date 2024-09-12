@@ -13,6 +13,7 @@ class StateHandler {
       `Logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`
     );
     this.discord.client.user.setActivity({ name: 'to nothing', type: ActivityType.Listening });
+    this.discord.buttonHandler.loadButtons();
   }
 }
 
