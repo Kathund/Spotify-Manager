@@ -6,7 +6,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 class FixCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('fix').setDescription('fix').global();
+    this.data = new CommandData().setName('fix').setDescription('fix');
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {

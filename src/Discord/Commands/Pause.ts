@@ -6,7 +6,7 @@ import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } fr
 class PauseCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('pause').setDescription('pause').global();
+    this.data = new CommandData().setName('pause').setDescription('pause');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

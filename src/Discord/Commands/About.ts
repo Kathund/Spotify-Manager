@@ -7,7 +7,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 class AboutCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('about').setDescription('about').global();
+    this.data = new CommandData().setName('about').setDescription('about');
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -16,9 +16,9 @@ class AboutCommand extends Command {
       await interaction.followUp({
         embeds: [
           new Embed({
-            title: 'Kath Bot',
-            description: `Kath Bot made with :purple_heart: by <@1276524855445164098>\nFollow my Github https://github.com/Kathund\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
-          }).build()
+            title: 'Spotify Manager',
+            description: `Spoitfy Manager made with :purple_heart: by <@1276524855445164098>\nOpen source on [Github](https://github.com/Kathund/Spotify-Manager)\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
+          })
         ]
       });
     } catch (error) {

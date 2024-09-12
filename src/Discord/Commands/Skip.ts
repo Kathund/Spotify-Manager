@@ -6,7 +6,7 @@ import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } fr
 class SkipCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('skip').setDescription('skip').global();
+    this.data = new CommandData().setName('skip').setDescription('skip');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

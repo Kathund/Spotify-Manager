@@ -1,5 +1,5 @@
 {
   "token": "DISCORD_BOT_TOKEN",
   "spotifyClientId": "SPOTIFY_CLIENT_ID",
-  "port": 5173
+  "port": 18173
 }

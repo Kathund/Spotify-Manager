@@ -6,7 +6,7 @@ import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 class QueueCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('queue').setDescription('queue').global();
+    this.data = new CommandData().setName('queue').setDescription('queue');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

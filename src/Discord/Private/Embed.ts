@@ -9,6 +9,7 @@ class Embed extends EmbedBuilder {
     this.setTitle(data.title);
     this.setDescription(data.description);
     this.setAuthor(data.author ? { name: data.author } : null);
+    this.setFooter({ text: 'Spotify Manager by @.kathund', iconURL: 'https://i.imgur.com/uUuZx2E.png' });
   }
 }
 

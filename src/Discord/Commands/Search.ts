@@ -9,7 +9,6 @@ class SearchCommand extends Command {
     this.data = new CommandData()
       .setName('search')
       .setDescription('search')
-      .global()
       .stringOption(
         new SlashCommandStringOption().setName('query').setDescription('The search query').setRequired(true)
       )

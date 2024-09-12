@@ -6,7 +6,7 @@ import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 class UptimeCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('uptime').setDescription('Uptime of stuff').global();
+    this.data = new CommandData().setName('uptime').setDescription('Uptime of stuff');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

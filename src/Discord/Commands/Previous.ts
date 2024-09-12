@@ -6,7 +6,7 @@ import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } fr
 class PreviousCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('previous').setDescription('previous').global();
+    this.data = new CommandData().setName('previous').setDescription('previous');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

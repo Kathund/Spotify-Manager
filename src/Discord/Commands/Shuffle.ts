@@ -6,7 +6,7 @@ import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } fr
 class ShuffleCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('shuffle').setDescription('shuffle').global();
+    this.data = new CommandData().setName('shuffle').setDescription('shuffle');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

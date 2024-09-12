@@ -6,7 +6,7 @@ import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } fr
 class PlayCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('play').setDescription('play').global();
+    this.data = new CommandData().setName('play').setDescription('play');
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
