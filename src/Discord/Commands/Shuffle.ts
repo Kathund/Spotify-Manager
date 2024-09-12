@@ -1,27 +1,17 @@
 import Command from '../Private/Command';
+import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import {
-  ApplicationIntegrationType,
-  BaseMessageOptions,
-  ButtonInteraction,
-  ChatInputCommandInteraction,
-  InteractionContextType,
-  SlashCommandBuilder
-} from 'discord.js';
+import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
-class PlaybackCommand extends Command {
-  data: SlashCommandBuilder;
+class ShuffleCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new SlashCommandBuilder()
-      .setName('playback')
-      .setDescription('playback')
-      .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
-      .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
+    this.data = new CommandData().setName('shuffle').setDescription('shuffle').global();
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
+      await this.discord.Application.spotify.requestHandler.shuffle();
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
       const sendData: BaseMessageOptions = { embeds: [playback.toEmbed()], components: playback.toButtons() };
       if (interaction.isButton()) {
@@ -29,6 +19,10 @@ class PlaybackCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
+      await interaction.followUp({
+        content: `Shuffle ${playback.shuffleState ? 'Enabled' : 'Disabled'}.`,
+        ephemeral: true
+      });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {
@@ -40,4 +34,4 @@ class PlaybackCommand extends Command {
   }
 }
 
-export default PlaybackCommand;
+export default ShuffleCommand;

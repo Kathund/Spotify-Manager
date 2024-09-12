@@ -1,12 +1,10 @@
-import { ChatInputCommandInteraction, Collection, SlashCommandBuilder } from 'discord';
-
-export interface SlashCommand {
-  command: SlashCommandBuilder;
-  execute: (interaction: ChatInputCommandInteraction) => void;
-}
+import Button from '../Discord/Private/Button';
+import Command from '../Discord/Private/Command';
+import { Collection } from 'discord.js';
 
 declare module 'discord.js' {
   export interface Client {
-    commands: Collection<string, SlashCommand>;
+    commands: Collection<string, Command>;
+    buttons: Collection<string, Button>;
   }
 }

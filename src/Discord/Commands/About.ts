@@ -1,22 +1,13 @@
 import Command from '../Private/Command';
+import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
 import Embed from '../Private/Embed';
-import {
-  ApplicationIntegrationType,
-  ChatInputCommandInteraction,
-  InteractionContextType,
-  SlashCommandBuilder
-} from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 
 class AboutCommand extends Command {
-  data: SlashCommandBuilder;
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new SlashCommandBuilder()
-      .setName('about')
-      .setDescription('about')
-      .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
-      .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
+    this.data = new CommandData().setName('about').setDescription('about').global();
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {

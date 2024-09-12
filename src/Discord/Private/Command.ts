@@ -1,17 +1,15 @@
+import CommandData from './CommandData';
 import DiscordManager from '../DiscordManager';
-import { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
+import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class Command {
   readonly discord: DiscordManager;
+  data!: CommandData;
   constructor(discord: DiscordManager) {
     this.discord = discord;
   }
 
-  autoComplete(interaction: AutocompleteInteraction): Promise<void> {
-    throw new Error('Auto Complete Method not implemented.');
-  }
-
-  execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     throw new Error('Execute Method not implemented.');
   }
 }

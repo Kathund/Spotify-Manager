@@ -1,22 +1,12 @@
 import Command from '../Private/Command';
+import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import {
-  ApplicationIntegrationType,
-  ButtonInteraction,
-  ChatInputCommandInteraction,
-  InteractionContextType,
-  SlashCommandBuilder
-} from 'discord.js';
+import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class QueueCommand extends Command {
-  data: SlashCommandBuilder;
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new SlashCommandBuilder()
-      .setName('queue')
-      .setDescription('queue')
-      .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
-      .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
+    this.data = new CommandData().setName('queue').setDescription('queue').global();
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {

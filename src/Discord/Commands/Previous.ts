@@ -1,28 +1,17 @@
 import Command from '../Private/Command';
+import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import {
-  ApplicationIntegrationType,
-  BaseMessageOptions,
-  ButtonInteraction,
-  ChatInputCommandInteraction,
-  InteractionContextType,
-  SlashCommandBuilder
-} from 'discord.js';
+import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
-class PauseCommand extends Command {
-  data: SlashCommandBuilder;
+class PreviousCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new SlashCommandBuilder()
-      .setName('pause')
-      .setDescription('pause')
-      .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
-      .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
+    this.data = new CommandData().setName('previous').setDescription('previous').global();
   }
 
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
-      await this.discord.Application.spotify.requestHandler.pause();
+      await this.discord.Application.spotify.requestHandler.previous();
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
       const sendData: BaseMessageOptions = { embeds: [playback.toEmbed()], components: playback.toButtons() };
       if (interaction.isButton()) {
@@ -30,7 +19,7 @@ class PauseCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: 'Paused.', ephemeral: true });
+      await interaction.followUp({ content: 'Previous song is playing.', ephemeral: true });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {
@@ -42,4 +31,4 @@ class PauseCommand extends Command {
   }
 }
 
-export default PauseCommand;
+export default PreviousCommand;

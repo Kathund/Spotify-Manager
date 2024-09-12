@@ -1,24 +1,21 @@
 import Command from '../Private/Command';
+import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import {
-  ApplicationIntegrationType,
-  ChatInputCommandInteraction,
-  InteractionContextType,
-  SlashCommandBuilder,
-  SlashCommandOptionsOnlyBuilder
-} from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandIntegerOption, SlashCommandStringOption } from 'discord.js';
 
 class SearchCommand extends Command {
-  data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new SlashCommandBuilder()
+    this.data = new CommandData()
       .setName('search')
       .setDescription('search')
-      .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
-      .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall)
-      .addStringOption((option) => option.setName('query').setDescription('The search query').setRequired(true))
-      .addIntegerOption((option) => option.setName('page').setDescription('The search page').setRequired(false));
+      .global()
+      .stringOption(
+        new SlashCommandStringOption().setName('query').setDescription('The search query').setRequired(true)
+      )
+      .integerOption(
+        new SlashCommandIntegerOption().setName('page').setDescription('The search page').setRequired(false)
+      );
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {

@@ -1,24 +1,15 @@
 import Command from '../Private/Command';
+import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import {
-  ApplicationIntegrationType,
-  ChatInputCommandInteraction,
-  InteractionContextType,
-  SlashCommandBuilder
-} from 'discord.js';
+import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class UptimeCommand extends Command {
-  data: SlashCommandBuilder;
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new SlashCommandBuilder()
-      .setName('uptime')
-      .setDescription('Uptime of stuff')
-      .setContexts(InteractionContextType.PrivateChannel, InteractionContextType.BotDM, InteractionContextType.Guild)
-      .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall);
+    this.data = new CommandData().setName('uptime').setDescription('Uptime of stuff').global();
   }
 
-  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
       await interaction.followUp({
         content: `Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`
