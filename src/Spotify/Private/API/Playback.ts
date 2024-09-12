@@ -1,8 +1,7 @@
 import Device from './Devices';
 import Embed from '../../../Discord/Private/Embed';
 import Track from './Track';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
-import { emojis } from '../../../../config.json';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
 export type RepeatState = 'off' | 'track' | 'context';
 
 class Playback {
@@ -52,47 +51,62 @@ class Playback {
     )} 100%`;
   }
 
-  toEmbed(): EmbedBuilder {
+  toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     if (!this.item) {
-      return new Embed({ title: 'Nothing is playing.', description: 'User has nothing playing on spotify' }).build();
+      return new Embed({ title: 'Nothing is playing.', description: 'User has nothing playing on spotify' });
     }
     return this.item
-      .toEmbed()
+      .toEmbed(emojis)
       .setTitle(`Currently ${this.playing ? 'Playing' : 'Paused'}`)
       .addFields({ name: 'Progress', value: this.getPrograssBar() })
       .addFields({ name: 'Volume', value: this.getVolumeBar() });
   }
 
-  toButtons(): ActionRowBuilder<ButtonBuilder>[] {
+  toButtons(emojis: Collection<string, string>): ActionRowBuilder<ButtonBuilder>[] {
     if (!this.item) {
       return [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setEmoji(emojis.spotify).setStyle(ButtonStyle.Link).setURL('https://open.spotify.com')
+          new ButtonBuilder()
+            .setEmoji(emojis.get('spotify') || '')
+            .setStyle(ButtonStyle.Link)
+            .setURL('https://open.spotify.com')
         )
       ];
     }
     return [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
-          .setEmoji(emojis.shuffle)
+          .setEmoji(emojis.get('shuffle') || '')
           .setStyle(this.shuffleState ? ButtonStyle.Success : ButtonStyle.Danger)
           .setCustomId('shuffle'),
-        new ButtonBuilder().setEmoji(emojis.back).setStyle(ButtonStyle.Secondary).setCustomId('previous'),
         new ButtonBuilder()
-          .setEmoji(this.playing ? emojis.pause : emojis.play)
+          .setEmoji(emojis.get('back') || '')
+          .setStyle(ButtonStyle.Secondary)
+          .setCustomId('previous'),
+        new ButtonBuilder()
+          .setEmoji(this.playing ? emojis.get('pause') || '' : emojis.get('play') || '')
           .setStyle(this.playing ? ButtonStyle.Success : ButtonStyle.Danger)
           .setCustomId(this.playing ? 'pause' : 'play'),
-        new ButtonBuilder().setEmoji(emojis.forward).setStyle(ButtonStyle.Secondary).setCustomId('skip'),
         new ButtonBuilder()
-          .setEmoji('track' === this.repeatState ? emojis.repeatOne : emojis.repeat)
+          .setEmoji(emojis.get('forward') || '')
+          .setStyle(ButtonStyle.Secondary)
+          .setCustomId('skip'),
+        new ButtonBuilder()
+          .setEmoji('track' === this.repeatState ? emojis.get('repeatOne') || '' : emojis.get('repeat') || '')
           .setStyle('off' === this.repeatState ? ButtonStyle.Danger : ButtonStyle.Success)
           .setCustomId('repeat')
       ),
       new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder().setEmoji(emojis.refresh).setStyle(ButtonStyle.Secondary).setCustomId('refresh'),
-        new ButtonBuilder().setEmoji(emojis.queue).setStyle(ButtonStyle.Secondary).setCustomId('queue'),
         new ButtonBuilder()
-          .setEmoji(emojis.spotify)
+          .setEmoji(emojis.get('refresh') || '')
+          .setStyle(ButtonStyle.Secondary)
+          .setCustomId('refresh'),
+        new ButtonBuilder()
+          .setEmoji(emojis.get('queue') || '')
+          .setStyle(ButtonStyle.Secondary)
+          .setCustomId('queue'),
+        new ButtonBuilder()
+          .setEmoji(emojis.get('spotify') || '')
           .setStyle(ButtonStyle.Link)
           .setURL(this.item.spotifyUrl || 'https://open.spotify.com')
       )

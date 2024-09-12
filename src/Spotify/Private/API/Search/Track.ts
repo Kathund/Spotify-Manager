@@ -1,6 +1,6 @@
 import Embed from '../../../../Discord/Private/Embed';
 import Track from '../Track';
-import { EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js';
+import { Collection, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js';
 
 class TrackSearch {
   query: string;
@@ -20,15 +20,15 @@ class TrackSearch {
     this.total = data.total;
   }
 
-  toEmbed(): EmbedBuilder {
+  toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       title: `Search: ${this.query}`,
       description: `Page ${Math.floor(this.offset / this.limit) + 1}/${Math.ceil(this.total / this.limit)}`,
       author: `Found ${this.total} Results`
-    }).build();
+    });
     this.items.map((track) => {
       embed.addFields({
-        name: `${track.name} ${track.toEmojis()}`,
+        name: `${track.name} ${track.toEmojis(emojis)}`,
         value: `[${track.album.name}](<${track.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${track.artists[0].name}](<${track.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
       });
     });

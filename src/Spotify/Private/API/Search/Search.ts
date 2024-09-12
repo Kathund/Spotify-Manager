@@ -1,7 +1,13 @@
 import Embed from '../../../../Discord/Private/Embed';
 import TrackSearch from './Track';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelectMenuBuilder } from 'discord.js';
-import { emojis } from '../../../../../config.json';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  Collection,
+  EmbedBuilder,
+  StringSelectMenuBuilder
+} from 'discord.js';
 
 class Search {
   query: string;
@@ -19,28 +25,36 @@ class Search {
     return this.track ? Math.floor(this.track.offset / this.track.limit) + 1 : 0;
   }
 
-  toEmbed(): EmbedBuilder {
+  toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     if (!this.track) {
-      return new Embed({
-        title: `No results found for ${this.query}!`,
-        description: 'Please try again',
-        color: 'Red'
-      }).build();
+      return new Embed({ title: `No results found for ${this.query}!`, description: 'Please try again' }, 'Red');
     }
-    return this.track.toEmbed();
+    return this.track.toEmbed(emojis);
   }
 
-  toButtons(): ActionRowBuilder<ButtonBuilder> {
+  toButtons(emojis: Collection<string, string>): ActionRowBuilder<ButtonBuilder> {
     const buttons: ButtonBuilder[] = [
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.Start').setEmoji(emojis.back),
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.Back').setEmoji(emojis.backOne),
+      new ButtonBuilder()
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId('search.Start')
+        .setEmoji(emojis.get('back') || ''),
+      new ButtonBuilder()
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId('search.Back')
+        .setEmoji(emojis.get('backOne') || ''),
       new ButtonBuilder()
         .setCustomId('MEOW')
         .setStyle(ButtonStyle.Secondary)
         .setLabel(`Page ${this.getPage()} / ${this.getPages()}`)
         .setDisabled(true),
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.Forward').setEmoji(emojis.forwardOne),
-      new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('search.End').setEmoji(emojis.forward)
+      new ButtonBuilder()
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId('search.Forward')
+        .setEmoji(emojis.get('forwardOne') || ''),
+      new ButtonBuilder()
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId('search.End')
+        .setEmoji(emojis.get('forward') || '')
     ];
     if (1 === this.getPages() || 0 === this.getPages()) {
       buttons[0].setDisabled(true);

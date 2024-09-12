@@ -3,7 +3,7 @@ import ButtonHandler from './Handlers/ButtonHandler';
 import CommandHancler from './Handlers/CommandHandler';
 import InteractionHandler from './Handlers/InteractionHandler';
 import StateHandler from './Handlers/StateHandler';
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 
 class DiscordManager {
   readonly Application: Application;
@@ -12,6 +12,7 @@ class DiscordManager {
   declare commandHandler: CommandHancler;
   declare buttonHandler: ButtonHandler;
   client?: Client;
+  emojis: Collection<string, string> = new Collection<string, string>();
   constructor(app: Application) {
     this.Application = app;
     this.interactionHandler = new InteractionHandler(this);

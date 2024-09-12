@@ -28,7 +28,7 @@ class InteractionHandler {
       await interaction.deferReply({ ephemeral: true });
       const track = await this.discord.Application.spotify.requestHandler.getTrack(interaction.values[0]);
       await interaction.followUp({
-        embeds: [track.toEmbed()],
+        embeds: [track.toEmbed(this.discord.emojis)],
         components: [new ActionRowBuilder<ButtonBuilder>().setComponents(track.queueButton())]
       });
     } catch (error) {

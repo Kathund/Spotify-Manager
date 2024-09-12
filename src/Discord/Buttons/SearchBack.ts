@@ -23,7 +23,10 @@ class SearchBackButton extends Button {
         Number(interaction.message.embeds[0].description.split('Page ')[1].split('/')[0]) - 1
       ];
       const res = await this.discord.Application.spotify.requestHandler.searchTracks(search, pageIndex - 1);
-      await interaction.update({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+      await interaction.update({
+        embeds: [res.toEmbed(this.discord.emojis)],
+        components: [res.toButtons(this.discord.emojis), res.toSelectMenu()]
+      });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

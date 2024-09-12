@@ -12,7 +12,10 @@ class RefreshButton extends Button {
   async execute(interaction: ButtonInteraction): Promise<void> {
     try {
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
-      await interaction.update({ embeds: [playback.toEmbed()], components: playback.toButtons() });
+      await interaction.update({
+        embeds: [playback.toEmbed(this.discord.emojis)],
+        components: playback.toButtons(this.discord.emojis)
+      });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

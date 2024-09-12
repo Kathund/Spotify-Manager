@@ -12,7 +12,10 @@ class PlaybackCommand extends Command {
   async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     try {
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
-      const sendData: BaseMessageOptions = { embeds: [playback.toEmbed()], components: playback.toButtons() };
+      const sendData: BaseMessageOptions = {
+        embeds: [playback.toEmbed(this.discord.emojis)],
+        components: playback.toButtons(this.discord.emojis)
+      };
       if (interaction.isButton()) {
         await interaction.update(sendData);
       } else {

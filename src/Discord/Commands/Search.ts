@@ -27,7 +27,10 @@ class SearchCommand extends Command {
         return;
       }
       const res = await this.discord.Application.spotify.requestHandler.searchTracks(query, page);
-      await interaction.followUp({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+      await interaction.followUp({
+        embeds: [res.toEmbed(this.discord.emojis)],
+        components: [res.toButtons(this.discord.emojis), res.toSelectMenu()]
+      });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

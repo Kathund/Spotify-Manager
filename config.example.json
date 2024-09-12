@@ -1,22 +1,5 @@
 {
   "token": "DISCORD_BOT_TOKEN",
   "spotifyClientId": "SPOTIFY_CLIENT_ID",
-  "spotifyClientSecret": "SPOTIFY_CLIENT_SECRET",
-  "port": 5173,
-  "emojis": {
-    "back": "EMOJI_ID_back",
-    "backOne": "EMOJI_ID_backOne",
-    "pause": "EMOJI_ID_pause",
-    "play": "EMOJI_ID_play",
-    "forward": "EMOJI_ID_forward",
-    "forwardOne": "EMOJI_ID_forwardOne",
-    "queue": "EMOJI_ID_queue",
-    "spotify": "EMOJI_ID_spotify",
-    "refresh": "EMOJI_ID_refresh",
-    "shuffle": "EMOJI_ID_shuffle",
-    "repeat": "EMOJI_ID_repeat",
-    "repeatOne": "EMOJI_ID_repeatOne",
-    "explicit": "EMOJI_ID_explicit",
-    "local": "EMOJI_ID_local"
-  }
+  "port": 5173
 }

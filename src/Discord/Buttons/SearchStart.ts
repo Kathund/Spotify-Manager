@@ -16,7 +16,10 @@ class SearchStartButton extends Button {
       }
       const search = interaction.message.embeds[0].title.split(': ')[1].trim();
       const res = await this.discord.Application.spotify.requestHandler.searchTracks(search);
-      await interaction.update({ embeds: [res.toEmbed()], components: [res.toButtons(), res.toSelectMenu()] });
+      await interaction.update({
+        embeds: [res.toEmbed(this.discord.emojis)],
+        components: [res.toButtons(this.discord.emojis), res.toSelectMenu()]
+      });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {

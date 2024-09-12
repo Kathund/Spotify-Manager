@@ -1,8 +1,7 @@
 import Album from './Album';
 import Artist from './Artist';
 import Embed from '../../../Discord/Private/Embed';
-import { ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
-import { emojis } from '../../../../config.json';
+import { ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
 
 class Track {
   album: Album;
@@ -38,20 +37,20 @@ class Track {
     this.uri = data.uri;
   }
 
-  toEmojis(): string {
-    return `${this.explicit ? emojis.explicit : ''} ${this.local ? emojis.local : ''}`;
+  toEmojis(emojis: Collection<string, string>): string {
+    return `${this.explicit ? emojis.get('explicit') : ''} ${this.local ? emojis.get('local') : ''}`;
   }
 
   toString(): string {
     return this.name;
   }
 
-  toEmbed(): EmbedBuilder {
+  toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       author: `ID: ${this.id || 'Unknown'}`,
       title: 'Track Infomation',
-      description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.toEmojis()}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
-    }).build();
+      description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.toEmojis(emojis)}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+    });
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
     return embed;
   }

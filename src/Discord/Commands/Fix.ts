@@ -1,19 +1,18 @@
 import Command from '../Private/Command';
 import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 
-class QueueCommand extends Command {
+class FixCommand extends Command {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new CommandData().setName('queue').setDescription('queue').global();
+    this.data = new CommandData().setName('fix').setDescription('fix').global();
   }
 
-  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
-      if (!interaction.deferred) await interaction.deferReply({ ephemeral: true });
-      const res = await this.discord.Application.spotify.requestHandler.getQueue();
-      await interaction.followUp({ embeds: [res.toEmbed(this.discord.emojis)], ephemeral: true });
+      fetch(`http://localhost:${this.discord.Application.config.port}/auth/refresh`);
+      await interaction.followUp({ content: 'fixed i hope' });
     } catch (error) {
       if (error instanceof Error) this.discord.Application.Logger.error(error);
       if (interaction.replied || interaction.deferred) {
@@ -25,4 +24,4 @@ class QueueCommand extends Command {
   }
 }
 
-export default QueueCommand;
+export default FixCommand;
