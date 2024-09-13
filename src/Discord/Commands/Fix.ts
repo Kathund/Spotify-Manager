@@ -10,17 +10,8 @@ class FixCommand extends Command {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    try {
-      fetch(`http://localhost:${this.discord.Application.config.port}/auth/refresh`);
-      await interaction.followUp({ content: 'fixed i hope' });
-    } catch (error) {
-      if (error instanceof Error) this.discord.Application.Logger.error(error);
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({ content: 'Something went wrong. Please try again later.', ephemeral: true });
-        return;
-      }
-      await interaction.reply({ content: 'Something went wrong. Please try again later.', ephemeral: true });
-    }
+    fetch(`http://localhost:${this.discord.Application.config.port}/auth/refresh`);
+    await interaction.followUp({ content: 'fixed i hope' });
   }
 }
 

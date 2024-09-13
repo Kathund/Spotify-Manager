@@ -1,7 +1,7 @@
 import * as config from '../config.json';
 import CacheHandler from './Private/CacheHandler';
 import DiscordManager from './Discord/DiscordManager';
-import Logger from './utils/Logger';
+import Logger from './Private/Logger';
 import RequestHandler from './Private/RequestHandler';
 import SpotifyManager from './Spotify/SpotifyManager';
 

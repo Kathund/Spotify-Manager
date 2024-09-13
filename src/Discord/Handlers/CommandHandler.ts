@@ -1,7 +1,9 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
-import { ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
+import { BaseMessageOptions, ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
 import { readdirSync } from 'fs';
+import Embed from '../Private/Embed';
+import SpotifyManagerError from '../../Private/Error';
 
 class CommandHancler {
   readonly discord: DiscordManager;
@@ -25,7 +27,28 @@ class CommandHancler {
       );
       await command.execute(interaction);
     } catch (error) {
-      if (error instanceof Error) this.discord.Application.Logger.error(error);
+      if (error instanceof Error || error instanceof SpotifyManagerError) this.discord.Application.Logger.error(error);
+      const embed = new Embed(
+        { title: 'Something went wrong.', description: 'This error has been reported. Please try again later.' },
+        'Red'
+      );
+      if (error instanceof SpotifyManagerError) embed.setDescription(error.message);
+      if (error instanceof Error) {
+        if (!this.discord.client) return;
+        this.discord.client.users.send(this.discord.Application.config.ownerId, {
+          embeds: [
+            new Embed({
+              title: 'Error',
+              description: `Something went wrong.\n\n\`\`\`${error.message}\n${error.stack}\n\`\`\``
+            })
+          ]
+        });
+      }
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ embeds: [embed], ephemeral: true });
+        return;
+      }
+      await interaction.reply({ embeds: [embed], ephemeral: true });
     }
   }
 

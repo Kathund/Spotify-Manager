@@ -11,24 +11,15 @@ class AboutCommand extends Command {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    try {
-      const app = await interaction.client.application.fetch();
-      await interaction.followUp({
-        embeds: [
-          new Embed({
-            title: 'Spotify Manager',
-            description: `Spoitfy Manager made with :purple_heart: by <@1276524855445164098>\nOpen source on [Github](https://github.com/Kathund/Spotify-Manager)\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
-          })
-        ]
-      });
-    } catch (error) {
-      if (error instanceof Error) this.discord.Application.Logger.error(error);
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({ content: 'Something went wrong. Please try again later.', ephemeral: true });
-        return;
-      }
-      await interaction.reply({ content: 'Something went wrong. Please try again later.', ephemeral: true });
-    }
+    const app = await interaction.client.application.fetch();
+    await interaction.followUp({
+      embeds: [
+        new Embed({
+          title: 'Spotify Manager',
+          description: `Spoitfy Manager made with :purple_heart: by <@1276524855445164098>\nOpen source on [Github](https://github.com/Kathund/Spotify-Manager)\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
+        })
+      ]
+    });
   }
 }
 

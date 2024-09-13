@@ -2,6 +2,7 @@ import Playback from './API/Playback';
 import Queue from './API/Queue';
 import Search from './API/Search/Search';
 import SpotifyManager from '../SpotifyManager';
+import SpotifyManagerError from '../../Private/Error';
 import Track from './API/Track';
 
 class RequestHandler {
@@ -12,13 +13,13 @@ class RequestHandler {
 
   async getStatus(): Promise<Playback> {
     const res = await this.spotify.Application.requestHandler.request('/me/player', { noCache: true });
-    if (204 === res.statusCode) throw new Error(this.spotify.Application.errors.NOT_LOGGED_IN);
+    if (204 === res.statusCode) throw new SpotifyManagerError(this.spotify.Application.errors.NOT_LOGGED_IN);
     return new Playback(await res.data);
   }
 
   async skip(): Promise<void> {
     const playbackStatus = await this.getStatus();
-    if (!playbackStatus.playing) throw new Error(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (!playbackStatus.playing) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
     await this.spotify.Application.requestHandler.request('/me/player/next', {
       noCache: true,
       method: 'POST'
@@ -27,7 +28,7 @@ class RequestHandler {
 
   async pause(): Promise<void> {
     const playbackStatus = await this.getStatus();
-    if (!playbackStatus.playing) throw new Error(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (!playbackStatus.playing) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
     await this.spotify.Application.requestHandler.request('/me/player/pause', {
       noCache: true,
       method: 'PUT'
@@ -36,7 +37,7 @@ class RequestHandler {
 
   async play(): Promise<void> {
     const playbackStatus = await this.getStatus();
-    if (!playbackStatus.playing) throw new Error(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (!playbackStatus.playing) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
     await this.spotify.Application.requestHandler.request('/me/player/play', {
       noCache: true,
       method: 'PUT'
@@ -45,7 +46,7 @@ class RequestHandler {
 
   async previous(): Promise<void> {
     const playbackStatus = await this.getStatus();
-    if (!playbackStatus.playing) throw new Error(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (!playbackStatus.playing) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
     await this.spotify.Application.requestHandler.request('/me/player/previous', {
       noCache: true,
       method: 'POST'
@@ -54,14 +55,14 @@ class RequestHandler {
 
   async getQueue(): Promise<Queue> {
     const playbackStatus = await this.getStatus();
-    if (!playbackStatus.playing) throw new Error(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (!playbackStatus.playing) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
     const res = await this.spotify.Application.requestHandler.request('/me/player/queue', { noCache: true });
     return new Queue(await res.data);
   }
 
   async shuffle(): Promise<void> {
     const playbackStatus = await this.getStatus();
-    if (!playbackStatus.playing) throw new Error(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (!playbackStatus.playing) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
     await this.spotify.Application.requestHandler.request(`/me/player/shuffle?state=${!playbackStatus.shuffleState}`, {
       noCache: true,
       method: 'PUT'
