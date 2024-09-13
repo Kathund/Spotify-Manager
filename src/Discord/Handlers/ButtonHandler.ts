@@ -1,9 +1,9 @@
 import Button from '../Private/Button';
 import DiscordManager from '../DiscordManager';
+import Embed from '../Private/Embed';
+import SpotifyManagerError from '../../Private/Error';
 import { ButtonInteraction, Collection } from 'discord.js';
 import { readdirSync } from 'fs';
-import SpotifyManagerError from '../../Private/Error';
-import Embed from '../Private/Embed';
 
 class ButtonHandler {
   readonly discord: DiscordManager;

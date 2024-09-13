@@ -1,9 +1,9 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
-import { BaseMessageOptions, ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
-import { readdirSync } from 'fs';
 import Embed from '../Private/Embed';
 import SpotifyManagerError from '../../Private/Error';
+import { ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
+import { readdirSync } from 'fs';
 
 class CommandHancler {
   readonly discord: DiscordManager;
