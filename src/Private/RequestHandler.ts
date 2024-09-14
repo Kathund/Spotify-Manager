@@ -62,6 +62,9 @@ class RequestHandler {
     if ('GET' !== options.method) {
       return new RequestData({}, res.headers, { status: res.status, options, url: endpoint, cached: false });
     }
+    if (204 === res.status || 'me/player' === endpoint) {
+      throw new SpotifyManagerError(this.Application.errors.NOTHING_PLAYING);
+    }
     const parsedRes = (await res.json()) as Record<string, any>;
     if (401 === res.status || 403 === res.status) throw new SpotifyManagerError(this.Application.errors.NOT_LOGGED_IN);
     const requestData = new RequestData(parsedRes, res.headers, {

@@ -33,7 +33,7 @@ class CommandHancler {
         'Red'
       );
       if (error instanceof SpotifyManagerError) embed.setDescription(error.message);
-      if (error instanceof Error) {
+      if (!(error instanceof SpotifyManagerError) && error instanceof Error) {
         if (!this.discord.client) return;
         this.discord.client.users.send(this.discord.Application.config.ownerId, {
           embeds: [
