@@ -3,10 +3,10 @@ import ButtonData from '../Private/ButtonData';
 import DiscordManager from '../DiscordManager';
 import { ButtonInteraction } from 'discord.js';
 
-class PreviousButton extends Button {
+class InfoButton extends Button {
   constructor(discord: DiscordManager) {
     super(discord);
-    this.data = new ButtonData('previous');
+    this.data = new ButtonData('info');
   }
 
   async execute(interaction: ButtonInteraction): Promise<void> {
@@ -15,8 +15,9 @@ class PreviousButton extends Button {
       await interaction.reply({ content: 'Button not found.', ephemeral: true });
       return;
     }
+    await interaction.deferReply({ ephemeral: true });
     await command.execute(interaction);
   }
 }
 
-export default PreviousButton;
+export default InfoButton;

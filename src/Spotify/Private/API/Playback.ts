@@ -55,11 +55,12 @@ class Playback {
     if (!this.item) {
       return new Embed({ title: 'Nothing is playing.', description: 'User has nothing playing on spotify' });
     }
-    return this.item
+    const embed = this.item
       .toEmbed(emojis)
       .setTitle(`Currently ${this.playing ? 'Playing' : 'Paused'}`)
-      .addFields({ name: 'Progress', value: this.getPrograssBar() })
-      .addFields({ name: 'Volume', value: this.getVolumeBar() });
+      .addFields({ name: 'Progress', value: this.getPrograssBar() });
+    if (this.device?.supportsVolume) embed.addFields({ name: 'Volume', value: this.getVolumeBar() });
+    return embed;
   }
 
   toButtons(emojis: Collection<string, string>): ActionRowBuilder<ButtonBuilder>[] {
@@ -108,7 +109,11 @@ class Playback {
         new ButtonBuilder()
           .setEmoji(emojis.get('spotify') || '')
           .setStyle(ButtonStyle.Link)
-          .setURL(this.item.spotifyUrl || 'https://open.spotify.com')
+          .setURL(this.item.spotifyUrl || 'https://open.spotify.com'),
+        new ButtonBuilder()
+          .setEmoji(emojis.get('info') || '')
+          .setStyle(ButtonStyle.Primary)
+          .setCustomId('info')
       )
     ];
   }
