@@ -1,14 +1,7 @@
 /* eslint-disable require-await */
 /* eslint-disable no-console */
 import chalk from 'chalk';
-import {
-  ApplicationEmoji,
-  Client,
-  ClientApplication,
-  GatewayIntentBits,
-  OAuth2Scopes,
-  PermissionsBitField
-} from 'discord.js';
+import { ApplicationEmoji, Client, GatewayIntentBits, OAuth2Scopes, PermissionsBitField } from 'discord.js';
 import { confirm, input, number, password } from '@inquirer/prompts';
 import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'fs';
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
