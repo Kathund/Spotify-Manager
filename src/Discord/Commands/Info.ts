@@ -50,7 +50,9 @@ class InfoCommand extends Command {
               'explicit'
             )} | Shows if the song is tagged explicit\n${this.discord.emojis.get(
               'local'
-            )} | Shows if the song is a local file`
+            )} | Shows if the song is a local file\n${this.discord.emojis.get(
+              'warning'
+            )} | Shows when something wen't wrong`
           },
           {
             name: 'Credits',

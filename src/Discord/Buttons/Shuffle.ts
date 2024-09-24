@@ -12,7 +12,7 @@ class ShuffleButton extends Button {
   async execute(interaction: ButtonInteraction): Promise<void> {
     const command = interaction.client.commands.get(interaction.customId);
     if (command === undefined) {
-      await interaction.reply({ content: 'Button not found.', ephemeral: true });
+      await interaction.reply({ content: `${this.discord.emojis.get('warning')} Button not found.`, ephemeral: true });
       return;
     }
     await command.execute(interaction);

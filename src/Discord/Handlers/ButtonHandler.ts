@@ -22,17 +22,22 @@ class ButtonHandler {
     } catch (error) {
       if (error instanceof Error || error instanceof SpotifyManagerError) this.discord.Application.Logger.error(error);
       const embed = new Embed(
-        { title: 'Something went wrong.', description: 'This error has been reported. Please try again later.' },
+        {
+          title: `${this.discord.emojis.get('warning')} Something went wrong. ${this.discord.emojis.get('warning')}`,
+          description: 'This error has been reported. Please try again later.'
+        },
         'Red'
       );
       if (error instanceof SpotifyManagerError) embed.setDescription(error.message);
-      if (error instanceof Error) {
+      if (!(error instanceof SpotifyManagerError) && error instanceof Error) {
         if (!this.discord.client) return;
         this.discord.client.users.send(this.discord.Application.config.ownerId, {
           embeds: [
             new Embed({
               title: 'Error',
-              description: `Something went wrong.\n\n\`\`\`${error.message}\n${error.stack}\n\`\`\``
+              description: `${this.discord.emojis.get(
+                'warning'
+              )} Something went wrong.\n\n\`\`\`${error.message}\n${error.stack}\n\`\`\``
             })
           ]
         });

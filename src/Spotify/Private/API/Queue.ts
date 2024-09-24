@@ -17,7 +17,7 @@ class Queue {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       title: 'Queue',
-      description: 'Upcomming Queue\n**Warning: ** This dose not show local files'
+      description: `Upcomming Queue\n**${emojis.get('warning')} Warning: ** This dose not show local files`
     });
     this.queue.map((track) => {
       embed.addFields({
