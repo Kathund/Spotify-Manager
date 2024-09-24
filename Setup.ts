@@ -1,9 +1,17 @@
 /* eslint-disable require-await */
 /* eslint-disable no-console */
 import chalk from 'chalk';
-import { Client, GatewayIntentBits, OAuth2Scopes, PermissionsBitField } from 'discord.js';
+import {
+  ApplicationEmoji,
+  Client,
+  ClientApplication,
+  GatewayIntentBits,
+  OAuth2Scopes,
+  PermissionsBitField
+} from 'discord.js';
 import { confirm, input, number, password } from '@inquirer/prompts';
 import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'fs';
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function uploadEmojisToBot(token: string) {
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -13,17 +21,26 @@ async function uploadEmojisToBot(token: string) {
     if (!application) return;
     const currentEmojis = await application.emojis.fetch();
     if (0 < currentEmojis.size) {
-      console.log('You already have emojis uploaded to the bot. Please remove them or upload these emojis manually.');
-    } else {
+      console.log(chalk.red(chalk.bold('Emojis already exist.')));
+      const check = await confirm({ message: 'Overrite Emojis?', default: true });
+      if (false === check) {
+        client.destroy();
+        return;
+      }
+      currentEmojis.forEach(async (emoji: ApplicationEmoji) => {
+        await emoji.delete().then((emoji: ApplicationEmoji) => console.log(`Deleted ${emoji.name} Emoji`));
+      });
+    }
+    delay(5000).then(async () => {
       const emojiFiles = readdirSync('./emojis').filter((file) => file.endsWith('.png'));
       for (const emoji of emojiFiles) {
         application.emojis
           .create({ attachment: `./emojis/${emoji}`, name: emoji.split('.')[0] })
-          .then((emoji) => console.log(`Uploaded ${emoji.name} emoji`))
+          .then((emoji: ApplicationEmoji) => console.log(`Uploaded ${emoji.name} Emoji`))
           .catch(console.error);
       }
-    }
-    client.destroy();
+      await client.destroy();
+    });
   });
 }
 
@@ -46,7 +63,7 @@ async function setupBot(token: string) {
     console.log(
       `If you want to make the bot user installable, enable it on the Developer Portal. Link: https://discord.com/developers/applications/${application.id}/installation`
     );
-    client.destroy();
+    await client.destroy();
   });
 }
 
