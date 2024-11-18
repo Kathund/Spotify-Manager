@@ -3,10 +3,8 @@ class SpotifyManagerError extends Error {
     super(message);
     this.name = 'Spotify Manager';
   }
-
   toString(): string {
     return this.message;
   }
 }
-
 export default SpotifyManagerError;

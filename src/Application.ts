@@ -1,19 +1,10 @@
 import * as config from '../config.json';
+import * as messages from '../messages.json';
 import CacheHandler from './Private/CacheHandler';
 import DiscordManager from './Discord/DiscordManager';
 import Logger from './Private/Logger';
 import RequestHandler from './Private/RequestHandler';
 import SpotifyManager from './Spotify/SpotifyManager';
-
-interface Errors {
-  NOT_LOGGED_IN: string;
-  NOTHING_PLAYING: string;
-}
-
-const errors: Errors = {
-  NOT_LOGGED_IN: 'Account isnt logged in.',
-  NOTHING_PLAYING: 'Nothing is playing.'
-};
 
 class Application {
   readonly config: typeof config;
@@ -22,7 +13,7 @@ class Application {
   declare spotify: SpotifyManager;
   declare cacheHandler: CacheHandler;
   declare requestHandler: RequestHandler;
-  declare errors: Errors;
+  readonly messages: typeof messages;
   constructor() {
     this.config = config;
     this.Logger = new Logger();
@@ -30,7 +21,7 @@ class Application {
     this.spotify = new SpotifyManager(this);
     this.cacheHandler = new CacheHandler();
     this.requestHandler = new RequestHandler(this);
-    this.errors = errors;
+    this.messages = messages;
   }
 
   connect(): void {

@@ -1,8 +1,6 @@
 import Application from '../Application';
 import SpotifyManagerError from './Error';
-
 const BASE_URL = 'https://api.spotify.com/v1';
-
 type RequestMehod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export interface RequestOptions {
@@ -43,7 +41,7 @@ class RequestHandler {
   }
 
   async request(endpoint: string, options?: RequestOptions): Promise<RequestData> {
-    if (!this.Application.spotify.token) throw new SpotifyManagerError(this.Application.errors.NOT_LOGGED_IN);
+    if (!this.Application.spotify.token) throw new SpotifyManagerError(this.Application.messages.accountNotLoggedIn);
     options = { raw: options?.raw ?? false, noCache: options?.noCache ?? false, method: options?.method ?? 'GET' };
     if (this.Application.cacheHandler.has(endpoint)) {
       const data = this.Application.cacheHandler.get(endpoint);
@@ -63,10 +61,12 @@ class RequestHandler {
       return new RequestData({}, res.headers, { status: res.status, options, url: endpoint, cached: false });
     }
     if (204 === res.status || 'me/player' === endpoint) {
-      throw new SpotifyManagerError(this.Application.errors.NOTHING_PLAYING);
+      throw new SpotifyManagerError(this.Application.messages.nothingPlaying);
     }
     const parsedRes = (await res.json()) as Record<string, any>;
-    if (401 === res.status || 403 === res.status) throw new SpotifyManagerError(this.Application.errors.NOT_LOGGED_IN);
+    if (401 === res.status || 403 === res.status) {
+      throw new SpotifyManagerError(this.Application.messages.accountNotLoggedIn);
+    }
     const requestData = new RequestData(parsedRes, res.headers, {
       status: res.status,
       options,

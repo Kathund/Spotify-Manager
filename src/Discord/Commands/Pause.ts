@@ -21,7 +21,7 @@ class PauseCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: 'Paused.', ephemeral: true });
+      await interaction.followUp({ content: this.discord.Application.messages.playbackPaused, ephemeral: true });
     });
   }
 }

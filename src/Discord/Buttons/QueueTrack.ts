@@ -19,7 +19,7 @@ class QueueTrackButton extends Button {
     }
     const trackId = interaction.message.embeds[0].author.name.split('ID: ')[1];
     await this.discord.Application.spotify.requestHandler.queueTrack(`spotify:track:${trackId}`);
-    await interaction.reply({ content: 'Song added to queue.', ephemeral: true });
+    await interaction.reply({ content: this.discord.Application.messages.songQueued, ephemeral: true });
   }
 }
 

@@ -9,8 +9,8 @@ class Command {
     this.discord = discord;
   }
 
-  execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
-    throw new Error('Execute Method not implemented.');
+  execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> | void {
+    throw new Error(this.discord.Application.messages.missingExecuteFunction);
   }
 }
 

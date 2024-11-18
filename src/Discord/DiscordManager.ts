@@ -1,6 +1,7 @@
 import Application from '../Application';
 import ButtonHandler from './Handlers/ButtonHandler';
 import CommandHancler from './Handlers/CommandHandler';
+import DiscordUtils from './Private/DiscordUtils';
 import InteractionHandler from './Handlers/InteractionHandler';
 import StateHandler from './Handlers/StateHandler';
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
@@ -11,6 +12,7 @@ class DiscordManager {
   declare stateHandler: StateHandler;
   declare commandHandler: CommandHancler;
   declare buttonHandler: ButtonHandler;
+  declare utils: DiscordUtils;
   client?: Client;
   emojis: Collection<string, string> = new Collection<string, string>();
   constructor(app: Application) {
@@ -19,6 +21,7 @@ class DiscordManager {
     this.stateHandler = new StateHandler(this);
     this.commandHandler = new CommandHancler(this);
     this.buttonHandler = new ButtonHandler(this);
+    this.utils = new DiscordUtils(this);
   }
 
   connect(): void {

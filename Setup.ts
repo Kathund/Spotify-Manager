@@ -1,5 +1,6 @@
 /* eslint-disable require-await */
 /* eslint-disable no-console */
+
 import chalk from 'chalk';
 import { ApplicationEmoji, Client, GatewayIntentBits, OAuth2Scopes, PermissionsBitField } from 'discord.js';
 import { confirm, input, number, password } from '@inquirer/prompts';

@@ -1,3 +1,4 @@
+import * as messages from '../../../../../messages.json';
 import Embed from '../../../../Discord/Private/Embed';
 import TrackSearch from './Track';
 import {
@@ -76,7 +77,7 @@ class Search {
   toSelectMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
     if (!this.track) {
       return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-        new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder('No results found.')
+        new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder(messages.noSearchResults)
       );
     }
     return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(this.track.toSelectMenu());

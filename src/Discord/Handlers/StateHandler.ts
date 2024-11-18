@@ -12,7 +12,10 @@ class StateHandler {
     this.discord.Application.Logger.discord(
       `Logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`
     );
-    this.discord.client.user.setActivity({ name: 'to music', type: ActivityType.Listening });
+    this.discord.client.user.setActivity({
+      name: this.discord.Application.messages.discordStatus,
+      type: ActivityType.Listening
+    });
     this.discord.buttonHandler.loadButtons();
     if (!this.discord.client.application) return;
     const application = await this.discord.client.application.fetch();

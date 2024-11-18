@@ -1,4 +1,5 @@
 import DiscordManager from '../DiscordManager';
+import ReplaceVariables from '../../Private/ReplaceVariables';
 import { ActionRowBuilder, BaseInteraction, ButtonBuilder, StringSelectMenuInteraction } from 'discord.js';
 
 class InteractionHandler {
@@ -16,13 +17,18 @@ class InteractionHandler {
   async stringSelectMenu(interaction: StringSelectMenuInteraction): Promise<void> {
     try {
       this.discord.Application.Logger.discord(
-        `Menu Clicked ${interaction.user.username} (${interaction.user.id}) menu ${interaction.customId} value ${
-          interaction.values[0]
-        }`
+        `Menu Clicked ${interaction.user.username} (${interaction.user.id}) menu ${
+          interaction.customId
+        } value ${interaction.values[0]}`
       );
       const ids: string[] = ['searchSelectMenu'];
       if (!ids.includes(interaction.customId)) {
-        await interaction.reply({ content: 'Can i select ur menus?', ephemeral: true });
+        await interaction.reply({
+          content: ReplaceVariables(this.discord.Application.messages.menuNotFound, {
+            warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
+          }),
+          ephemeral: true
+        });
         return;
       }
       await interaction.deferReply({ ephemeral: true });

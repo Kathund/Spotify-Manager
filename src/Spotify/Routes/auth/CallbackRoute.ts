@@ -15,10 +15,10 @@ class CallbackRoute extends Route {
       if (!code || !verifier || 'string' !== typeof code) return res.status(400).send('Invalid request.');
       const token = await this.getAccessToken(verifier, code);
       this.spotify.token = token;
-      res.status(200).json({ success: true, message: 'Token generated successfully.', data: token });
+      res.status(200).json({ success: true, message: this.spotify.Application.messages.tokenGenerated });
     } catch (error) {
       if (error instanceof Error) this.spotify.Application.Logger.error(error);
-      res.status(500).send('An error occurred while fetching data.');
+      res.status(500).send(this.spotify.Application.messages.errorFetchingData);
     }
   }
 

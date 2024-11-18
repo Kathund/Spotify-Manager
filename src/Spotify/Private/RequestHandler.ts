@@ -13,36 +13,24 @@ class RequestHandler {
 
   async getStatus(): Promise<Playback> {
     const res = await this.spotify.Application.requestHandler.request('/me/player', { noCache: true });
-    if (204 === res.statusCode) throw new SpotifyManagerError(this.spotify.Application.errors.NOTHING_PLAYING);
+    if (204 === res.statusCode) throw new SpotifyManagerError(this.spotify.Application.messages.nothingPlaying);
     return new Playback(await res.data);
   }
 
   async skip(): Promise<void> {
-    await this.spotify.Application.requestHandler.request('/me/player/next', {
-      noCache: true,
-      method: 'POST'
-    });
+    await this.spotify.Application.requestHandler.request('/me/player/next', { noCache: true, method: 'POST' });
   }
 
   async pause(): Promise<void> {
-    await this.spotify.Application.requestHandler.request('/me/player/pause', {
-      noCache: true,
-      method: 'PUT'
-    });
+    await this.spotify.Application.requestHandler.request('/me/player/pause', { noCache: true, method: 'PUT' });
   }
 
   async play(): Promise<void> {
-    await this.spotify.Application.requestHandler.request('/me/player/play', {
-      noCache: true,
-      method: 'PUT'
-    });
+    await this.spotify.Application.requestHandler.request('/me/player/play', { noCache: true, method: 'PUT' });
   }
 
   async previous(): Promise<void> {
-    await this.spotify.Application.requestHandler.request('/me/player/previous', {
-      noCache: true,
-      method: 'POST'
-    });
+    await this.spotify.Application.requestHandler.request('/me/player/previous', { noCache: true, method: 'POST' });
   }
 
   async getQueue(): Promise<Queue> {

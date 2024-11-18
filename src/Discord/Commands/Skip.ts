@@ -9,8 +9,8 @@ class SkipCommand extends Command {
     this.data = new CommandData().setName('skip').setDescription('skip');
   }
 
-  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
-    await this.discord.Application.spotify.requestHandler.skip().then(async () => {
+  execute(interaction: ChatInputCommandInteraction | ButtonInteraction): void {
+    this.discord.Application.spotify.requestHandler.skip().then(async () => {
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
       const sendData: BaseMessageOptions = {
         embeds: [playback.toEmbed(this.discord.emojis)],
@@ -21,7 +21,7 @@ class SkipCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: 'Skipped song.', ephemeral: true });
+      await interaction.followUp({ content: this.discord.Application.messages.playbackSongSkip, ephemeral: true });
     });
   }
 }

@@ -1,5 +1,4 @@
 export type DeviceType = 'computer' | 'smartphone' | 'speaker';
-
 class Device {
   id: string;
   active: boolean;

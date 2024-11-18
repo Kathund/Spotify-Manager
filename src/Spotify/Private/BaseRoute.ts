@@ -9,7 +9,7 @@ class Route {
   }
 
   handle(...args: any[]) {
-    throw new Error('Routes method must be implemented');
+    throw new Error(this.spotify.Application.messages.missingRoutesFunction);
   }
 }
 

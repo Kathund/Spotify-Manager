@@ -1,4 +1,6 @@
+import * as messages from '../../../../messages.json';
 import Embed from '../../../Discord/Private/Embed';
+import ReplaceVariables from '../../../Private/ReplaceVariables';
 import Track from './Track';
 import { Collection, EmbedBuilder } from 'discord.js';
 
@@ -17,7 +19,7 @@ class Queue {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       title: 'Queue',
-      description: `Upcomming Queue\n**${emojis.get('warning')} Warning: ** This dose not show local files`
+      description: ReplaceVariables(messages.upcomingQueue, { warningEmoji: emojis.get('warning') || 'Missing Emoji' })
     });
     this.queue.map((track) => {
       embed.addFields({

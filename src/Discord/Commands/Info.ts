@@ -16,9 +16,7 @@ class InfoCommand extends Command {
       embeds: [
         new Embed({
           title: 'Spotify Manager',
-          description: `Spotify Manager made with :purple_heart: by <@1276524855445164098>\nOpen source on [Github](https://github.com/Kathund/Spotify-Manager)\n\n**Stats:**\nServers: ${
-            app.approximateGuildCount || 0
-          }\nUser Installs: ${app.approximateUserInstallCount || 0}`
+          description: `Spotify Manager made with :purple_heart: by <@1276524855445164098>\nOpen source on [Github](https://github.com/Kathund/Spotify-Manager)\n\n**Stats:**\nServers: ${app.approximateGuildCount || 0}\nUser Installs: ${app.approximateUserInstallCount || 0}`
         }).addFields(
           {
             name: 'Buttons',

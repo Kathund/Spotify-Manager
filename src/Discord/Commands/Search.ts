@@ -21,7 +21,7 @@ class SearchCommand extends Command {
     const query = interaction.options.getString('query') || null;
     const page = interaction.options.getInteger('page') || 0;
     if (!query) {
-      await interaction.reply({ content: 'Please provide a search query.', ephemeral: true });
+      await interaction.reply({ content: this.discord.Application.messages.missingQuerySearch, ephemeral: true });
       return;
     }
     const res = await this.discord.Application.spotify.requestHandler.searchTracks(query, page);

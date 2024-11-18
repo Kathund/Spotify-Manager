@@ -39,16 +39,15 @@ class Playback {
           .toString()
           .padStart(2, '0')}`
       : '0:00';
-
     const prograssBar = '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
     return `${progress} ${prograssBar} ${duration}`;
   }
 
   getVolumeBar(): string {
     if (null === this.device || null === this.device.volumePercent) return `0% ${'-'.repeat(20)} 100%`;
-    return `0% ${'█'.repeat(Math.floor(this.device.volumePercent * 20))}${'-'.repeat(
-      20 - Math.floor(this.device.volumePercent * 20)
-    )} 100%`;
+    return `0% ${'█'.repeat(
+      Math.floor(this.device.volumePercent * 20)
+    )}${'-'.repeat(20 - Math.floor(this.device.volumePercent * 20))} 100%`;
   }
 
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {

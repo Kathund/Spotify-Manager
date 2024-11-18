@@ -1,6 +1,7 @@
 import Button from '../Private/Button';
 import ButtonData from '../Private/ButtonData';
 import DiscordManager from '../DiscordManager';
+import ReplaceVariables from '../../Private/ReplaceVariables';
 import { ButtonInteraction } from 'discord.js';
 
 class SkipButton extends Button {
@@ -12,7 +13,12 @@ class SkipButton extends Button {
   async execute(interaction: ButtonInteraction): Promise<void> {
     const command = interaction.client.commands.get(interaction.customId);
     if (command === undefined) {
-      await interaction.reply({ content: `${this.discord.emojis.get('warning')} Button not found.`, ephemeral: true });
+      await interaction.reply({
+        content: ReplaceVariables(this.discord.Application.messages.buttonNotFound, {
+          warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
+        }),
+        ephemeral: true
+      });
       return;
     }
     await command.execute(interaction);

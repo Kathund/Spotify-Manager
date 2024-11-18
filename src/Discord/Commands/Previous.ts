@@ -21,7 +21,7 @@ class PreviousCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: 'Previous song is playing.', ephemeral: true });
+      await interaction.followUp({ content: this.discord.Application.messages.playbackPrevious, ephemeral: true });
     });
   }
 }

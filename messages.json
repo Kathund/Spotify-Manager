@@ -1,0 +1,22 @@
+{
+  "accountNotLoggedIn": "Account isnt logged in.",
+  "nothingPlaying": "Nothing is playing.",
+  "playbackPaused": "Playback Paused",
+  "playbackPlaying": "Playback Playing",
+  "playbackPrevious": "Previous song is playing",
+  "playbackSongSkip": "Current Song Skipped.",
+  "missingQuerySearch": "Please provide a search query",
+  "buttonNotFound": "{warningEmoji} Button not found.",
+  "menuNotFound": "{warningEmoji} Menu not found.",
+  "songQueued": "Song added to queue.",
+  "defaultErrorMessage": "{warningEmoji} Something went wrong",
+  "errorReported": "This error has been reported to the owner. Please try again later.",
+  "discordStatus": "to Music!",
+  "missingExecuteFunction": "Execute Method not implemented!",
+  "missingRoutesFunction": "Routes Method not implemented!",
+  "noSearchResults": "No Search Results Found",
+  "tokenGenerated": "Token generated successfully",
+  "errorFetchingData": "An error occurred while fetching data",
+  "itemPreview": "Preview an Item",
+  "upcomingQueue": "Upcoming Queue\n**{warningEmoji} Warning:** This dose not show local files"
+}

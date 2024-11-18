@@ -9,8 +9,8 @@ class Button {
     this.discord = discord;
   }
 
-  execute(interaction: ButtonInteraction): Promise<void> {
-    throw new Error('Execute Method not implemented.');
+  execute(interaction: ButtonInteraction): Promise<void> | void {
+    throw new Error(this.discord.Application.messages.missingExecuteFunction);
   }
 }
 

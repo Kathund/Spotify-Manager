@@ -21,7 +21,7 @@ class PlayCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: 'Playing.', ephemeral: true });
+      await interaction.followUp({ content: this.discord.Application.messages.playbackPlaying, ephemeral: true });
     });
   }
 }

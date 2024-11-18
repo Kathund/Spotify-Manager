@@ -1,6 +1,5 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
-import Embed from '../Private/Embed';
 import SpotifyManagerError from '../../Private/Error';
 import { ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
 import { readdirSync } from 'fs';
@@ -21,39 +20,15 @@ class CommandHancler {
         await interaction.deferReply({ ephemeral: false });
       }
       this.discord.Application.Logger.discord(
-        `Interaction Event trigged by ${interaction.user.username} (${interaction.user.id}) ran command ${
-          interaction.commandName
-        }`
+        `Interaction Event trigged by ${interaction.user.username} (${
+          interaction.user.id
+        }) ran command ${interaction.commandName}`
       );
       await command.execute(interaction);
     } catch (error) {
-      if (error instanceof Error || error instanceof SpotifyManagerError) this.discord.Application.Logger.error(error);
-      const embed = new Embed(
-        {
-          title: `${this.discord.emojis.get('warning')} Something went wrong. ${this.discord.emojis.get('warning')}`,
-          description: 'This error has been reported. Please try again later.'
-        },
-        'Red'
-      );
-      if (error instanceof SpotifyManagerError) embed.setDescription(error.message);
-      if (!(error instanceof SpotifyManagerError) && error instanceof Error) {
-        if (!this.discord.client) return;
-        this.discord.client.users.send(this.discord.Application.config.ownerId, {
-          embeds: [
-            new Embed({
-              title: 'Error',
-              description: `${this.discord.emojis.get(
-                'warning'
-              )} Something went wrong.\n\n\`\`\`${error.message}\n${error.stack}\n\`\`\``
-            })
-          ]
-        });
+      if (error instanceof Error || error instanceof SpotifyManagerError) {
+        this.discord.utils.handleError(interaction, error);
       }
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({ embeds: [embed], ephemeral: true });
-        return;
-      }
-      await interaction.reply({ embeds: [embed], ephemeral: true });
     }
   }
 

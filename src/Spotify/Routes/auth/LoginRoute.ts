@@ -23,7 +23,7 @@ class AuthRoute extends Route {
       res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
     } catch (error) {
       if (error instanceof Error) this.spotify.Application.Logger.error(error);
-      res.status(500).send('An error occurred while fetching data.');
+      res.status(500).send(this.spotify.Application.messages.errorFetchingData);
     }
   }
 

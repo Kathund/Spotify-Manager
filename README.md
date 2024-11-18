@@ -98,9 +98,11 @@ pnpm install
 ```bash
 pnpm setup-config
 ```
+
 This is where you will input the `Client ID` and `Discord Bot Token` that you saved earlier.
 
-:warning: Note if you dont use the default emojis for the bot you will need go to the Discord Application's portal and add emojis with the same names as the emojis in the emoji folder.
+:warning: Note if you dont use the default emojis for the bot you will need go to the Discord Application's portal and
+add emojis with the same names as the emojis in the emoji folder.
 
 5. Start the application
 
