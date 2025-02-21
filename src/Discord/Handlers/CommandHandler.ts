@@ -4,7 +4,7 @@ import SpotifyManagerError from '../../Private/Error';
 import { ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
 import { readdirSync } from 'fs';
 
-class CommandHancler {
+class CommandHandler {
   readonly discord: DiscordManager;
   constructor(discord: DiscordManager) {
     this.discord = discord;
@@ -51,4 +51,4 @@ class CommandHancler {
   }
 }
 
-export default CommandHancler;
+export default CommandHandler;
