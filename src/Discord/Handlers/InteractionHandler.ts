@@ -1,6 +1,12 @@
 import DiscordManager from '../DiscordManager';
 import ReplaceVariables from '../../Private/ReplaceVariables';
-import { ActionRowBuilder, BaseInteraction, ButtonBuilder, MessageFlags, StringSelectMenuInteraction } from 'discord.js';
+import {
+  ActionRowBuilder,
+  BaseInteraction,
+  ButtonBuilder,
+  MessageFlags,
+  StringSelectMenuInteraction
+} from 'discord.js';
 
 class InteractionHandler {
   readonly discord: DiscordManager;
