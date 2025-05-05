@@ -1,7 +1,7 @@
 import Command from '../Private/Command';
 import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
+import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class SkipCommand extends Command {
   constructor(discord: DiscordManager) {
@@ -21,7 +21,10 @@ class SkipCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: this.discord.Application.messages.playbackSongSkip, ephemeral: true });
+      await interaction.followUp({
+        content: this.discord.Application.messages.playbackSongSkip,
+        flags: MessageFlags.Ephemeral
+      });
     });
   }
 }

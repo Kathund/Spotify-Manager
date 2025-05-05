@@ -5,14 +5,14 @@
   "main": "index.ts",
   "types": "src/types/main.d.ts",
   "scripts": {
-    "start": "npx tsx index.ts",
-    "lint:check": "npx eslint src/ index.ts",
-    "lint": "npx eslint src/ index.ts --fix",
-    "prettier": "npx prettier --write .",
-    "prettier:check": "npx prettier --check .",
-    "build": "npx tsc --build",
-    "dev": "npx nodemon",
-    "setup-config": "npx tsx Setup.ts"
+    "start": "pnpm exec tsx index.ts",
+    "lint:check": "pnpm exec eslint src/ index.ts",
+    "lint": "pnpm exec eslint src/ index.ts --fix",
+    "prettier": "pnpm exec prettier --write .",
+    "prettier:check": "pnpm exec prettier --check .",
+    "build": "pnpm exec tsc --build",
+    "dev": "pnpm exec nodemon",
+    "setup-config": "pnpm exec tsx Setup.ts"
   },
   "keywords": [],
   "author": "Kathund",
@@ -28,7 +28,7 @@
   "type": "module",
   "dependencies": {
     "chalk": "^5.4.1",
-    "discord.js": "^14.16.3",
+    "discord.js": "^14.19.3",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "node-cache": "^5.1.2",

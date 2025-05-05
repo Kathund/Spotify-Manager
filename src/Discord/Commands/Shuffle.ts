@@ -1,7 +1,7 @@
 import Command from '../Private/Command';
 import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
+import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class ShuffleCommand extends Command {
   constructor(discord: DiscordManager) {
@@ -23,7 +23,7 @@ class ShuffleCommand extends Command {
       }
       await interaction.followUp({
         content: `Shuffle ${playback.shuffleState ? 'Enabled' : 'Disabled'}.`,
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
     });
   }

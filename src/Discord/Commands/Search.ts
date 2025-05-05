@@ -1,7 +1,12 @@
 import Command from '../Private/Command';
 import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import { ChatInputCommandInteraction, SlashCommandIntegerOption, SlashCommandStringOption } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  MessageFlags,
+  SlashCommandIntegerOption,
+  SlashCommandStringOption
+} from 'discord.js';
 
 class SearchCommand extends Command {
   constructor(discord: DiscordManager) {
@@ -21,7 +26,10 @@ class SearchCommand extends Command {
     const query = interaction.options.getString('query') || null;
     const page = interaction.options.getInteger('page') || 0;
     if (!query) {
-      await interaction.reply({ content: this.discord.Application.messages.missingQuerySearch, ephemeral: true });
+      await interaction.reply({
+        content: this.discord.Application.messages.missingQuerySearch,
+        flags: MessageFlags.Ephemeral
+      });
       return;
     }
     const res = await this.discord.Application.spotify.requestHandler.searchTracks(query, page);

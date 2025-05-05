@@ -2,7 +2,7 @@ import Button from '../Private/Button';
 import ButtonData from '../Private/ButtonData';
 import DiscordManager from '../DiscordManager';
 import ReplaceVariables from '../../Private/ReplaceVariables';
-import { ButtonInteraction } from 'discord.js';
+import { ButtonInteraction, MessageFlags } from 'discord.js';
 
 class PreviousButton extends Button {
   constructor(discord: DiscordManager) {
@@ -17,7 +17,7 @@ class PreviousButton extends Button {
         content: ReplaceVariables(this.discord.Application.messages.buttonNotFound, {
           warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
         }),
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
       return;
     }

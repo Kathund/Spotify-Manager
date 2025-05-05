@@ -2,7 +2,7 @@ import DiscordManager from '../DiscordManager';
 import Embed from './Embed';
 import ReplaceVariables from '../../Private/ReplaceVariables';
 import SpotifyManagerError from '../../Private/Error';
-import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
+import { ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class DiscordUtils {
   declare discord: DiscordManager;
@@ -36,10 +36,10 @@ class DiscordUtils {
       });
     }
     if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ embeds: [embed], ephemeral: true });
+      await interaction.followUp({ embeds: [embed], flags: MessageFlags.Ephemeral });
       return;
     }
-    await interaction.reply({ embeds: [embed], ephemeral: true });
+    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
   }
 }
 

@@ -1,7 +1,7 @@
 import Command from '../Private/Command';
 import CommandData from '../Private/CommandData';
 import DiscordManager from '../DiscordManager';
-import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
+import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class PreviousCommand extends Command {
   constructor(discord: DiscordManager) {
@@ -21,7 +21,10 @@ class PreviousCommand extends Command {
       } else {
         await interaction.followUp(sendData);
       }
-      await interaction.followUp({ content: this.discord.Application.messages.playbackPrevious, ephemeral: true });
+      await interaction.followUp({
+        content: this.discord.Application.messages.playbackPrevious,
+        flags: MessageFlags.Ephemeral
+      });
     });
   }
 }

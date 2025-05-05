@@ -1,7 +1,7 @@
 import Command from '../Private/Command';
 import DiscordManager from '../DiscordManager';
 import SpotifyManagerError from '../../Private/Error';
-import { ChatInputCommandInteraction, Collection, REST, Routes } from 'discord.js';
+import { ChatInputCommandInteraction, Collection, MessageFlags, REST, Routes } from 'discord.js';
 import { readdirSync } from 'fs';
 
 class CommandHandler {
@@ -15,9 +15,9 @@ class CommandHandler {
     if (!command) return;
     try {
       if ('search' === interaction.commandName) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.deferReply({ ephemeral: false });
+        await interaction.deferReply();
       }
       this.discord.Application.Logger.discord(
         `Interaction Event trigged by ${interaction.user.username} (${

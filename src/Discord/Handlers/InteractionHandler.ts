@@ -1,6 +1,6 @@
 import DiscordManager from '../DiscordManager';
 import ReplaceVariables from '../../Private/ReplaceVariables';
-import { ActionRowBuilder, BaseInteraction, ButtonBuilder, StringSelectMenuInteraction } from 'discord.js';
+import { ActionRowBuilder, BaseInteraction, ButtonBuilder, MessageFlags, StringSelectMenuInteraction } from 'discord.js';
 
 class InteractionHandler {
   readonly discord: DiscordManager;
@@ -27,11 +27,11 @@ class InteractionHandler {
           content: ReplaceVariables(this.discord.Application.messages.menuNotFound, {
             warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
           }),
-          ephemeral: true
+          flags: MessageFlags.Ephemeral
         });
         return;
       }
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       const track = await this.discord.Application.spotify.requestHandler.getTrack(interaction.values[0]);
       await interaction.followUp({
         embeds: [track.toEmbed(this.discord.emojis)],
