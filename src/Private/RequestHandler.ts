@@ -1,10 +1,10 @@
 import Application from '../Application';
 import SpotifyManagerError from './Error';
 const BASE_URL = 'https://api.spotify.com/v1';
-type RequestMehod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export interface RequestOptions {
-  method?: RequestMehod;
+  method?: RequestMethod;
   raw?: boolean;
   noCache?: boolean;
 }

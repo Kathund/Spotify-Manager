@@ -48,7 +48,7 @@ class Track {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       author: `ID: ${this.id || 'Unknown'}`,
-      title: 'Track Infomation',
+      title: 'Track Information',
       description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.toEmojis(emojis)}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
     });
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);

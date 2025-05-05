@@ -1,6 +1,6 @@
 # Spotify Manager
 
-Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback statusm and more
+Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback status and more
 all from a discord bot. This application uses [Discord.js v14](https://www.npmjs.com/package/discord.js) and the
 [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
 
@@ -31,7 +31,7 @@ all from a discord bot. This application uses [Discord.js v14](https://www.npmjs
 3. Fill out the form with the following information:
    - App Name: `Spotify Manager`
    - App Description:
-     `Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback statusm and more all from a discord bot.`
+     `Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback status and more all from a discord bot.`
    - Redirect URIs: `http://localhost:18173/auth/callback`
    - Which API/SDKs are you planning to use?: `Web API`
 4. Click on `Save`
@@ -101,7 +101,7 @@ pnpm setup-config
 
 This is where you will input the `Client ID` and `Discord Bot Token` that you saved earlier.
 
-:warning: Note if you dont use the default emojis for the bot you will need go to the Discord Application's portal and
+:warning: Note if you don't use the default emojis for the bot you will need go to the Discord Application's portal and
 add emojis with the same names as the emojis in the emoji folder.
 
 5. Start the application

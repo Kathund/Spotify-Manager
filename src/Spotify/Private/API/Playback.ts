@@ -30,7 +30,7 @@ class Playback {
     return this.item;
   }
 
-  getPrograssBar(): string {
+  getProgressBar(): string {
     const progress = `${Math.floor(this.progressMS / 60000)}:${Math.floor((this.progressMS % 60000) / 1000)
       .toString()
       .padStart(2, '0')}`;
@@ -39,8 +39,8 @@ class Playback {
           .toString()
           .padStart(2, '0')}`
       : '0:00';
-    const prograssBar = '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
-    return `${progress} ${prograssBar} ${duration}`;
+    const progressbar = '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
+    return `${progress} ${progressbar} ${duration}`;
   }
 
   getVolumeBar(): string {
@@ -57,7 +57,7 @@ class Playback {
     const embed = this.item
       .toEmbed(emojis)
       .setTitle(`Currently ${this.playing ? 'Playing' : 'Paused'}`)
-      .addFields({ name: 'Progress', value: this.getPrograssBar() });
+      .addFields({ name: 'Progress', value: this.getProgressBar() });
     if (this.device?.supportsVolume) embed.addFields({ name: 'Volume', value: this.getVolumeBar() });
     return embed;
   }

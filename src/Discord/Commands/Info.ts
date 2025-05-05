@@ -36,7 +36,7 @@ class InfoCommand extends Command {
               'refresh'
             )} Refresh Button | Refreshes playback info\n${this.discord.emojis.get(
               'queue'
-            )} Queue Button | View upcomming queue\n${this.discord.emojis.get(
+            )} Queue Button | View upcoming queue\n${this.discord.emojis.get(
               'spotify'
             )} Spotify Button | Opens the current song's url\n${this.discord.emojis.get(
               'info'

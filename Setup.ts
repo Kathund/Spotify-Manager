@@ -16,7 +16,7 @@ async function uploadEmojisToBot(token: string) {
     const currentEmojis = await application.emojis.fetch();
     if (0 < currentEmojis.size) {
       console.log(chalk.red(chalk.bold('Emojis already exist.')));
-      const check = await confirm({ message: 'Overrite Emojis?', default: true });
+      const check = await confirm({ message: 'Overwrite Emojis?', default: true });
       if (false === check) {
         client.destroy();
         return;
@@ -64,7 +64,7 @@ async function setupBot(token: string) {
 (async () => {
   if (existsSync('config.json')) {
     console.log(chalk.red(chalk.bold('Config file already exists.')));
-    const check = await confirm({ message: 'Overrite Config File?', default: true });
+    const check = await confirm({ message: 'Overwrite Config File?', default: true });
     if (false === check) {
       console.log(chalk.red(chalk.bold('Exiting...')));
       process.exit(0);
