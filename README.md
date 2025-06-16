@@ -1,7 +1,7 @@
 # Spotify Manager
 
-Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback status and more
-all from a discord bot. This application uses [Discord.js v14](https://www.npmjs.com/package/discord.js) and the
+Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback status and more all
+from a discord bot. This application uses [Discord.js v14](https://www.npmjs.com/package/discord.js) and the
 [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
 
 ## Table of Contents

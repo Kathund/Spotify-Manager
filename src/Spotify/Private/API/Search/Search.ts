@@ -38,11 +38,11 @@ class Search {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Start')
-        .setEmoji(emojis.get('back') || ''),
+        .setEmoji(emojis.get('back') || messages.fallBackEmojis.back),
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Back')
-        .setEmoji(emojis.get('backOne') || ''),
+        .setEmoji(emojis.get('backOne') || messages.fallBackEmojis.backOne),
       new ButtonBuilder()
         .setCustomId('MEOW')
         .setStyle(ButtonStyle.Secondary)
@@ -51,11 +51,11 @@ class Search {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Forward')
-        .setEmoji(emojis.get('forwardOne') || ''),
+        .setEmoji(emojis.get('forwardOne') || messages.fallBackEmojis.forwardOne),
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.End')
-        .setEmoji(emojis.get('forward') || '')
+        .setEmoji(emojis.get('forward') || messages.fallBackEmojis.forward)
     ];
     if (1 === this.getPages() || 0 === this.getPages()) {
       buttons[0].setDisabled(true);

@@ -15,7 +15,7 @@ class DiscordUtils {
     const embed = new Embed(
       {
         title: ReplaceVariables(this.discord.Application.messages.defaultErrorMessage, {
-          warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
+          warningEmoji: this.discord.emojis.get('warning') || this.discord.Application.messages.missingEmoji
         }),
         description: this.discord.Application.messages.errorReported
       },
@@ -29,7 +29,7 @@ class DiscordUtils {
           new Embed({
             title: 'Error',
             description: `${ReplaceVariables(this.discord.Application.messages.defaultErrorMessage, {
-              warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
+              warningEmoji: this.discord.emojis.get('warning') || this.discord.Application.messages.missingEmoji
             })}\n\n\`\`\`${error.message}\n${error.stack}\n\`\`\``
           })
         ]

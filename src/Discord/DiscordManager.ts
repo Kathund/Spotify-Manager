@@ -4,7 +4,7 @@ import CommandHandler from './Handlers/CommandHandler';
 import DiscordUtils from './Private/DiscordUtils';
 import InteractionHandler from './Handlers/InteractionHandler';
 import StateHandler from './Handlers/StateHandler';
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 
 class DiscordManager {
   readonly Application: Application;
@@ -27,8 +27,8 @@ class DiscordManager {
   connect(): void {
     this.client = new Client({ intents: [GatewayIntentBits.Guilds] });
     this.commandHandler.deployCommands();
-    this.client.on('ready', () => this.stateHandler.onReady());
-    this.client.on('interactionCreate', (interaction) => this.interactionHandler.onInteraction(interaction));
+    this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
+    this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
     this.client.login(this.Application.config.token).catch((e) => this.Application.Logger.error(e));
   }
 }

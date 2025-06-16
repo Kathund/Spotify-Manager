@@ -1,6 +1,8 @@
+import * as messages from '../../../../messages.json';
 import Album from './Album';
 import Artist from './Artist';
 import Embed from '../../../Discord/Private/Embed';
+import ReplaceVariables from '../../../Private/ReplaceVariables';
 import { ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
 
 class Track {
@@ -48,8 +50,16 @@ class Track {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       author: `ID: ${this.id || 'Unknown'}`,
-      title: 'Track Information',
-      description: `[${this.name}](${this.spotifyUrl || 'https://open.spotify.com'}) ${this.toEmojis(emojis)}\n\n[${this.album.name}](<${this.album.spotifyUrl || 'https://open.spotify.com/'}>) | [${this.artists[0].name}](<${this.artists[0].spotifyUrl || 'https://open.spotify.com/'}>)`
+      title: messages.trackEmbed.title,
+      description: ReplaceVariables(messages.trackEmbed.description, {
+        name: this.name,
+        spotifyUrl: this.spotifyUrl || 'https://open.spotify.com',
+        emojis: this.toEmojis(emojis),
+        albumName: this.album.name,
+        albumSpotifyUrl: this.album.spotifyUrl || 'https://open.spotify.com',
+        artistName: this.artists[0].name,
+        artistSpotifyUrl: this.artists[0].spotifyUrl || 'https://open.spotify.com'
+      })
     });
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
     return embed;

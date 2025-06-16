@@ -31,7 +31,7 @@ class InteractionHandler {
       if (!ids.includes(interaction.customId)) {
         await interaction.reply({
           content: ReplaceVariables(this.discord.Application.messages.menuNotFound, {
-            warningEmoji: this.discord.emojis.get('warning') || 'Missing Emoji'
+            warningEmoji: this.discord.emojis.get('warning') || this.discord.Application.messages.missingEmoji
           }),
           flags: MessageFlags.Ephemeral
         });
