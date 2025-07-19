@@ -28,27 +28,27 @@
   "type": "module",
   "dependencies": {
     "chalk": "^5.4.1",
-    "discord.js": "^14.19.3",
+    "discord.js": "^14.21.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "node-cache": "^5.1.2",
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.26.0",
-    "@inquirer/prompts": "^7.5.0",
+    "@eslint/js": "^9.31.0",
+    "@inquirer/prompts": "^7.6.0",
     "@j4cobi/eslint-plugin-sort-imports": "^1.0.2",
     "@types/eslint": "^9.6.1",
-    "@types/express": "^5.0.1",
-    "@types/express-session": "^1.18.1",
-    "@types/node": "^22.15.3",
-    "eslint": "^9.26.0",
-    "eslint-config-prettier": "^10.1.2",
-    "globals": "^16.0.0",
+    "@types/express": "^5.0.3",
+    "@types/express-session": "^1.18.2",
+    "@types/node": "^24.0.15",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.3.0",
     "nodemon": "^3.1.10",
-    "prettier": "^3.5.3",
-    "tsx": "^4.19.4",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.31.1"
+    "typescript-eslint": "^8.37.0"
   }
 }
