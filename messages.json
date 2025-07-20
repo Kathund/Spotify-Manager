@@ -28,7 +28,7 @@
     "progressBar": {
       "enabled": true,
       "title": "Progress",
-      "value": "{trackProgress} {progressBar} {trackLength}"
+      "value": "{trackProgress} {progressBar} {trackDuration}"
     },
     "volumeBar": {
       "enabled": true,
