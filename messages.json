@@ -28,12 +28,12 @@
     "progressBar": {
       "enabled": true,
       "title": "Progress",
-      "value": "{progressBar}"
+      "value": "{trackProgress} {progressBar} {trackLength}"
     },
     "volumeBar": {
       "enabled": true,
       "title": "Volume",
-      "value": "{volumeBar}"
+      "value": "0% {volumeBar} 100%"
     }
   },
   "trackEmbed": {

@@ -34,23 +34,14 @@ class Playback {
   }
 
   getProgressBar(): string {
-    const progress = `${Math.floor(this.progressMS / 60000)}:${Math.floor((this.progressMS % 60000) / 1000)
-      .toString()
-      .padStart(2, '0')}`;
-    const duration = this.item
-      ? `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
-          .toString()
-          .padStart(2, '0')}`
-      : '0:00';
-    const progressbar = '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
-    return `${progress} ${progressbar} ${duration}`;
+    return '█'.repeat(Math.floor(this.progress * 20)) + '-'.repeat(20 - Math.floor(this.progress * 20));
   }
 
   getVolumeBar(): string {
-    if (null === this.device || null === this.device.volumePercent) return `0% ${'-'.repeat(20)} 100%`;
-    return `0% ${'█'.repeat(
+    if (null === this.device || null === this.device.volumePercent) return `${'-'.repeat(20)}`;
+    return `${'█'.repeat(
       Math.floor(this.device.volumePercent * 20)
-    )}${'-'.repeat(20 - Math.floor(this.device.volumePercent * 20))} 100%`;
+    )}${'-'.repeat(20 - Math.floor(this.device.volumePercent * 20))}`;
   }
 
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
@@ -70,14 +61,24 @@ class Playback {
     if (messages.playbackEmbed.progressBar.enabled) {
       embed.addFields({
         name: messages.playbackEmbed.progressBar.title,
-        value: ReplaceVariables(messages.playbackEmbed.progressBar.value, { progressBar: this.getProgressBar() })
+        value: ReplaceVariables(messages.playbackEmbed.progressBar.value, {
+          progressBar: this.getProgressBar(),
+          trackProgress: `${Math.floor(this.progressMS / 60000)}:${Math.floor((this.progressMS % 60000) / 1000)
+            .toString()
+            .padStart(2, '0')}`,
+          trackDuration: this.item
+            ? `${Math.floor(this.item.duration / 60000)}:${Math.floor((this.item.duration % 60000) / 1000)
+                .toString()
+                .padStart(2, '0')}`
+            : '0:00'
+        })
       });
     }
 
     if (messages.playbackEmbed.volumeBar.enabled && this.device?.supportsVolume) {
       embed.addFields({
         name: messages.playbackEmbed.volumeBar.title,
-        value: ReplaceVariables(messages.playbackEmbed.volumeBar.value, { volumeBar: this.getProgressBar() })
+        value: ReplaceVariables(messages.playbackEmbed.volumeBar.value, { volumeBar: this.getVolumeBar() })
       });
     }
 
