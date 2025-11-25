@@ -27,28 +27,28 @@
   "packageManager": "pnpm@9.9.0",
   "type": "module",
   "dependencies": {
-    "chalk": "^5.4.1",
-    "discord.js": "^14.21.0",
+    "chalk": "^5.6.2",
+    "discord.js": "^14.25.1",
     "express": "^5.1.0",
-    "express-session": "^1.18.1",
+    "express-session": "^1.18.2",
     "node-cache": "^5.1.2",
-    "winston": "^3.17.0"
+    "winston": "^3.18.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.31.0",
-    "@inquirer/prompts": "^7.6.0",
+    "@eslint/js": "^9.39.1",
+    "@inquirer/prompts": "^8.0.1",
     "@j4cobi/eslint-plugin-sort-imports": "^1.0.2",
     "@types/eslint": "^9.6.1",
-    "@types/express": "^5.0.3",
+    "@types/express": "^5.0.5",
     "@types/express-session": "^1.18.2",
-    "@types/node": "^24.0.15",
-    "eslint": "^9.31.0",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^16.3.0",
-    "nodemon": "^3.1.10",
+    "globals": "^16.5.0",
+    "nodemon": "^3.1.11",
     "prettier": "^3.6.2",
-    "tsx": "^4.20.3",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.37.0"
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0"
   }
 }
