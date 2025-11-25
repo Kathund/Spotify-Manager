@@ -27,7 +27,7 @@ class CallbackRoute extends Route {
     params.append('client_id', this.spotify.Application.config.spotifyClientId);
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
-    params.append('redirect_uri', `http://localhost:${this.spotify.Application.config.port}/auth/callback`);
+    params.append('redirect_uri', `http://127.0.0.1:${this.spotify.Application.config.port}/auth/callback`);
     params.append('code_verifier', verifier!);
     const result = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',

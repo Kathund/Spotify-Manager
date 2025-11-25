@@ -1,4 +1,5 @@
-/* eslint-disable camelcase */ import Route from '../../Private/BaseRoute';
+/* eslint-disable camelcase */
+import Route from '../../Private/BaseRoute';
 import SpotifyManager from '../../SpotifyManager';
 import { Request, Response } from 'express';
 

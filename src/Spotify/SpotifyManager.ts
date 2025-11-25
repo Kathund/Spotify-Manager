@@ -34,7 +34,7 @@ class SpotifyManager {
     this.token = null;
     this.interval = setInterval(async () => {
       if (this.token) {
-        const res = await fetch(`http://localhost:${this.Application.config.port}/auth/refresh`);
+        const res = await fetch(`http://127.0.0.1:${this.Application.config.port}/auth/refresh`);
         if (200 !== res.status) {
           this.Application.Logger.warn('Token refresh failed.');
           return;
@@ -55,7 +55,7 @@ class SpotifyManager {
       this.expressServer.get(route.path, route.handle.bind(route));
     }
     this.expressServer.listen(this.Application.config.port, () => {
-      this.Application.Logger.other(`Proxy server listening at http://localhost:${this.Application.config.port}`);
+      this.Application.Logger.other(`Proxy server listening at http://127.0.0.1:${this.Application.config.port}`);
     });
   }
 }

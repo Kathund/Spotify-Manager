@@ -32,7 +32,7 @@ from a discord bot. This application uses [Discord.js v14](https://www.npmjs.com
    - App Name: `Spotify Manager`
    - App Description:
      `Control spotify via a discord bot! What could go wrong? Allow anyone to queue songs, manage playback status and more all from a discord bot.`
-   - Redirect URIs: `http://localhost:18173/auth/callback`
+   - Redirect URIs: `http://127.0.0.1:18173/auth/callback`
    - Which API/SDKs are you planning to use?: `Web API`
 4. Click on `Save`
 
