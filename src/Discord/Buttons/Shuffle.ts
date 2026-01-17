@@ -1,7 +1,7 @@
-import Button from '../Private/Button';
-import ButtonData from '../Private/ButtonData';
-import DiscordManager from '../DiscordManager';
-import ReplaceVariables from '../../Private/ReplaceVariables';
+import Button from '../Private/Button.js';
+import ButtonData from '../Private/ButtonData.js';
+import DiscordManager from '../DiscordManager.js';
+import ReplaceVariables from '../../Private/ReplaceVariables.js';
 import { ButtonInteraction, MessageFlags } from 'discord.js';
 
 class ShuffleButton extends Button {
@@ -10,7 +10,7 @@ class ShuffleButton extends Button {
     this.data = new ButtonData('shuffle');
   }
 
-  async execute(interaction: ButtonInteraction): Promise<void> {
+  override async execute(interaction: ButtonInteraction): Promise<void> {
     const command = interaction.client.commands.get(interaction.customId);
     if (command === undefined) {
       await interaction.reply({

@@ -1,17 +1,9 @@
-import Application from '../Application';
-import RequestHandler from './Private/RequestHandler';
-import Routes from './Routes';
+import RequestHandler from './Private/RequestHandler.js';
+import Routes from './Routes/index.js';
 import express from 'express';
 import session from 'express-session';
-
-export interface Token {
-  key: string;
-  refresh: string;
-  type: string;
-  expiresIn: number;
-  expirationTime: number;
-  scope: string[];
-}
+import type Application from '../Application.js';
+import type { Token } from '../Types/Spotify.js';
 
 class SpotifyManager {
   readonly Application: Application;
@@ -34,8 +26,8 @@ class SpotifyManager {
     this.token = null;
     this.interval = setInterval(async () => {
       if (this.token) {
-        const res = await fetch(`http://127.0.0.1:${this.Application.config.port}/auth/refresh`);
-        if (200 !== res.status) {
+        const res = await fetch(`http://127.0.0.1:${process.env.PORT}/auth/refresh`);
+        if (res.status !== 200) {
           this.Application.Logger.warn('Token refresh failed.');
           return;
         }
@@ -54,8 +46,8 @@ class SpotifyManager {
       // @ts-expect-error
       this.expressServer.get(route.path, route.handle.bind(route));
     }
-    this.expressServer.listen(this.Application.config.port, () => {
-      this.Application.Logger.other(`Proxy server listening at http://127.0.0.1:${this.Application.config.port}`);
+    this.expressServer.listen(Number(process.env.PORT), () => {
+      this.Application.Logger.other(`Proxy server listening at http://127.0.0.1:${process.env.PORT}`);
     });
   }
 }

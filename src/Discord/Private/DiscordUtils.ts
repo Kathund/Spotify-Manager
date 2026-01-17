@@ -1,8 +1,8 @@
-import DiscordManager from '../DiscordManager';
-import Embed from './Embed';
-import ReplaceVariables from '../../Private/ReplaceVariables';
-import SpotifyManagerError from '../../Private/Error';
+import Embed from './Embed.js';
+import ReplaceVariables from '../../Private/ReplaceVariables.js';
+import SpotifyManagerError from '../../Private/Error.js';
 import { ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
+import type DiscordManager from '../DiscordManager.js';
 
 class DiscordUtils {
   declare discord: DiscordManager;
@@ -24,7 +24,7 @@ class DiscordUtils {
     if (error instanceof SpotifyManagerError) embed.setDescription(error.message);
     if (!(error instanceof SpotifyManagerError) && error instanceof Error) {
       if (!this.discord.client) return;
-      this.discord.client.users.send(this.discord.Application.config.ownerId, {
+      this.discord.client.users.send(process.env.OWNER_ID, {
         embeds: [
           new Embed({
             title: 'Error',

@@ -1,6 +1,0 @@
-{
-  "token": "DISCORD_BOT_TOKEN",
-  "spotifyClientId": "SPOTIFY_CLIENT_ID",
-  "port": 18173,
-  "ownerId": "OWNER_ID"
-}

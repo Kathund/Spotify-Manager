@@ -1,4 +1,5 @@
 import { Colors, EmbedBuilder } from 'discord.js';
+
 type EmbedColor = keyof typeof Colors | 'Random';
 
 class Embed extends EmbedBuilder {

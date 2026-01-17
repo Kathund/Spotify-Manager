@@ -1,5 +1,5 @@
-import DiscordManager from '../DiscordManager';
 import { ActivityType } from 'discord.js';
+import type DiscordManager from '../DiscordManager.js';
 
 class StateHandler {
   discord: DiscordManager;

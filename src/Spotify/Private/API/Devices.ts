@@ -1,4 +1,5 @@
-export type DeviceType = 'computer' | 'smartphone' | 'speaker';
+import type { DeviceType } from '../../../Types/Spotify.js';
+
 class Device {
   id: string;
   active: boolean;

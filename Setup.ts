@@ -4,7 +4,8 @@
 import chalk from 'chalk';
 import { ApplicationEmoji, Client, GatewayIntentBits, OAuth2Scopes, PermissionsBitField } from 'discord.js';
 import { confirm, input, number, password } from '@inquirer/prompts';
-import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
+
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function uploadEmojisToBot(token: string) {
@@ -14,10 +15,10 @@ async function uploadEmojisToBot(token: string) {
     const application = await client.application?.fetch();
     if (!application) return;
     const currentEmojis = await application.emojis.fetch();
-    if (0 < currentEmojis.size) {
+    if (currentEmojis.size > 0) {
       console.log(chalk.red(chalk.bold('Emojis already exist.')));
       const check = await confirm({ message: 'Overwrite Emojis?', default: true });
-      if (false === check) {
+      if (check === false) {
         client.destroy();
         return;
       }
@@ -29,7 +30,7 @@ async function uploadEmojisToBot(token: string) {
       const emojiFiles = readdirSync('./emojis').filter((file) => file.endsWith('.png'));
       for (const emoji of emojiFiles) {
         application.emojis
-          .create({ attachment: `./emojis/${emoji}`, name: emoji.split('.')[0] })
+          .create({ attachment: `./emojis/${emoji}`, name: emoji.split('.')[0] || 'UNKNOWN' })
           .then((emoji: ApplicationEmoji) => console.log(`Uploaded ${emoji.name} Emoji`))
           .catch(console.error);
       }
@@ -65,7 +66,7 @@ async function setupBot(token: string) {
   if (existsSync('config.json')) {
     console.log(chalk.red(chalk.bold('Config file already exists.')));
     const check = await confirm({ message: 'Overwrite Config File?', default: true });
-    if (false === check) {
+    if (check === false) {
       console.log(chalk.red(chalk.bold('Exiting...')));
       process.exit(0);
     } else {
@@ -76,7 +77,7 @@ async function setupBot(token: string) {
   const token = await password({
     message: 'Discord Token:',
     validate: (input) => {
-      if ('' === input.trim()) {
+      if (input.trim() === '') {
         return 'Discord Token is required';
       }
       return true;
@@ -84,7 +85,7 @@ async function setupBot(token: string) {
   });
   const spotifyClientId = await password({
     message: 'Spotify Client Id:',
-    validate: (input) => '' !== input.trim() || 'Spotify Client Id is required'
+    validate: (input) => input.trim() !== '' || 'Spotify Client Id is required'
   });
   const port = await number({ message: 'Port:', default: 18173 });
   const ownerId = await input({ message: 'Bot Owner Discord Id (Used for logging errors):' });

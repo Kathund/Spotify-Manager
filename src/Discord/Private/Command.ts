@@ -1,6 +1,6 @@
-import CommandData from './CommandData';
-import DiscordManager from '../DiscordManager';
-import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
+import type CommandData from './CommandData.js';
+import type DiscordManager from '../DiscordManager.js';
+import type { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class Command {
   readonly discord: DiscordManager;

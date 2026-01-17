@@ -1,4 +1,4 @@
-import SpotifyManager from '../SpotifyManager';
+import type SpotifyManager from '../SpotifyManager.js';
 
 class Route {
   readonly spotify: SpotifyManager;

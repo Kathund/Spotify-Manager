@@ -1,9 +1,9 @@
-import Playback from './API/Playback';
-import Queue from './API/Queue';
-import Search from './API/Search/Search';
-import SpotifyManager from '../SpotifyManager';
-import SpotifyManagerError from '../../Private/Error';
-import Track from './API/Track';
+import Playback from './API/Playback.js';
+import Queue from './API/Queue.js';
+import Search from './API/Search/Search.js';
+import SpotifyManagerError from '../../Private/Error.js';
+import Track from './API/Track.js';
+import type SpotifyManager from '../SpotifyManager.js';
 
 class RequestHandler {
   readonly spotify: SpotifyManager;
@@ -13,7 +13,7 @@ class RequestHandler {
 
   async getStatus(): Promise<Playback> {
     const res = await this.spotify.Application.requestHandler.request('/me/player', { noCache: true });
-    if (204 === res.statusCode) throw new SpotifyManagerError(this.spotify.Application.messages.nothingPlaying);
+    if (res.statusCode === 204) throw new SpotifyManagerError(this.spotify.Application.messages.nothingPlaying);
     return new Playback(await res.data);
   }
 

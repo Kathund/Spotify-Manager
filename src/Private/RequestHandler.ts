@@ -1,13 +1,8 @@
-import Application from '../Application';
-import SpotifyManagerError from './Error';
-const BASE_URL = 'https://api.spotify.com/v1';
-type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+import SpotifyManagerError from './Error.js';
+import type Application from '../Application.js';
+import type { RequestOptions } from '../Types/Requests.js';
 
-export interface RequestOptions {
-  method?: RequestMethod;
-  raw?: boolean;
-  noCache?: boolean;
-}
+const BASE_URL = 'https://api.spotify.com/v1';
 
 class RequestData {
   readonly data: any;
@@ -57,14 +52,14 @@ class RequestHandler {
       method: options.method,
       headers: { Authorization: `Bearer ${this.Application.spotify.token.key}` }
     });
-    if ('GET' !== options.method) {
+    if (options.method !== 'GET') {
       return new RequestData({}, res.headers, { status: res.status, options, url: endpoint, cached: false });
     }
-    if (204 === res.status || 'me/player' === endpoint) {
+    if (res.status === 204 || endpoint === 'me/player') {
       throw new SpotifyManagerError(this.Application.messages.nothingPlaying);
     }
     const parsedRes = (await res.json()) as Record<string, any>;
-    if (401 === res.status || 403 === res.status) {
+    if (res.status === 401 || res.status === 403) {
       throw new SpotifyManagerError(this.Application.messages.accountNotLoggedIn);
     }
     const requestData = new RequestData(parsedRes, res.headers, {
@@ -74,7 +69,7 @@ class RequestHandler {
       cached: false
     });
     if (options.noCache) return requestData;
-    if (false !== options.raw) {
+    if (options.raw !== false) {
       this.Application.cacheHandler.set(endpoint, requestData);
     }
     return requestData;

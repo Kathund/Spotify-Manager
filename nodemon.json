@@ -1,5 +1,1 @@
-{
-  "ignore": ["config.json", "config.example.json", "node_modules", "src/types"],
-  "ext": "ts",
-  "exec": "pnpm start"
-}
+{ "exec": "pnpm start", "ext": "ts", "ignore": ["config.example.json", "config.json", "node_modules", "src/types"] }

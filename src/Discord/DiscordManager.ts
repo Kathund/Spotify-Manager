@@ -1,10 +1,10 @@
-import Application from '../Application';
-import ButtonHandler from './Handlers/ButtonHandler';
-import CommandHandler from './Handlers/CommandHandler';
-import DiscordUtils from './Private/DiscordUtils';
-import InteractionHandler from './Handlers/InteractionHandler';
-import StateHandler from './Handlers/StateHandler';
+import ButtonHandler from './Handlers/ButtonHandler.js';
+import CommandHandler from './Handlers/CommandHandler.js';
+import DiscordUtils from './Private/DiscordUtils.js';
+import InteractionHandler from './Handlers/InteractionHandler.js';
+import StateHandler from './Handlers/StateHandler.js';
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import type Application from '../Application.js';
 
 class DiscordManager {
   readonly Application: Application;
@@ -29,7 +29,7 @@ class DiscordManager {
     this.commandHandler.deployCommands();
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
-    this.client.login(this.Application.config.token).catch((e) => this.Application.Logger.error(e));
+    this.client.login(process.env.DISCORD_TOKEN).catch((e) => this.Application.Logger.error(e));
   }
 }
 

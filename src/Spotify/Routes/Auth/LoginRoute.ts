@@ -1,6 +1,6 @@
-import Route from '../../Private/BaseRoute';
-import SpotifyManager from '../../SpotifyManager';
-import { Request, Response } from 'express';
+import Route from '../../Private/BaseRoute.js';
+import SpotifyManager from '../../SpotifyManager.js';
+import type { Request, Response } from 'express';
 
 class AuthRoute extends Route {
   constructor(spotify: SpotifyManager) {
@@ -8,15 +8,15 @@ class AuthRoute extends Route {
     this.path = '/auth/login';
   }
 
-  async handle(req: Request, res: Response) {
+  override async handle(req: Request, res: Response) {
     try {
       const verifier = this.generateCodeVerifier(128);
       const challenge = await this.generateCodeChallenge(verifier);
       req.session.verifier = verifier;
       const params = new URLSearchParams();
-      params.append('client_id', this.spotify.Application.config.spotifyClientId);
+      params.append('client_id', process.env.SPOTIFY_CLIENT_ID);
       params.append('response_type', 'code');
-      params.append('redirect_uri', `http://127.0.0.1:${this.spotify.Application.config.port}/auth/callback`);
+      params.append('redirect_uri', `http://127.0.0.1:${process.env.PORT}/auth/callback`);
       params.append('scope', this.spotify.scopes.join(' '));
       params.append('code_challenge_method', 'S256');
       params.append('code_challenge', challenge);

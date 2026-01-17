@@ -1,8 +1,8 @@
-import * as messages from '../../../../messages.json';
-import Album from './Album';
-import Artist from './Artist';
-import Embed from '../../../Discord/Private/Embed';
-import ReplaceVariables from '../../../Private/ReplaceVariables';
+import Album from './Album.js';
+import Artist from './Artist.js';
+import Embed from '../../../Discord/Private/Embed.js';
+import Messages from '../../../../Messages.js';
+import ReplaceVariables from '../../../Private/ReplaceVariables.js';
 import { ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
 
 class Track {
@@ -50,15 +50,15 @@ class Track {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       author: `ID: ${this.id || 'Unknown'}`,
-      title: messages.trackEmbed.title,
-      description: ReplaceVariables(messages.trackEmbed.description, {
+      title: Messages.trackEmbed.title,
+      description: ReplaceVariables(Messages.trackEmbed.description, {
         name: this.name,
         spotifyUrl: this.spotifyUrl || 'https://open.spotify.com',
         emojis: this.toEmojis(emojis),
         albumName: this.album.name,
         albumSpotifyUrl: this.album.spotifyUrl || 'https://open.spotify.com',
-        artistName: this.artists[0].name,
-        artistSpotifyUrl: this.artists[0].spotifyUrl || 'https://open.spotify.com'
+        artistName: this.artists[0]?.name || 'UNKNOWN',
+        artistSpotifyUrl: this.artists[0]?.spotifyUrl || 'https://open.spotify.com'
       })
     });
     if (this.album.images[0]) embed.setThumbnail(this.album.images[0].url);
@@ -66,7 +66,7 @@ class Track {
   }
 
   queueButton(): ButtonBuilder {
-    return new ButtonBuilder().setLabel('Queue').setStyle(ButtonStyle.Danger).setCustomId(`QueueTrack`);
+    return new ButtonBuilder().setLabel('Queue').setStyle(ButtonStyle.Danger).setCustomId('QueueTrack');
   }
 }
 

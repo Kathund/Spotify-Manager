@@ -1,5 +1,6 @@
-import AuthRoute from './auth/LoginRoute';
-import CallbackRoute from './auth/CallbackRoute';
-import RefreshRoute from './auth/RefreshRoute';
+import AuthRoute from './Auth/LoginRoute.js';
+import CallbackRoute from './Auth/CallbackRoute.js';
+import RefreshRoute from './Auth/RefreshRoute.js';
 
-export default [AuthRoute, CallbackRoute, RefreshRoute];
+const Routes = [AuthRoute, CallbackRoute, RefreshRoute];
+export default Routes;

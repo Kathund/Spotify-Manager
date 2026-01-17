@@ -1,16 +1,12 @@
 {
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
+  "editor.formatOnSave": true,
   "editor.tabSize": 2,
-  "prettier.useTabs": false,
+  "editor.trimAutoWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "editor.trimAutoWhitespace": true,
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+  "prettier.useTabs": false,
   "typescript.format.semicolons": "insert",
   "typescript.preferences.quoteStyle": "single"
 }

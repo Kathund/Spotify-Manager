@@ -1,6 +1,6 @@
-import Command from '../Private/Command';
-import CommandData from '../Private/CommandData';
-import DiscordManager from '../DiscordManager';
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import DiscordManager from '../DiscordManager.js';
 import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class UptimeCommand extends Command {
@@ -9,7 +9,7 @@ class UptimeCommand extends Command {
     this.data = new CommandData().setName('uptime').setDescription('uptime');
   }
 
-  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     await interaction.followUp({
       content: `Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`
     });

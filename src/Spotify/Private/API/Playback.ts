@@ -1,11 +1,10 @@
-import * as messages from '../../../../messages.json';
-import Device from './Devices';
-import Embed from '../../../Discord/Private/Embed';
-import ReplaceVariables from '../../../Private/ReplaceVariables';
-import Track from './Track';
+import Device from './Devices.js';
+import Embed from '../../../Discord/Private/Embed.js';
+import Messages from '../../../../Messages.js';
+import ReplaceVariables from '../../../Private/ReplaceVariables.js';
+import Track from './Track.js';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
-
-export type RepeatState = 'off' | 'track' | 'context';
+import type { RepeatState } from '../../../Types/Spotify.js';
 
 class Playback {
   device: Device | null;
@@ -38,7 +37,7 @@ class Playback {
   }
 
   getVolumeBar(): string {
-    if (null === this.device || null === this.device.volumePercent) return `${'-'.repeat(20)}`;
+    if (this.device === null || this.device.volumePercent === null) return `${'-'.repeat(20)}`;
     return `${'█'.repeat(
       Math.floor(this.device.volumePercent * 20)
     )}${'-'.repeat(20 - Math.floor(this.device.volumePercent * 20))}`;
@@ -47,21 +46,21 @@ class Playback {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     if (!this.item) {
       return new Embed({
-        title: messages.nothingPlaying,
-        description: messages.playbackEmbed.nothingPlayingDescription
+        title: Messages.nothingPlaying,
+        description: Messages.playbackEmbed.nothingPlayingDescription
       });
     }
 
     const embed = this.item.toEmbed(emojis).setTitle(
-      ReplaceVariables(messages.playbackEmbed.description, {
-        playbackState: this.playing ? messages.playbackEmbed.playbackStatePlaying : messages.playbackPaused
+      ReplaceVariables(Messages.playbackEmbed.description, {
+        playbackState: this.playing ? Messages.playbackEmbed.playbackStatePlaying : Messages.playbackPaused
       })
     );
 
-    if (messages.playbackEmbed.progressBar.enabled) {
+    if (Messages.playbackEmbed.progressBar.enabled) {
       embed.addFields({
-        name: messages.playbackEmbed.progressBar.title,
-        value: ReplaceVariables(messages.playbackEmbed.progressBar.value, {
+        name: Messages.playbackEmbed.progressBar.title,
+        value: ReplaceVariables(Messages.playbackEmbed.progressBar.value, {
           progressBar: this.getProgressBar(),
           trackProgress: `${Math.floor(this.progressMS / 60000)}:${Math.floor((this.progressMS % 60000) / 1000)
             .toString()
@@ -75,10 +74,10 @@ class Playback {
       });
     }
 
-    if (messages.playbackEmbed.volumeBar.enabled && this.device?.supportsVolume) {
+    if (Messages.playbackEmbed.volumeBar.enabled && this.device?.supportsVolume) {
       embed.addFields({
-        name: messages.playbackEmbed.volumeBar.title,
-        value: ReplaceVariables(messages.playbackEmbed.volumeBar.value, { volumeBar: this.getVolumeBar() })
+        name: Messages.playbackEmbed.volumeBar.title,
+        value: ReplaceVariables(Messages.playbackEmbed.volumeBar.value, { volumeBar: this.getVolumeBar() })
       });
     }
 
@@ -90,7 +89,7 @@ class Playback {
       return [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder()
-            .setEmoji(emojis.get('spotify') || messages.fallBackEmojis.spotify)
+            .setEmoji(emojis.get('spotify') || Messages.fallBackEmojis.spotify)
             .setStyle(ButtonStyle.Link)
             .setURL('https://open.spotify.com')
         )
@@ -99,49 +98,49 @@ class Playback {
     return [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
-          .setEmoji(emojis.get('shuffle') || messages.fallBackEmojis.shuffle)
+          .setEmoji(emojis.get('shuffle') || Messages.fallBackEmojis.shuffle)
           .setStyle(this.shuffleState ? ButtonStyle.Success : ButtonStyle.Danger)
           .setCustomId('shuffle'),
         new ButtonBuilder()
-          .setEmoji(emojis.get('back') || messages.fallBackEmojis.back)
+          .setEmoji(emojis.get('back') || Messages.fallBackEmojis.back)
           .setStyle(ButtonStyle.Secondary)
           .setCustomId('previous'),
         new ButtonBuilder()
           .setEmoji(
             this.playing
-              ? emojis.get('pause') || messages.fallBackEmojis.pause
-              : emojis.get('play') || messages.fallBackEmojis.play
+              ? emojis.get('pause') || Messages.fallBackEmojis.pause
+              : emojis.get('play') || Messages.fallBackEmojis.play
           )
           .setStyle(this.playing ? ButtonStyle.Success : ButtonStyle.Danger)
           .setCustomId(this.playing ? 'pause' : 'play'),
         new ButtonBuilder()
-          .setEmoji(emojis.get('forward') || messages.fallBackEmojis.forward)
+          .setEmoji(emojis.get('forward') || Messages.fallBackEmojis.forward)
           .setStyle(ButtonStyle.Secondary)
           .setCustomId('skip'),
         new ButtonBuilder()
           .setEmoji(
-            'track' === this.repeatState
-              ? emojis.get('repeatOne') || messages.fallBackEmojis.repeatOne
-              : emojis.get('repeat') || messages.fallBackEmojis.repeat
+            this.repeatState === 'track'
+              ? emojis.get('repeatOne') || Messages.fallBackEmojis.repeatOne
+              : emojis.get('repeat') || Messages.fallBackEmojis.repeat
           )
-          .setStyle('off' === this.repeatState ? ButtonStyle.Danger : ButtonStyle.Success)
+          .setStyle(this.repeatState === 'off' ? ButtonStyle.Danger : ButtonStyle.Success)
           .setCustomId('repeat')
       ),
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
-          .setEmoji(emojis.get('refresh') || messages.fallBackEmojis.refresh)
+          .setEmoji(emojis.get('refresh') || Messages.fallBackEmojis.refresh)
           .setStyle(ButtonStyle.Secondary)
           .setCustomId('refresh'),
         new ButtonBuilder()
-          .setEmoji(emojis.get('queue') || messages.fallBackEmojis.queue)
+          .setEmoji(emojis.get('queue') || Messages.fallBackEmojis.queue)
           .setStyle(ButtonStyle.Secondary)
           .setCustomId('queue'),
         new ButtonBuilder()
-          .setEmoji(emojis.get('spotify') || messages.fallBackEmojis.spotify)
+          .setEmoji(emojis.get('spotify') || Messages.fallBackEmojis.spotify)
           .setStyle(ButtonStyle.Link)
           .setURL(this.item.spotifyUrl || 'https://open.spotify.com'),
         new ButtonBuilder()
-          .setEmoji(emojis.get('info') || messages.fallBackEmojis.info)
+          .setEmoji(emojis.get('info') || Messages.fallBackEmojis.info)
           .setStyle(ButtonStyle.Primary)
           .setCustomId('info')
       )

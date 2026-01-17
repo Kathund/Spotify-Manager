@@ -1,7 +1,7 @@
-import Command from '../Private/Command';
-import CommandData from '../Private/CommandData';
-import DiscordManager from '../DiscordManager';
-import Embed from '../Private/Embed';
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import DiscordManager from '../DiscordManager.js';
+import Embed from '../Private/Embed.js';
 import { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class InfoCommand extends Command {
@@ -10,7 +10,7 @@ class InfoCommand extends Command {
     this.data = new CommandData().setName('info').setDescription('info');
   }
 
-  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     const app = await interaction.client.application.fetch();
     await interaction.followUp({
       embeds: [

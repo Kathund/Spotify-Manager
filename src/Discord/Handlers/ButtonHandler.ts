@@ -1,8 +1,8 @@
-import Button from '../Private/Button';
-import DiscordManager from '../DiscordManager';
-import SpotifyManagerError from '../../Private/Error';
+import Button from '../Private/Button.js';
+import SpotifyManagerError from '../../Private/Error.js';
 import { ButtonInteraction, Collection } from 'discord.js';
-import { readdirSync } from 'fs';
+import { readdirSync } from 'node:fs';
+import type DiscordManager from '../DiscordManager.js';
 
 class ButtonHandler {
   readonly discord: DiscordManager;

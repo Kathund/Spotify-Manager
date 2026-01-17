@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import Route from '../../Private/BaseRoute';
-import SpotifyManager from '../../SpotifyManager';
-import { Request, Response } from 'express';
+import Route from '../../Private/BaseRoute.js';
+import SpotifyManager from '../../SpotifyManager.js';
+import type { Request, Response } from 'express';
 
 class RefreshRoute extends Route {
   constructor(spotify: SpotifyManager) {
@@ -9,7 +9,7 @@ class RefreshRoute extends Route {
     this.path = '/auth/refresh';
   }
 
-  async handle(req: Request, res: Response) {
+  override async handle(req: Request, res: Response) {
     try {
       if (!this.spotify.token) {
         return res.status(403).json({ success: false, cause: this.spotify.Application.messages.accountNotLoggedIn });
@@ -21,13 +21,13 @@ class RefreshRoute extends Route {
         body: new URLSearchParams({
           grant_type: 'refresh_token',
           refresh_token: this.spotify.token.refresh,
-          client_id: this.spotify.Application.config.spotifyClientId
+          client_id: process.env.SPOTIFY_CLIENT_ID
         })
       });
-      if (403 === result.status || 401 === result.status) {
+      if (result.status === 403 || result.status === 401) {
         return res.status(403).json({ success: true, cause: this.spotify.Application.messages.accountNotLoggedIn });
       }
-      if (200 !== result.status) {
+      if (result.status !== 200) {
         return res.status(404).json({ success: false, cause: 'Something went wrong. Please try again' });
       }
       const tokenData = await result.json();

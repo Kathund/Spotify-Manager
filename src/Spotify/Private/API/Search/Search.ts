@@ -1,6 +1,6 @@
-import * as messages from '../../../../../messages.json';
-import Embed from '../../../../Discord/Private/Embed';
-import TrackSearch from './Track';
+import Embed from '../../../../Discord/Private/Embed.js';
+import Messages from '../../../../../Messages.js';
+import TrackSearch from './Track.js';
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -15,7 +15,7 @@ class Search {
   track: TrackSearch | null;
   constructor(data: Record<string, any>) {
     this.query = data.search;
-    this.track = 1 < data.tracks.items.length ? new TrackSearch({ query: this.query, ...data.tracks }) : null;
+    this.track = data.tracks.items.length > 1 ? new TrackSearch({ query: this.query, ...data.tracks }) : null;
   }
 
   getPages(): number {
@@ -38,11 +38,11 @@ class Search {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Start')
-        .setEmoji(emojis.get('back') || messages.fallBackEmojis.back),
+        .setEmoji(emojis.get('back') || Messages.fallBackEmojis.back),
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Back')
-        .setEmoji(emojis.get('backOne') || messages.fallBackEmojis.backOne),
+        .setEmoji(emojis.get('backOne') || Messages.fallBackEmojis.backOne),
       new ButtonBuilder()
         .setCustomId('MEOW')
         .setStyle(ButtonStyle.Secondary)
@@ -51,25 +51,25 @@ class Search {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Forward')
-        .setEmoji(emojis.get('forwardOne') || messages.fallBackEmojis.forwardOne),
+        .setEmoji(emojis.get('forwardOne') || Messages.fallBackEmojis.forwardOne),
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.End')
-        .setEmoji(emojis.get('forward') || messages.fallBackEmojis.forward)
+        .setEmoji(emojis.get('forward') || Messages.fallBackEmojis.forward)
     ];
-    if (1 === this.getPages() || 0 === this.getPages()) {
-      buttons[0].setDisabled(true);
-      buttons[1].setDisabled(true);
-      buttons[3].setDisabled(true);
-      buttons[4].setDisabled(true);
+    if (this.getPages() === 1 || this.getPages() === 0) {
+      buttons[0]?.setDisabled(true);
+      buttons[1]?.setDisabled(true);
+      buttons[3]?.setDisabled(true);
+      buttons[4]?.setDisabled(true);
     }
-    if (1 === this.getPage()) {
-      buttons[0].setDisabled(true);
-      buttons[1].setDisabled(true);
+    if (this.getPage() === 1) {
+      buttons[0]?.setDisabled(true);
+      buttons[1]?.setDisabled(true);
     }
     if (this.getPage() === this.getPages()) {
-      buttons[3].setDisabled(true);
-      buttons[4].setDisabled(true);
+      buttons[3]?.setDisabled(true);
+      buttons[4]?.setDisabled(true);
     }
     return new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
   }
@@ -77,7 +77,7 @@ class Search {
   toSelectMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
     if (!this.track) {
       return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-        new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder(messages.noSearchResults)
+        new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder(Messages.noSearchResults)
       );
     }
     return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(this.track.toSelectMenu());

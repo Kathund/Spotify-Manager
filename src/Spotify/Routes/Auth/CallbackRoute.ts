@@ -1,6 +1,7 @@
-import Route from '../../Private/BaseRoute';
-import SpotifyManager, { Token } from '../../SpotifyManager';
-import { Request, Response } from 'express';
+import Route from '../../Private/BaseRoute.js';
+import SpotifyManager from '../../SpotifyManager.js';
+import type { Request, Response } from 'express';
+import type { Token } from '../../../Types/Spotify.js';
 
 class CallbackRoute extends Route {
   constructor(spotify: SpotifyManager) {
@@ -8,11 +9,11 @@ class CallbackRoute extends Route {
     this.path = '/auth/callback/';
   }
 
-  async handle(req: Request, res: Response) {
+  override async handle(req: Request, res: Response) {
     try {
       const { code } = req.query;
       const verifier = req.session.verifier;
-      if (!code || !verifier || 'string' !== typeof code) return res.status(400).send('Invalid request.');
+      if (!code || !verifier || typeof code !== 'string') return res.status(400).send('Invalid request.');
       const token = await this.getAccessToken(verifier, code);
       this.spotify.token = token;
       res.status(200).json({ success: true, message: this.spotify.Application.messages.tokenGenerated });
@@ -24,10 +25,10 @@ class CallbackRoute extends Route {
 
   async getAccessToken(verifier: string, code: string): Promise<Token> {
     const params = new URLSearchParams();
-    params.append('client_id', this.spotify.Application.config.spotifyClientId);
+    params.append('client_id', process.env.SPOTIFY_CLIENT_ID);
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
-    params.append('redirect_uri', `http://127.0.0.1:${this.spotify.Application.config.port}/auth/callback`);
+    params.append('redirect_uri', `http://127.0.0.1:${process.env.PORT}/auth/callback`);
     params.append('code_verifier', verifier!);
     const result = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',

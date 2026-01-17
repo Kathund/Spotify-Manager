@@ -1,7 +1,7 @@
-import Command from '../Private/Command';
-import CommandData from '../Private/CommandData';
-import DiscordManager from '../DiscordManager';
-import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import DiscordManager from '../DiscordManager.js';
+import { type BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class ShuffleCommand extends Command {
   constructor(discord: DiscordManager) {
@@ -9,7 +9,7 @@ class ShuffleCommand extends Command {
     this.data = new CommandData().setName('shuffle').setDescription('shuffle');
   }
 
-  async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     await this.discord.Application.spotify.requestHandler.shuffle().then(async () => {
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
       const sendData: BaseMessageOptions = {

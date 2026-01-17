@@ -1,7 +1,7 @@
-import Command from '../Private/Command';
-import CommandData from '../Private/CommandData';
-import DiscordManager from '../DiscordManager';
-import { BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import DiscordManager from '../DiscordManager.js';
+import { type BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class SkipCommand extends Command {
   constructor(discord: DiscordManager) {
@@ -9,7 +9,7 @@ class SkipCommand extends Command {
     this.data = new CommandData().setName('skip').setDescription('skip');
   }
 
-  execute(interaction: ChatInputCommandInteraction | ButtonInteraction): void {
+  override execute(interaction: ChatInputCommandInteraction | ButtonInteraction): void {
     this.discord.Application.spotify.requestHandler.skip().then(async () => {
       const playback = await this.discord.Application.spotify.requestHandler.getStatus();
       const sendData: BaseMessageOptions = {

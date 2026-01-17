@@ -1,13 +1,23 @@
 {
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "allowJs": false,
+    "declaration": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
     "outDir": "./build",
-    "module": "ES2022",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
     "target": "ES2022",
-    "strict": true
+    "verbatimModuleSyntax": true
   }
 }

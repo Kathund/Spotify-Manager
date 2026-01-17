@@ -1,5 +1,5 @@
-import Artist from './Artist';
-import Image from './Image';
+import Artist from './Artist.js';
+import Image from './Image.js';
 
 class Album {
   albumType: string;

@@ -6,11 +6,7 @@
   "ignoreDeps": ["node", "pnpm"],
   "labels": ["dependencies"],
   "packageRules": [
-    {
-      "commitMessagePrefix": "chore(deps):",
-      "matchCurrentVersion": "!/^0/",
-      "matchUpdateTypes": ["minor", "patch"]
-    }
+    { "commitMessagePrefix": "chore(deps):", "matchCurrentVersion": "!/^0/", "matchUpdateTypes": ["minor", "patch"] }
   ],
   "prConcurrentLimit": 5,
   "prHourlyLimit": 0,

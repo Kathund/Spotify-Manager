@@ -1,6 +1,9 @@
-/* eslint-disable no-console */ const customLevels = { discord: 0, other: 1, warn: 2, error: 3, max: 4 };
+/* eslint-disable no-console */
+
 import chalk from 'chalk';
 import { createLogger, format, transports } from 'winston';
+
+const customLevels = { discord: 0, other: 1, warn: 2, error: 3, max: 4 };
 
 function getCurrentTime() {
   return new Date().toLocaleString('en-US', {

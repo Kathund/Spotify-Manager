@@ -1,6 +1,6 @@
-import ButtonData from './ButtonData';
-import DiscordManager from '../DiscordManager';
-import { ButtonInteraction } from 'discord.js';
+import type ButtonData from './ButtonData.js';
+import type DiscordManager from '../DiscordManager.js';
+import type { ButtonInteraction } from 'discord.js';
 
 class Button {
   readonly discord: DiscordManager;

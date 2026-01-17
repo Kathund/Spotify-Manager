@@ -1,8 +1,8 @@
-import Command from '../Private/Command';
-import DiscordManager from '../DiscordManager';
-import SpotifyManagerError from '../../Private/Error';
+import Command from '../Private/Command.js';
+import SpotifyManagerError from '../../Private/Error.js';
 import { ChatInputCommandInteraction, Collection, MessageFlags, REST, Routes } from 'discord.js';
-import { readdirSync } from 'fs';
+import { readdirSync } from 'node:fs';
+import type DiscordManager from '../DiscordManager.js';
 
 class CommandHandler {
   readonly discord: DiscordManager;
@@ -14,7 +14,7 @@ class CommandHandler {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
     try {
-      if ('search' === interaction.commandName) {
+      if (interaction.commandName === 'search') {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       } else {
         await interaction.deferReply();
@@ -44,8 +44,8 @@ class CommandHandler {
         this.discord.client.commands.set(command.data.name, command);
       }
     }
-    const rest = new REST({ version: '10' }).setToken(this.discord.Application.config.token);
-    const clientID = Buffer.from(this.discord.Application.config.token.split('.')[0], 'base64').toString('ascii');
+    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+    const clientID = Buffer.from(process.env.DISCORD_TOKEN.split('.')?.[0] || 'UNKNOWN', 'base64').toString('ascii');
     await rest.put(Routes.applicationCommands(clientID), { body: commands });
     this.discord.Application.Logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
   }
