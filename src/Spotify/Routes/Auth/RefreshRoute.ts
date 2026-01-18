@@ -2,6 +2,7 @@
 
 import Route from '../../Private/BaseRoute.js';
 import SpotifyManager from '../../SpotifyManager.js';
+import Translate from '../../../Private/Translate.js';
 import { readFileSync, writeFileSync } from 'node:fs';
 import type { Request, Response } from 'express';
 
@@ -24,7 +25,7 @@ class RefreshRoute extends Route {
         })
       });
       if (result.status === 403 || result.status === 401) {
-        return res.status(403).json({ success: true, cause: this.spotify.Application.messages.accountNotLoggedIn });
+        return res.status(403).json({ success: true, cause: Translate('spotify.error.account.login') });
       }
       if (result.status !== 200) {
         return res.status(404).json({ success: false, cause: 'Something went wrong. Please try again' });
@@ -45,10 +46,10 @@ class RefreshRoute extends Route {
           2
         )
       );
-      res.status(200).json({ success: true, message: this.spotify.Application.messages.tokenGenerated });
+      res.status(200).json({ success: true, message: Translate('spotify.token.generated') });
     } catch (error) {
       if (error instanceof Error) console.error(error);
-      res.status(500).send(this.spotify.Application.messages.errorFetchingData);
+      res.status(500).send(Translate('spotify.error.fetching'));
     }
   }
 }

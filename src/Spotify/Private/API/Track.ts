@@ -1,7 +1,7 @@
 import Album from './Album.js';
 import Artist from './Artist.js';
 import Embed from '../../../Discord/Private/Embed.js';
-import Messages from '../../../../Messages.js';
+import Translate from '../../../Private/Translate.js';
 import { ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
 import { ReplaceVariables } from '../../../Utils/StringUtils.js';
 
@@ -50,8 +50,8 @@ class Track {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       author: `ID: ${this.id || 'Unknown'}`,
-      title: Messages.trackEmbed.title,
-      description: ReplaceVariables(Messages.trackEmbed.description, {
+      title: Translate('discord.track.embed.title'),
+      description: ReplaceVariables(Translate('discord.track.embed.description'), {
         name: this.name,
         spotifyUrl: this.spotifyUrl || 'https://open.spotify.com',
         emojis: this.toEmojis(emojis),

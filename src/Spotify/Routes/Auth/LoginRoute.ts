@@ -1,5 +1,6 @@
 import Route from '../../Private/BaseRoute.js';
 import SpotifyManager from '../../SpotifyManager.js';
+import Translate from '../../../Private/Translate.js';
 import type { Request, Response } from 'express';
 
 class AuthRoute extends Route {
@@ -23,7 +24,7 @@ class AuthRoute extends Route {
       res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
     } catch (error) {
       if (error instanceof Error) console.error(error);
-      res.status(500).send(this.spotify.Application.messages.errorFetchingData);
+      res.status(500).send(Translate('spotify.error.fetching'));
     }
   }
 

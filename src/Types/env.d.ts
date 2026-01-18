@@ -4,5 +4,6 @@ declare namespace NodeJS {
     PORT: string;
     DISCORD_TOKEN: string;
     SPOTIFY_CLIENT_ID: string;
+    LANGUAGE: string;
   }
 }

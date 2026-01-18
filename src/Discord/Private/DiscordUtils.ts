@@ -1,5 +1,6 @@
 import Embed from './Embed.js';
 import SpotifyManagerError from '../../Private/Error.js';
+import Translate from '../../Private/Translate.js';
 import { ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 import { ReplaceVariables } from '../../Utils/StringUtils.js';
 import type DiscordManager from '../DiscordManager.js';
@@ -14,10 +15,10 @@ class DiscordUtils {
     console.error(error);
     const embed = new Embed(
       {
-        title: ReplaceVariables(this.discord.Application.messages.defaultErrorMessage, {
-          warningEmoji: this.discord.emojis.get('warning') || this.discord.Application.messages.missingEmoji
+        title: ReplaceVariables(Translate('discord.error'), {
+          warningEmoji: this.discord.emojis.get('warning') || Translate('error.missing.emoji')
         }),
-        description: this.discord.Application.messages.errorReported
+        description: Translate('discord.error.reported')
       },
       'Red'
     );
@@ -28,8 +29,8 @@ class DiscordUtils {
         embeds: [
           new Embed({
             title: 'Error',
-            description: `${ReplaceVariables(this.discord.Application.messages.defaultErrorMessage, {
-              warningEmoji: this.discord.emojis.get('warning') || this.discord.Application.messages.missingEmoji
+            description: `${ReplaceVariables(Translate('discord.error'), {
+              warningEmoji: this.discord.emojis.get('warning') || Translate('error.missing.emoji')
             })}\n\n\`\`\`${error.message}\n${error.stack}\n\`\`\``
           })
         ]

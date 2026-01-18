@@ -1,6 +1,7 @@
 import Command from '../Private/Command.js';
 import CommandData from '../Private/CommandData.js';
 import DiscordManager from '../DiscordManager.js';
+import Translate from '../../Private/Translate.js';
 import { type BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class SkipCommand extends Command {
@@ -22,7 +23,7 @@ class SkipCommand extends Command {
         await interaction.followUp(sendData);
       }
       await interaction.followUp({
-        content: this.discord.Application.messages.playbackSongSkip,
+        content: Translate('discord.response.playback.skip'),
         flags: MessageFlags.Ephemeral
       });
     });

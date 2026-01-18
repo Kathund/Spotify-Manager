@@ -1,6 +1,6 @@
 import Embed from '../../../../Discord/Private/Embed.js';
-import Messages from '../../../../../Messages.js';
 import Track from '../Track.js';
+import Translate from '../../../../Private/Translate.js';
 import { Collection, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from 'discord.js';
 
 class TrackSearch {
@@ -37,7 +37,9 @@ class TrackSearch {
   }
 
   toSelectMenu(): StringSelectMenuBuilder {
-    const select = new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder(Messages.itemPreview);
+    const select = new StringSelectMenuBuilder()
+      .setCustomId('searchSelectMenu')
+      .setPlaceholder(Translate('discord.item.preview'));
     this.items.map((track) => {
       select.addOptions(
         new StringSelectMenuOptionBuilder()

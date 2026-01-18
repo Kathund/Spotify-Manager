@@ -1,6 +1,6 @@
 import Embed from '../../../Discord/Private/Embed.js';
-import Messages from '../../../../Messages.js';
 import Track from './Track.js';
+import Translate from '../../../Private/Translate.js';
 import { Collection, EmbedBuilder } from 'discord.js';
 import { ReplaceVariables } from '../../../Utils/StringUtils.js';
 
@@ -19,8 +19,8 @@ class Queue {
   toEmbed(emojis: Collection<string, string>): EmbedBuilder {
     const embed = new Embed({
       title: 'Queue',
-      description: ReplaceVariables(Messages.upcomingQueue, {
-        warningEmoji: emojis.get('warning') || Messages.missingEmoji
+      description: ReplaceVariables(Translate('discord.response.upcoming.queue'), {
+        warningEmoji: emojis.get('warning') || Translate('error.missing.emoji')
       })
     });
 

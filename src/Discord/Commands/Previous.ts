@@ -1,6 +1,7 @@
 import Command from '../Private/Command.js';
 import CommandData from '../Private/CommandData.js';
 import DiscordManager from '../DiscordManager.js';
+import Translate from '../../Private/Translate.js';
 import { type BaseMessageOptions, ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 
 class PreviousCommand extends Command {
@@ -22,7 +23,7 @@ class PreviousCommand extends Command {
         await interaction.followUp(sendData);
       }
       await interaction.followUp({
-        content: this.discord.Application.messages.playbackPrevious,
+        content: Translate('discord.response.playback.previous'),
         flags: MessageFlags.Ephemeral
       });
     });

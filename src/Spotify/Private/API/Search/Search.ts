@@ -1,6 +1,6 @@
 import Embed from '../../../../Discord/Private/Embed.js';
-import Messages from '../../../../../Messages.js';
 import TrackSearch from './Track.js';
+import Translate from '../../../../Private/Translate.js';
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -38,11 +38,11 @@ class Search {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Start')
-        .setEmoji(emojis.get('back') || Messages.fallBackEmojis.back),
+        .setEmoji(emojis.get('back') || Translate('fallback.emoji.back')),
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Back')
-        .setEmoji(emojis.get('backOne') || Messages.fallBackEmojis.backOne),
+        .setEmoji(emojis.get('backOne') || Translate('fallback.emoji.backOne')),
       new ButtonBuilder()
         .setCustomId('MEOW')
         .setStyle(ButtonStyle.Secondary)
@@ -51,11 +51,11 @@ class Search {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.Forward')
-        .setEmoji(emojis.get('forwardOne') || Messages.fallBackEmojis.forwardOne),
+        .setEmoji(emojis.get('forwardOne') || Translate('fallback.emoji.forwardOne')),
       new ButtonBuilder()
         .setStyle(ButtonStyle.Secondary)
         .setCustomId('search.End')
-        .setEmoji(emojis.get('forward') || Messages.fallBackEmojis.forward)
+        .setEmoji(emojis.get('forward') || Translate('fallback.emoji.forward'))
     ];
     if (this.getPages() === 1 || this.getPages() === 0) {
       buttons[0]?.setDisabled(true);
@@ -77,7 +77,9 @@ class Search {
   toSelectMenu(): ActionRowBuilder<StringSelectMenuBuilder> {
     if (!this.track) {
       return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-        new StringSelectMenuBuilder().setCustomId('searchSelectMenu').setPlaceholder(Messages.noSearchResults)
+        new StringSelectMenuBuilder()
+          .setCustomId('searchSelectMenu')
+          .setPlaceholder(Translate('error.search.no.results'))
       );
     }
     return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(this.track.toSelectMenu());

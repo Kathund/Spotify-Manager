@@ -3,6 +3,7 @@ import Queue from './API/Queue.js';
 import Search from './API/Search/Search.js';
 import SpotifyManagerError from '../../Private/Error.js';
 import Track from './API/Track.js';
+import Translate from '../../Private/Translate.js';
 import type SpotifyManager from '../SpotifyManager.js';
 
 class RequestHandler {
@@ -13,7 +14,7 @@ class RequestHandler {
 
   async getStatus(): Promise<Playback> {
     const res = await this.spotify.Application.requestHandler.request('/me/player', { noCache: true });
-    if (res.statusCode === 204) throw new SpotifyManagerError(this.spotify.Application.messages.nothingPlaying);
+    if (res.statusCode === 204) throw new SpotifyManagerError(Translate('error.playback.nothing'));
     return new Playback(await res.data);
   }
 

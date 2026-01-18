@@ -1,3 +1,4 @@
+import Translate from '../../Private/Translate.js';
 import { ActivityType } from 'discord.js';
 import type DiscordManager from '../DiscordManager.js';
 
@@ -11,7 +12,7 @@ class StateHandler {
     if (!this.discord.client || !this.discord.client.user) return;
     console.discord(`Logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`);
     this.discord.client.user.setActivity({
-      name: this.discord.Application.messages.discordStatus,
+      name: Translate('discord.status'),
       type: ActivityType.Listening
     });
     this.discord.buttonHandler.loadButtons();

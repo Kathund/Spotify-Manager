@@ -1,5 +1,6 @@
 import Route from '../../Private/BaseRoute.js';
 import SpotifyManager from '../../SpotifyManager.js';
+import Translate from '../../../Private/Translate.js';
 import { writeFileSync } from 'node:fs';
 import type { Request, Response } from 'express';
 import type { Token } from '../../../Types/Spotify.js';
@@ -17,10 +18,10 @@ class CallbackRoute extends Route {
       if (!code || !verifier || typeof code !== 'string') return res.status(400).send('Invalid request.');
       const token = await this.getAccessToken(verifier, code);
       writeFileSync('auth.json', JSON.stringify(token, null, 2));
-      res.status(200).json({ success: true, message: this.spotify.Application.messages.tokenGenerated });
+      res.status(200).json({ success: true, message: Translate('spotify.token.generated') });
     } catch (error) {
       if (error instanceof Error) console.error(error);
-      res.status(500).send(this.spotify.Application.messages.errorFetchingData);
+      res.status(500).send(Translate('spotify.error.fetching'));
     }
   }
 

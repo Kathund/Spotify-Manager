@@ -1,3 +1,4 @@
+import Translate from '../../Private/Translate.js';
 import type ButtonData from './ButtonData.js';
 import type DiscordManager from '../DiscordManager.js';
 import type { ButtonInteraction } from 'discord.js';
@@ -10,7 +11,7 @@ class Button {
   }
 
   execute(interaction: ButtonInteraction): Promise<void> | void {
-    throw new Error(this.discord.Application.messages.missingExecuteFunction);
+    throw new Error(Translate('error.missing.execute'));
   }
 }
 

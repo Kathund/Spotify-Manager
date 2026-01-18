@@ -1,4 +1,5 @@
 import SpotifyManagerError from './Error.js';
+import Translate from './Translate.js';
 import { readFileSync } from 'node:fs';
 import type Application from '../Application.js';
 import type { RequestOptions } from '../Types/Requests.js';
@@ -57,11 +58,11 @@ class RequestHandler {
       return new RequestData({}, res.headers, { status: res.status, options, url: endpoint, cached: false });
     }
     if (res.status === 204 || endpoint === 'me/player') {
-      throw new SpotifyManagerError(this.Application.messages.nothingPlaying);
+      throw new SpotifyManagerError(Translate('error.playback.nothing'));
     }
     const parsedRes = (await res.json()) as Record<string, any>;
     if (res.status === 401 || res.status === 403) {
-      throw new SpotifyManagerError(this.Application.messages.accountNotLoggedIn);
+      throw new SpotifyManagerError(Translate('spotify.error.account.login'));
     }
     const requestData = new RequestData(parsedRes, res.headers, {
       status: res.status,

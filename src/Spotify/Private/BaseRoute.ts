@@ -1,3 +1,4 @@
+import Translate from '../../Private/Translate.js';
 import type SpotifyManager from '../SpotifyManager.js';
 
 class Route {
@@ -9,7 +10,7 @@ class Route {
   }
 
   handle(...args: any[]) {
-    throw new Error(this.spotify.Application.messages.missingRoutesFunction);
+    throw new Error(Translate('error.missing.routes.handle'));
   }
 }
 
