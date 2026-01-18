@@ -46,8 +46,6 @@ class SpotifyManager {
     );
     for (const RouteClass of Routes) {
       const route = new RouteClass(this);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       this.expressServer.get(route.path, route.handle.bind(route));
     }
     this.expressServer.listen(Number(process.env.PORT), () => {
