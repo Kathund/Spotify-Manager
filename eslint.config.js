@@ -15,7 +15,7 @@ export default [
   prettier,
   globalIgnores(['./build/']),
   {
-    ignores: ['package.json'],
+    ignores: ['package.json', 'auth.json'],
     files: ['**/*.json'],
     plugins: { json },
     language: 'json/json',

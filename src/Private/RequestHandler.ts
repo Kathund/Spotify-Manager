@@ -1,4 +1,5 @@
 import SpotifyManagerError from './Error.js';
+import { readFileSync } from 'node:fs';
 import type Application from '../Application.js';
 import type { RequestOptions } from '../Types/Requests.js';
 
@@ -36,7 +37,6 @@ class RequestHandler {
   }
 
   async request(endpoint: string, options?: RequestOptions): Promise<RequestData> {
-    if (!this.Application.spotify.token) throw new SpotifyManagerError(this.Application.messages.accountNotLoggedIn);
     options = { raw: options?.raw ?? false, noCache: options?.noCache ?? false, method: options?.method ?? 'GET' };
     if (this.Application.cacheHandler.has(endpoint)) {
       const data = this.Application.cacheHandler.get(endpoint);
@@ -48,9 +48,10 @@ class RequestHandler {
         timestamp: data.timestamp
       });
     }
+    const authData = JSON.parse(readFileSync('auth.json', 'utf-8'));
     const res = await fetch(BASE_URL + endpoint, {
       method: options.method,
-      headers: { Authorization: `Bearer ${this.Application.spotify.token.key}` }
+      headers: { Authorization: `Bearer ${authData.key}` }
     });
     if (options.method !== 'GET') {
       return new RequestData({}, res.headers, { status: res.status, options, url: endpoint, cached: false });

@@ -2,15 +2,14 @@ import RequestHandler from './Private/RequestHandler.js';
 import Routes from './Routes/index.js';
 import express from 'express';
 import session from 'express-session';
+import { existsSync } from 'node:fs';
 import type Application from '../Application.js';
-import type { Token } from '../Types/Spotify.js';
 
 class SpotifyManager {
   readonly Application: Application;
   declare requestHandler: RequestHandler;
   readonly expressServer: express.Application;
-  scopes: string[];
-  token: null | Token;
+  readonly scopes: string[];
   declare interval: NodeJS.Timeout;
   constructor(app: Application) {
     this.Application = app;
@@ -23,17 +22,22 @@ class SpotifyManager {
       'user-read-playback-state',
       'user-read-private'
     ];
-    this.token = null;
-    this.interval = setInterval(async () => {
-      if (this.token) {
-        const res = await fetch(`http://127.0.0.1:${process.env.PORT}/auth/refresh`);
-        if (res.status !== 200) {
-          this.Application.Logger.warn('Token refresh failed.');
-          return;
-        }
-        this.Application.Logger.other('Token refreshed successfully.');
-      }
-    }, 1000 * 3600);
+    this.interval = setInterval(async () => await this.refreshAuth(), 1000 * 3600);
+    this.refreshAuth();
+  }
+
+  private async refreshAuth() {
+    if (!existsSync('auth.json')) {
+      return this.Application.Logger.warn(
+        `Missing Spotify Auth File. Please login to spotify via http://127.0.0.1:${process.env.PORT}/auth/login`
+      );
+    }
+    const res = await fetch(`http://127.0.0.1:${process.env.PORT}/auth/refresh`);
+    if (res.status !== 200) {
+      this.Application.Logger.warn('Token refresh failed.');
+      return;
+    }
+    this.Application.Logger.other('Token refreshed successfully.');
   }
 
   private startWebServer() {
