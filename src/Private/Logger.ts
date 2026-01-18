@@ -30,7 +30,7 @@ function getCurrentTime() {
 function getErrorString(error: Error): string {
   return `${error.toString()}${error.stack
     ?.replaceAll(error.toString(), '')
-    .replaceAll('Hypixel Discord Guild Chat Bridge:', '\nHypixel Discord Guild Chat Bridge:')}`;
+    .replaceAll('Spotify Manager:', '\nSpotify Manager:')}`;
 }
 
 function logSomething(message: string, log: LogData): void {
