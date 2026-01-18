@@ -28,16 +28,13 @@ class SpotifyManager {
 
   private async refreshAuth() {
     if (!existsSync('auth.json')) {
-      return this.Application.Logger.warn(
+      return console.warn(
         `Missing Spotify Auth File. Please login to spotify via http://127.0.0.1:${process.env.PORT}/auth/login`
       );
     }
     const res = await fetch(`http://127.0.0.1:${process.env.PORT}/auth/refresh`);
-    if (res.status !== 200) {
-      this.Application.Logger.warn('Token refresh failed.');
-      return;
-    }
-    this.Application.Logger.other('Token refreshed successfully.');
+    if (res.status !== 200) return console.warn('Token refresh failed.');
+    console.other('Token refreshed successfully.');
   }
 
   private startWebServer() {
@@ -49,7 +46,7 @@ class SpotifyManager {
       this.expressServer.get(route.path, route.handle.bind(route));
     }
     this.expressServer.listen(Number(process.env.PORT), () => {
-      this.Application.Logger.other(`Proxy server listening at http://127.0.0.1:${process.env.PORT}`);
+      console.other(`Proxy server listening at http://127.0.0.1:${process.env.PORT}`);
     });
   }
 }

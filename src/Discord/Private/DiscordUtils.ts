@@ -1,7 +1,7 @@
 import Embed from './Embed.js';
-import ReplaceVariables from '../../Private/ReplaceVariables.js';
 import SpotifyManagerError from '../../Private/Error.js';
 import { ButtonInteraction, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
+import { ReplaceVariables } from '../../Utils/StringUtils.js';
 import type DiscordManager from '../DiscordManager.js';
 
 class DiscordUtils {
@@ -11,7 +11,7 @@ class DiscordUtils {
   }
 
   async handleError(interaction: ChatInputCommandInteraction | ButtonInteraction, error: Error | SpotifyManagerError) {
-    this.discord.Application.Logger.error(error);
+    console.error(error);
     const embed = new Embed(
       {
         title: ReplaceVariables(this.discord.Application.messages.defaultErrorMessage, {

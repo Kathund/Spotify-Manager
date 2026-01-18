@@ -12,7 +12,7 @@ class ButtonHandler {
 
   async onButton(interaction: ButtonInteraction): Promise<void> {
     try {
-      this.discord.Application.Logger.discord(
+      console.discord(
         `Button Clicked ${interaction.user.username} (${interaction.user.id}) button ${interaction.customId}`
       );
       const button = interaction.client.buttons.get(interaction.customId);

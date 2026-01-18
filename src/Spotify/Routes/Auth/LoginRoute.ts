@@ -22,7 +22,7 @@ class AuthRoute extends Route {
       params.append('code_challenge', challenge);
       res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
     } catch (error) {
-      if (error instanceof Error) this.spotify.Application.Logger.error(error);
+      if (error instanceof Error) console.error(error);
       res.status(500).send(this.spotify.Application.messages.errorFetchingData);
     }
   }

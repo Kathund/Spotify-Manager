@@ -1,8 +1,8 @@
 import Button from '../Private/Button.js';
 import ButtonData from '../Private/ButtonData.js';
 import DiscordManager from '../DiscordManager.js';
-import ReplaceVariables from '../../Private/ReplaceVariables.js';
 import { ButtonInteraction, MessageFlags } from 'discord.js';
+import { ReplaceVariables } from '../../Utils/StringUtils.js';
 
 class PauseButton extends Button {
   constructor(discord: DiscordManager) {

@@ -29,7 +29,7 @@ class DiscordManager {
     this.commandHandler.deployCommands();
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
-    this.client.login(process.env.DISCORD_TOKEN).catch((e) => this.Application.Logger.error(e));
+    this.client.login(process.env.DISCORD_TOKEN).catch((e) => console.error(e));
   }
 }
 

@@ -19,7 +19,7 @@ class CommandHandler {
       } else {
         await interaction.deferReply();
       }
-      this.discord.Application.Logger.discord(
+      console.discord(
         `Interaction Event trigged by ${interaction.user.username} (${
           interaction.user.id
         }) ran command ${interaction.commandName}`
@@ -47,7 +47,7 @@ class CommandHandler {
     const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
     const clientID = Buffer.from(process.env.DISCORD_TOKEN.split('.')?.[0] || 'UNKNOWN', 'base64').toString('ascii');
     await rest.put(Routes.applicationCommands(clientID), { body: commands });
-    this.discord.Application.Logger.discord(`Successfully reloaded ${commands.length} application command(s).`);
+    console.discord(`Successfully reloaded ${commands.length} application command(s).`);
   }
 }
 

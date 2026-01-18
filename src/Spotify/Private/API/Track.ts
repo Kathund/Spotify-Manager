@@ -2,8 +2,8 @@ import Album from './Album.js';
 import Artist from './Artist.js';
 import Embed from '../../../Discord/Private/Embed.js';
 import Messages from '../../../../Messages.js';
-import ReplaceVariables from '../../../Private/ReplaceVariables.js';
 import { ButtonBuilder, ButtonStyle, Collection, EmbedBuilder } from 'discord.js';
+import { ReplaceVariables } from '../../../Utils/StringUtils.js';
 
 class Track {
   album: Album;

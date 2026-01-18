@@ -1,8 +1,8 @@
 import Embed from '../../../Discord/Private/Embed.js';
 import Messages from '../../../../Messages.js';
-import ReplaceVariables from '../../../Private/ReplaceVariables.js';
 import Track from './Track.js';
 import { Collection, EmbedBuilder } from 'discord.js';
+import { ReplaceVariables } from '../../../Utils/StringUtils.js';
 
 class Queue {
   currentPlayback: Track;

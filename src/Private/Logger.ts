@@ -1,9 +1,17 @@
-/* eslint-disable no-console */
-
 import chalk from 'chalk';
-import { createLogger, format, transports } from 'winston';
+import { Logger, createLogger, format, transports } from 'winston';
+import { TitleCase } from '../Utils/StringUtils.js';
+import type { LogData } from '../Types/Misc.js';
 
-const customLevels = { discord: 0, other: 1, warn: 2, error: 3, max: 4 };
+const otherLog = { level: 'other', background: chalk.bgCyan.black, color: chalk.reset.cyan };
+
+const logs: LogData[] = [
+  { level: 'discord', background: chalk.bgMagenta.black, color: chalk.reset.magenta },
+  otherLog,
+  { level: 'warn', background: chalk.bgYellow.black, color: chalk.reset.yellow },
+  { level: 'error', background: chalk.bgRedBright.black, color: chalk.reset.redBright },
+  { level: 'max', background: chalk.bgBlack.black, color: chalk.reset.black }
+];
 
 function getCurrentTime() {
   return new Date().toLocaleString('en-US', {
@@ -19,76 +27,62 @@ function getCurrentTime() {
   });
 }
 
-const combinedTransport = new transports.File({ level: 'max', filename: './logs/combined.log' });
-const discordLogger = createLogger({
-  level: 'discord',
-  levels: customLevels,
-  format: format.combine(
-    format.timestamp({ format: getCurrentTime }),
-    format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
-    })
-  ),
-  transports: [new transports.File({ level: 'discord', filename: './logs/discord.log' }), combinedTransport]
-});
-
-const otherLogger = createLogger({
-  level: 'other',
-  levels: customLevels,
-  format: format.combine(
-    format.timestamp({ format: getCurrentTime }),
-    format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
-    })
-  ),
-  transports: [new transports.File({ level: 'other', filename: './logs/other.log' }), combinedTransport]
-});
-
-const warnLogger = createLogger({
-  level: 'warn',
-  levels: customLevels,
-  format: format.combine(
-    format.timestamp({ format: getCurrentTime }),
-    format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
-    })
-  ),
-  transports: [new transports.File({ level: 'warn', filename: './logs/warn.log' }), combinedTransport]
-});
-
-const errorLogger = createLogger({
-  level: 'error',
-  levels: customLevels,
-  format: format.combine(
-    format.timestamp({ format: getCurrentTime }),
-    format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level.toUpperCase()} > ${message}`;
-    })
-  ),
-  transports: [new transports.File({ level: 'error', filename: './logs/error.log' }), combinedTransport]
-});
-
-class Logger {
-  public discord(message: string) {
-    discordLogger.log('discord', message);
-    return console.log(chalk.bgMagenta.black(`[${getCurrentTime()}] Discord >`) + ' ' + chalk.magenta(message));
-  }
-
-  public other(message: string) {
-    otherLogger.log('other', message);
-    return console.log(chalk.bgCyan.black(`[${getCurrentTime()}] Other >`) + ' ' + chalk.cyan(message));
-  }
-
-  public warn(message: string) {
-    warnLogger.log('warn', message);
-    return console.log(chalk.bgYellow.black(`[${getCurrentTime()}] Warning >`) + ' ' + chalk.yellow(message));
-  }
-
-  public error(error: Error) {
-    const errorString = `${error.toString()}${error.stack?.replace(error.toString(), '')}`;
-    errorLogger.log('error', errorString);
-    return console.log(chalk.bgRedBright.black(`[${getCurrentTime()}] Error >`) + ' ' + chalk.redBright(errorString));
-  }
+function getErrorString(error: Error): string {
+  return `${error.toString()}${error.stack
+    ?.replaceAll(error.toString(), '')
+    .replaceAll('Hypixel Discord Guild Chat Bridge:', '\nHypixel Discord Guild Chat Bridge:')}`;
 }
 
-export default Logger;
+function logSomething(message: string, log: LogData): void {
+  console.log(log.background(`[${getCurrentTime()}] ${TitleCase(log.level)} > ${log.color(message)}`));
+}
+
+const combinedTransport = new transports.File({ level: 'max', filename: './logs/combined.log' });
+const loggers: { [key: string]: Logger } = {};
+logs.forEach((log) => {
+  loggers[log.level] = createLogger({
+    level: log.level,
+    levels: logs.reduce(
+      (acc, name, index) => {
+        acc[name.level] = index;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    format: format.combine(
+      format.printf(({ timestamp, level, message }) => {
+        return `[${getCurrentTime()}] ${TitleCase(log.level)} > ${message}`;
+      })
+    ),
+    transports: [new transports.File({ level: log.level, filename: `./logs/${log.level}.log` }), combinedTransport]
+  });
+});
+
+console.discord = (message: string): void => {
+  const log = logs.find((log) => log.level === 'discord') || otherLog;
+  logSomething(message, log);
+  const logger = loggers[log.level];
+  if (logger) logger.log(log.level, message);
+};
+
+console.other = (message: string): void => {
+  const log = logs.find((log) => log.level === 'other') || otherLog;
+  logSomething(message, log);
+  const logger = loggers[log.level];
+  if (logger) logger.log(log.level, message);
+};
+
+console.warn = (message: string): void => {
+  const log = logs.find((log) => log.level === 'warn') || otherLog;
+  logSomething(message, log);
+  const logger = loggers[log.level];
+  if (logger) logger.log(log.level, message);
+};
+
+console.error = (message: Error): void => {
+  const log = logs.find((log) => log.level === 'error') || otherLog;
+  const errorString = getErrorString(message);
+  logSomething(errorString, log);
+  const logger = loggers[log.level];
+  if (logger) logger.log(log.level, errorString);
+};

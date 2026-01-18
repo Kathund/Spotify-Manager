@@ -47,7 +47,7 @@ class RefreshRoute extends Route {
       );
       res.status(200).json({ success: true, message: this.spotify.Application.messages.tokenGenerated });
     } catch (error) {
-      if (error instanceof Error) this.spotify.Application.Logger.error(error);
+      if (error instanceof Error) console.error(error);
       res.status(500).send(this.spotify.Application.messages.errorFetchingData);
     }
   }
